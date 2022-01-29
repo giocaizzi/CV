@@ -1,4 +1,3 @@
-
 \documentclass[letterpaper,11pt]{article}
 
 \usepackage{latexsym}
@@ -13,7 +12,6 @@
 \usepackage[english]{babel}
 \usepackage{tabularx}
 \usepackage{xifthen}
-\input{glyphtounicode}
 
 
 %----------FONT OPTIONS----------
@@ -52,8 +50,6 @@
   \vspace{-4pt}\scshape\raggedright\large
 }{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
 
-% Ensure that generate pdf is machine readable/ATS parsable
-\pdfgentounicode=1
 
 %-------------------------
 % Custom commands
@@ -121,7 +117,6 @@
     \small +39 340 8247713 $|$ \href{mailto:x@x.com}{\underline{giocaizzi@gmail.com}}\\ 
     \href{https://linkedin.com/in/giorgio-caizzi/}{\underline{linkedin.com/in/giorgio-caizzi/}}\\
 \end{center}
-q
 
 %-----------EDUCATION-----------
 \section{Education}
@@ -139,7 +134,7 @@ q
 
 %-----------EXPERIENCE-----------
 \section{Experience}
-  \resumeSubHeadingListStart
+    \resumeSubHeadingListStart
 
 	\resumeSubheading
 		{External Collaborator}{Mar. 2020 -- Dec. 2020}
@@ -167,14 +162,6 @@ q
 	      {“Hero Team” Promoter}{May. 2014 -- Sep. 2019}
 	      {GoPro EMEA}{Munich, Germany}
 	      {Promotion of cameras and brand-activation in selected events in Europe.\newline {\scriptsize Worked at: MotoGP Misano \& Mugello, Tour de France, FIS World Cup Finals Meribel, FISE Montpellier, MXGP Maggiora \& Arco di Trento, MXON Ernée, UCI Lourdes, EICMA Milano, Red Bull Crashed-Ice Marseille, Red Bull Soap-Box Paris \& more}}
-      \resumeItemListStart
-      \resumeItem
-      {Public execution of “Daily Giveaway” in Italian, English and French to award the winners of activation games.}
-       \resumeItem
-      {Daily management of booth on event-site: set-up, management and dismatle.}
-   	\resumeItem
-      {When working with event-cars, the activations are multi-days tasks without close supervision.}
-      \resumeItemListEnd
       
 % -----------Multiple Positions Heading-----------
 %    \resumeSubSubheading
@@ -188,28 +175,14 @@ q
 
   \resumeSubHeadingListEnd
 
-
-%-----------PROJECTS-----------
-%\section{Projects}
-%    \resumeSubHeadingListStart
-%      \resumeProjectHeading
-%          {\textbf{Gitlytics} $|$ \emph{Python, Flask, React, PostgreSQL, Docker}}{June 2020 -- Present}
-%          \resumeItemListStart
-%            \resumeItem{Developed a full-stack web application using with Flask serving a REST API with React as the frontend}
-%            \resumeItem{Implemented GitHub OAuth to get data from user’s repositories}
-%            \resumeItem{Visualized GitHub data to show collaboration}
-%            \resumeItem{Used Celery and Redis for asynchronous tasks}
-%          \resumeItemListEnd
-%    \resumeSubHeadingListEnd
-
 %-----------PROGRAMMING SKILLS-----------
 \section{Skills}
  \begin{itemize}[leftmargin=0.15in, label={}]
     \small{\item{
      \textbf{Languages}{: Fluency in Italian (mothertongue) and English. French at intermediate level.} \\
-     \textbf{Softwares}{: git, QGIS \& ArcGIS, PostgreSQL PostGIS, Adobe Creative Suite, \indent Microsoft Office} \\
-     \textbf{Programming}{: python, shell scripting (bash \& zsh), MATLAB, \LaTeX} \\
-     \textbf{Python libraries}{: unittest, pandas, numpy, scipy, matplotlib, statsmodels, geopandas, GDAL, shapely, rasterio}\\
+     \textbf{Softwares}{: ArcGIS \& QGis, Adobe Creative Suite, \indent Microsoft Office} \\
+     \textbf{Programming}{: python, shell scripting, \LaTeX and Markdown \& reStructuredText} \\
+     \textbf{Python libraries}{: pytest, pandas, numpy, scipy, matplotlib, statsmodels, geopandas, shapely, rasterio}\\
      \textbf{Personal interests}{: skiing, surfing, road-cycling and outdoors. Photography.}\\
 }}
  \end{itemize}
