@@ -112,7 +112,7 @@
     \end{itemize}
   }
   \end{center}
-  \vspace{-5pt}
+  \vspace{-2pt}
 }
 
 % -------------------------
@@ -136,16 +136,22 @@
 % SKILLS SECTION ELEMENT
 % -------------------------
 % skills list
-\newcommand{\skillsListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
-    \newcommand{\skillsListEnd}{\end{itemize}}
+\usepackage{ifthen}
+\usepackage{multicol}
 
+\newcommand{\skillsListStart}[1]{
+  \ifthenelse{#1 > 1}{\vspace{-15pt}\begin{multicols}{#1}}{}
+  \begin{itemize}[leftmargin=0.15in, label={}]
+}
+\newcommand{\skillsListEnd}[1]{
+  \end{itemize}
+  \ifthenelse{#1 > 1}{\end{multicols}}{}
+}
 % -------------------------
 % skills list item
 
 \newcommand{\skillsItem}[2]{
-  \vspace{-2pt}
-  \item\small{\textbf{#1}: #2}
-  \vspace{-7pt}
+  \item\vspace{-4pt}\small{\textbf{#1}: #2}
 }
 
 % -------------------------
