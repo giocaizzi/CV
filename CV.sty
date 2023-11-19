@@ -5,6 +5,14 @@
 % original template by: XXXX
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% The CV is made of a header section with info and sections
+% each section is made of a list of subheadings 
+% that are a table with basic information,
+% each subHeading can have a list of items consising 
+% in a bullet point list of text.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % ----------------------
 % PACKAGE CONFIGURATION
 % ----------------------
@@ -14,12 +22,6 @@
 % ----------------------
 % DOCUMENT CONFIGURATION
 % ----------------------
-
-% The CV is made of a header section with info and sections
-% each section is made of a list of subheadings 
-% that are a table with basic information,
-% each subHeading can have a list of items consising 
-% in a bullet point list of text.
 
 % latexsym package included for \LaTeX logo
 \RequirePackage{latexsym}
@@ -35,6 +37,8 @@
 \RequirePackage{tabularx}
 \RequirePackage{xifthen}
 \RequirePackage{fontawesome}
+% multi column package for automatic ordering of skills
+\usepackage{multicol}
 
 
 \pagestyle{fancy}
@@ -140,17 +144,31 @@
 % -------------------------
 % SKILLS
 % -------------------------
-% skills items list
+% skills list
 \newcommand{\skillsItemsListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
     \newcommand{\skillsItemsListEnd}{\end{itemize}}
 
 % -------------------------
-% skillsItem
+% skills item
 \newcommand{\skillsItem}[2]{
   \vspace{-2pt}\item
   \small{{\textbf{#1} #2}}
   \vspace{-7pt}
 }
+
+% -------------------------
+% multicol skills list
+\newcommand{\skillsMulticolListStart}{\begin{multicols}{3}\begin{itemize}}
+    \newcommand{\skillsMulticolListEnd}{\end{itemize}\end{multicols}}
+
+% -------------------------
+% multicol skills item
+\newcommand{\skillsMulticolItem}[2]{
+  \vspace{-2pt}\item
+  \small{{\textbf{#1} #2}}
+  \vspace{-7pt}
+}
+
 
 % -------------------------
 % OTHERS
