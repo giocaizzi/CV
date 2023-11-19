@@ -54,22 +54,18 @@
 % CUSTOM COMMANDS
 % -------------------------
 
-% RESUME ITEM LISTS
-\newcommand{\resumeItemListStart}{\begin{itemize}}
-\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+% The CV is structured as a list of subheadings 
+% that are a table with basic information,
+% each subheading has a list of items consising 
+% in a bullet point list of text.
 
-% RESUME ITEM
+% -------------------------
+% RESUME SUBHEADING LIST
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
 
-% new item with 1 argument: text
-% small font size
-% -3pt vertical space after the item
-\newcommand{\resumeItem}[1]{
-  % create new item in the list
-  \item
-  \small{{#1 \vspace{-3pt}}}
-}
-
-% RESUME SUBHEADING
+% -------------------------
+% RESUME SUBHEADING 
 
 % 5 arguments:  position, date, company, location, description
 \newcommand{\resumeSubheading}[5]{
@@ -108,7 +104,25 @@
   }
 }
 
+% RESUME ITEM LISTS
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+  \newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+  
+  % RESUME ITEM
+  
+  % new item with 1 argument: text
+  % small font size
+  % -3pt vertical space after the item
+  \newcommand{\resumeItem}[1]{
+    % create new item in the list
+    \item
+    \small{{#1 \vspace{-3pt}}}
+  }
+
+% -------------------------
 % RESUME SUBSUBHEADING
+
+% This subheading is for experiences that involve multiple positions
 
 % 2 arguments:  position, date
 \newcommand{\resumeSubSubheading}[2]{
@@ -121,6 +135,7 @@
     \end{tabular*}\vspace{-7pt}
 }
 
+% -------------------------
 % RESUME PROJECT HEADING
 
 % 2 arguments:  position, date
@@ -139,8 +154,7 @@
 
 \renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
 
-\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
-\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+
 
 
 %--------------------
@@ -161,7 +175,10 @@
 
 %-----------EXPERIENCE-----------
 \section{Experience}
+% start list
 \resumeSubHeadingListStart
+
+% aecom
 \resumeSubheading
 {Environmental Engineer}{Feb.2021}
 {AECOM URS Italy S.p.a.}{Milan, Italy}
@@ -177,8 +194,6 @@
 {Developing custom solutions for effective restitution of environmental data,
   with implementations from lastest technologies (Cloud services, SQL DataBase,
   Esri ArcGIS, Microsoft Power BI, python)}
-
-
 \resumeItemListEnd
 
 %wiseair
@@ -203,6 +218,7 @@
 {Managining brand-activation of \textit{Red Bull Citycrusher} event-car in selected sport
   events in Italy.}
 
+%gopro
 \resumeSubheading
 {“Hero Team” Promoter}{May. 2014 -- Sep. 2019}
 {GoPro EMEA}{Munich, Germany}
@@ -216,12 +232,14 @@
 %       {Apache Beam is a unified model for defining both batch and streaming data-parallel processing pipelines}
 %   \resumeItemListEnd
 %-------------------------------------------
-
 \resumeSubHeadingListEnd
+
 
 %-----------EDUCATION-----------
 \section{Education}
 \resumeSubHeadingListStart
+
+% polimi msc
 \resumeSubheading
 {MSc in Environmental and Land Planning Engineering}{Milan, Italy}
 {Politecnico di Milano}{Sep. 2018 -- Dec. 2020}
@@ -230,6 +248,8 @@
   Sustainability \& LCA assessment - Climate change mitigation\newline
   {\scriptsize Thesis: \it “Spatial interpolation methods for producing high-resolution PM2.5
     concentration maps in Milan, Italy“}}
+
+% polimi bsc
 \resumeSubheading
 {BSc in Environmental and Land Planning Engineering}{Milan, Italy}
 {Politecnico di Milano}{Sep. 2014 -- Mar. 2018}
@@ -237,6 +257,8 @@
   - Soil \& groundwater remediation - Geotechnology - Energy engineering - GIS\newline
   {\scriptsize Thesis: \it “Estimation of the environmental and economical impact of Case dell'Acqua,
     a free drinking-water distribution project in Milan by MM S.p.a.“}}
+
+% bsb
 \resumeSubheading
 {The British School of Brussels}{Brussels, Belgium}
 {International Baccalaureate (IB Diploma)}{Sep. 2012 -- May. 2014}{}
