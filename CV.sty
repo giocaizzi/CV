@@ -106,9 +106,9 @@
     \end{tabular*}
   }
   \ifblank{#6}{}{
-    \sectionElementSubListStart
-    \forcsvlist{\sectionElementSubListItem}{#6}
-    \sectionElementSubListEnd
+    \begin{itemize}
+      \forcsvlist{\sectionElementSubListItem}{#6}
+    \end{itemize}
   }
   \vspace{-5pt}
 }
@@ -131,6 +131,7 @@
   \renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
   % create new item in the list
   \item
+  \vspace{-4pt}
   \small{#1 }
 }
 
