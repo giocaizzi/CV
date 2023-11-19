@@ -44,6 +44,7 @@
 \RequirePackage{tabularx}
 \RequirePackage{xifthen}
 \RequirePackage{fontawesome}
+\usepackage{etoolbox} % for list processing and \ifblank
 
 
 \pagestyle{fancy}
@@ -86,8 +87,7 @@
 % sectionElement
 
 % 5 arguments:  position, date, company, location, description
-\newcommand{\sectionElement}[5]{
-  \vspace{-2pt}
+\newcommand{\sectionElement}[6]{
   % create new item in the list
   \item
   % table with 2 rows
@@ -102,12 +102,18 @@
     \textit{\small#3} & \textit{\small #4} \\
     % if argument 5 is empty, do nothing
   \end{tabular*}
-  \ifthenelse{\isempty{#5}}{}{
+  \ifblank{#5}{}{
     \begin{tabular*}{0.97\textwidth}[t]{@{}p{0.97\textwidth}@{}}
       \multicolumn{1}{p{0.97\textwidth}}{\small #5}\\
     \end{tabular*}
-  \vspace{0pt}
+    \vspace{-5pt}
   }
+  \ifblank{#6}{}{
+    \sectionElementSubListStart
+    \forcsvlist{\sectionElementSubListItem}{#6}
+    \sectionElementSubListEnd
+  }
+  \vspace{-5pt}
 }
 % -------------------------
 % sectionElement SubList
@@ -129,7 +135,6 @@
   % create new item in the list
   \item
   \small{#1 }
-  \vspace{-3pt}
 }
 
 % -------------------------
