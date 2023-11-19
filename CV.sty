@@ -5,11 +5,18 @@
 % original template by: XXXX
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% The CV is made of a header section with info and sections
-% each section is made of a list of subheadings 
-% that are a table with basic information,
-% each subHeading can have a list of items consising 
-% in a bullet point list of text.
+% The CV is made of:
+%   - a header section with info
+%   - a set of sections
+%     - each section contains a list of sectionElement
+%       - sectionElement contains 5 arguments:
+%         - position
+%         - date
+%         - company
+%         - location
+%         - description (optional)
+%       - each section can contain a list of sectionElementSubListItem
+%   - a footer section with info
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -37,8 +44,6 @@
 \RequirePackage{tabularx}
 \RequirePackage{xifthen}
 \RequirePackage{fontawesome}
-% multi column package for automatic ordering of skills
-\usepackage{multicol}
 
 
 \pagestyle{fancy}
@@ -70,105 +75,78 @@
 
 
 % -------------------------
-% SUBHEADINGS
+% SECTION ELEMENT
 % -------------------------
-% subHeadingList
+% sectionElement List
 
-\newcommand{\subHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
-    \newcommand{\subHeadingListEnd}{\end{itemize}}
+\newcommand{\sectionElementListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+    \newcommand{\sectionElementListEnd}{\end{itemize}}
 
 % -------------------------
-% subHeading 
+% sectionElement
 
 % 5 arguments:  position, date, company, location, description
-\newcommand{\subHeading}[5]{
+\newcommand{\sectionElement}[5]{
   \vspace{-2pt}
   % create new item in the list
   \item
-  % if argument 5 is empty, print only 2 rows
-  \ifthenelse{\isempty{#5}}
-  {
-    % table with 2 rows
-    % spands 97% of the text width
-    % [t] aligns content to the top
-    % l@{\extracolsep{\fill}}r creates 2 columns with equal width
-    % the first column is left aligned (l)
-    % the second column is right aligned (r)
-    % @{\extracolsep{\fill}} insert space that automatically streches to fill the width of the column
-    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
-      % #1 is bold and #2 is normal
-      \textbf{#1} & #2 \\
-      % #3 and #4 are small and italic
-      \textit{\small#3} & \textit{\small #4} \\
+  % table with 2 rows
+  % spands 97% of the text width
+  % [t] aligns content to the top
+  % l@{\extracolsep{\fill}}r creates 2 columns with equal width
+  % the first column is left aligned (l)
+  % the second column is right aligned (r)
+  % @{\extracolsep{\fill}} insert space that automatically streches to fill the width of the column
+  \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+    \textbf{#1} & #2 \\
+    \textit{\small#3} & \textit{\small #4} \\
+    % if argument 5 is empty, do nothing
+  \end{tabular*}
+  \ifthenelse{\isempty{#5}}{}{
+    \begin{tabular*}{0.97\textwidth}[t]{@{}p{0.97\textwidth}@{}}
+      \multicolumn{1}{p{0.97\textwidth}}{\small #5}\\
     \end{tabular*}
+  \vspace{0pt}
   }
-  % else print 3 rows
-  {
-    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
-      \textbf{#1} & #2 \\
-      \textit{\small#3} & \textit{\small #4} \\
-      % if #5 is not empty, print it in a new row
-      % new row that spans the two columns
-      \multicolumn{2}{p{0.97\textwidth}}
-      % description in small font size
-      {\small #5}\\
-    \end{tabular*}
-  }
-  % reduce vertical space after the table
-  \vspace{-7pt}
 }
+% -------------------------
+% sectionElement SubList
+
+\newcommand{\sectionElementSubListStart}{\begin{itemize}}
+    \newcommand{\sectionElementSubListEnd}{\end{itemize}}
 
 % -------------------------
-% subHeadingItemList
-
-\newcommand{\subHeadingItemListStart}{\begin{itemize}}
-    \newcommand{\subHeadingItemListEnd}{\end{itemize}}
-
-% -------------------------
-% subHeadingItem
-%   bullet point list of text
+% sectionElement SubList Item
 
 % new item with 1 argument: text
 % small font size
 % -3pt vertical space after the item
-\newcommand{\subHeadingItem}[1]{
+\newcommand{\sectionElementSubListItem}[1]{
+  %  bullet point list of text
+  % this line of code is redefining the second-level itemize label 
+  % to be a smaller, vertically centered bullet point.
+  \renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
   % create new item in the list
   \item
-  \small{{#1 \vspace{-3pt}}}
+  \small{#1 }
+  \vspace{-3pt}
 }
 
-% this line of code is redefining the second-level itemize label 
-% to be a smaller, vertically centered bullet point.
-\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
-
 % -------------------------
-% SKILLS
+% SKILLS SECTION ELEMENT
 % -------------------------
 % skills list
-\newcommand{\skillsItemsListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
-    \newcommand{\skillsItemsListEnd}{\end{itemize}}
+\newcommand{\skillsListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+    \newcommand{\skillsListEnd}{\end{itemize}}
 
 % -------------------------
-% skills item
+% skills list item
+
 \newcommand{\skillsItem}[2]{
-  \vspace{-2pt}\item
-  \small{{\textbf{#1} #2}}
+  \vspace{-2pt}
+  \item\small{\textbf{#1} #2}
   \vspace{-7pt}
 }
-
-% -------------------------
-% multicol skills list
-\newcommand{\skillsMulticolListStart}{\begin{multicols}{3}\begin{itemize}}
-    \newcommand{\skillsMulticolListEnd}{\end{itemize}\end{multicols}}
-
-% -------------------------
-% multicol skills item
-\newcommand{\skillsMulticolItem}[2]{
-  \vspace{-2pt}\item
-  \small{{\textbf{#1} #2}}
-  \vspace{-7pt}
-}
-
 
 % -------------------------
 % OTHERS
@@ -179,18 +157,18 @@
 % ????
 
 \newcommand{\resumeSubItem}[1]{
-  \subHeadingItem{#1}\vspace{-4pt}
+  \sectionElementSubListItem{#1}\vspace{-4pt}
 }
 
 % -------------------------
 % subSubHeading
 
-% This subHeading is for experiences that involve multiple positions
+% This sectionElement is for experiences that involve multiple positions
 % 2 arguments:  position, date
 \newcommand{\subSubHeading}[2]{
   % create new item in the list
   \item
-  % new table with 2 columns like in subHeading
+  % new table with 2 columns like in sectionElement
   \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
     % #1 is bold and #2 is italic and small
     \textit{\small#1} & \textit{\small #2} \\
@@ -204,7 +182,7 @@
 \newcommand{\projectHeading}[2]{
   % create new item in the list
   \item
-  % new table with 2 columns like in subHeading
+  % new table with 2 columns like in sectionElement
   \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
     \small#1 & #2 \\
   \end{tabular*}\vspace{-7pt}
