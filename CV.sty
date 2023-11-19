@@ -95,14 +95,15 @@
   % the first column is left aligned (l)
   % the second column is right aligned (r)
   % @{\extracolsep{\fill}} insert space that automatically streches to fill the width of the column
+  \begin{center}
   \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
     \textbf{#1} & #2 \\
     \textit{\small#3} & \textit{\small #4} \\
     % if argument 5 is empty, do nothing
   \end{tabular*}
   \ifblank{#5}{}{
-    \begin{tabular*}{0.97\textwidth}[t]{@{}p{0.97\textwidth}@{}}
-      \multicolumn{1}{p{0.97\textwidth}}{\small #5}\\
+    \begin{tabular*}{0.93\textwidth}[t]{@{}p{0.93\textwidth}@{}}
+      \multicolumn{1}{p{0.93\textwidth}}{\small #5}\\
     \end{tabular*}
   }
   \ifblank{#6}{}{
@@ -110,6 +111,7 @@
       \forcsvlist{\sectionElementSubListItem}{#6}
     \end{itemize}
   }
+  \end{center}
   \vspace{-5pt}
 }
 
