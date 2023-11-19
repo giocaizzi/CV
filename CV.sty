@@ -78,8 +78,9 @@
 
 % 5 arguments:  position, date, company, location, description
 \newcommand{\subHeading}[5]{
-  % create new item in the list with reduced vertical space
-  \vspace{-2pt}\item
+  \vspace{-2pt}
+  % create new item in the list
+  \item
   % if argument 5 is empty, print only 2 rows
   \ifthenelse{\isempty{#5}}
   {
@@ -96,8 +97,6 @@
       % #3 and #4 are small and italic
       \textit{\small#3} & \textit{\small #4} \\
     \end{tabular*}
-    % reduce vertical space after the table
-    \vspace{-7pt}
   }
   % else print 3 rows
   {
@@ -109,8 +108,10 @@
       \multicolumn{2}{p{0.97\textwidth}}
       % description in small font size
       {\small #5}\\
-    \end{tabular*}\vspace{-7pt}
+    \end{tabular*}
   }
+  % reduce vertical space after the table
+  \vspace{-7pt}
 }
 
 % -------------------------
