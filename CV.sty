@@ -69,7 +69,8 @@
 % -------------------------
 % Sections formatting
 \titleformat{\section}{
-  \vspace{-10pt}\scshape\raggedright\large
+  \vspace{-5pt}
+  \scshape\raggedright\large
 }{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
 
 
@@ -112,7 +113,7 @@
     \end{itemize}
   }
   \end{center}
-  \vspace{-2pt}
+  \vspace{-7pt}
 }
 
 % -------------------------
@@ -128,7 +129,7 @@
   \renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
   % create new item in the list
   \item
-  \vspace{-4pt}
+  \vspace{-5pt}
   \small{#1 }
 }
 
@@ -138,20 +139,24 @@
 % skills list
 \usepackage{ifthen}
 \usepackage{multicol}
+\usepackage{setspace}
+
 
 \newcommand{\skillsListStart}[1]{
   \ifthenelse{#1 > 1}{\vspace{-15pt}\begin{multicols}{#1}}{}
-  \begin{itemize}[leftmargin=0.15in, label={}]
+  \begin{itemize}[leftmargin=0.15in, label={},itemsep=0.5pt, parsep=0.5pt]
 }
 \newcommand{\skillsListEnd}[1]{
   \end{itemize}
   \ifthenelse{#1 > 1}{\end{multicols}}{}
+  \vspace{-20pt}
 }
 % -------------------------
 % skills list item
 
 \newcommand{\skillsItem}[2]{
-  \item\vspace{-4pt}\small{\textbf{#1}: #2}
+  \item
+  \small\textbf{#1}: #2
 }
 
 % -------------------------
