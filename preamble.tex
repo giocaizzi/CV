@@ -1,0 +1,163 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Giorgio Caizzi, 2021
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ----------------------
+% DOCUMENT CONFIGURATION
+% ----------------------
+
+%  font size: 11pt
+\documentclass[letterpaper,11pt]{article}
+
+% latexsym package included for \LaTeX logo
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{xifthen}
+\usepackage{fontawesome}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-10pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+
+% -------------------------
+% CUSTOM COMMANDS
+% -------------------------
+
+% The CV is made of a header section with info and sections
+% each section is made of a list of subheadings 
+% that are a table with basic information,
+% each subHeading can have a list of items consising 
+% in a bullet point list of text.
+
+% -------------------------
+% subHeadingList
+
+\newcommand{\subHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\subHeadingListEnd}{\end{itemize}}
+
+% -------------------------
+% subHeading 
+
+% 5 arguments:  position, date, company, location, description
+\newcommand{\subHeading}[5]{
+  % create new item in the list with reduced vertical space
+  \vspace{-2pt}\item
+  % if argument 5 is empty, print only 2 rows
+  \ifthenelse{\isempty{#5}}
+  {
+    % table with 2 rows
+    % spands 97% of the text width
+    % [t] aligns content to the top
+    % l@{\extracolsep{\fill}}r creates 2 columns with equal width
+    % the first column is left aligned (l)
+    % the second column is right aligned (r)
+    % @{\extracolsep{\fill}} insert space that automatically streches to fill the width of the column
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      % #1 is bold and #2 is normal
+  		\textbf{#1} & #2 \\
+      % #3 and #4 are small and italic
+  		\textit{\small#3} & \textit{\small #4} \\
+  	\end{tabular*}
+    % reduce vertical space after the table
+    \vspace{-7pt}
+  }
+  % else print 3 rows
+  {
+  	\begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+  		\textbf{#1} & #2 \\
+  		\textit{\small#3} & \textit{\small #4} \\
+      % if #5 is not empty, print it in a new row
+      % new row that spans the two columns
+  		\multicolumn{2}{p{0.97\textwidth}}
+        % description in small font size
+        {\small #5}\\
+  	\end{tabular*}\vspace{-7pt}
+  }
+}
+% -------------------------
+% subHeadingItemList
+
+\newcommand{\subHeadingItemListStart}{\begin{itemize}}
+\newcommand{\subHeadingItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+% -------------------------
+% subHeadingItem
+
+% new item with 1 argument: text
+% small font size
+% -3pt vertical space after the item
+\newcommand{\subHeadingItem}[1]{
+  % create new item in the list
+  \item
+  \small{{#1 \vspace{-3pt}}}
+}
+% this line of code is redefining the second-level itemize label 
+% to be a smaller, vertically centered bullet point.
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+% -------------------------
+% resumeSubItem 
+% ????
+
+\newcommand{\resumeSubItem}[1]{
+  \subHeadingItem{#1}\vspace{-4pt}
+}
+
+% -------------------------
+% subSubHeading
+
+% This subHeading is for experiences that involve multiple positions
+% 2 arguments:  position, date
+\newcommand{\subSubHeading}[2]{
+  % create new item in the list
+  \item
+    % new table with 2 columns like in subHeading
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      % #1 is bold and #2 is italic and small
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+% -------------------------
+% projectHeading
+
+% 2 arguments
+\newcommand{\projectHeading}[2]{
+  % create new item in the list
+    \item
+    % new table with 2 columns like in subHeading
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
