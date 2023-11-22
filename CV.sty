@@ -1,0 +1,200 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Giorgio Caizzi
+% giocaizzi@gmail.com
+% version 1.0 (19/11/2023)
+% original template by: XXXX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The CV is made of:
+%   - a header section with info
+%   - a set of sections
+%     - each section contains a list of sectionElement
+%       - sectionElement contains 6 arguments:
+%         - position
+%         - date
+%         - company
+%         - location
+%         - description (optional)
+%       - each section can contain a list of keypoints
+%   - a footer section with info
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ----------------------
+% PACKAGE CONFIGURATION
+% ----------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{CV}
+
+% ----------------------
+% DOCUMENT CONFIGURATION
+% ----------------------
+\usepackage{etoolbox} % for list processing and \ifblank
+\RequirePackage{latexsym} % or \LaTeX logo
+\RequirePackage[empty]{fullpage}
+\RequirePackage{titlesec}
+\RequirePackage{marvosym}
+\RequirePackage[usenames,dvipsnames]{color}
+\RequirePackage{verbatim}
+\RequirePackage{enumitem}
+\RequirePackage[hidelinks]{hyperref}
+\RequirePackage{fancyhdr}
+\RequirePackage[english]{babel}
+\RequirePackage{tabularx}
+\RequirePackage{xifthen}
+\RequirePackage{fontawesome}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.7in}
+\addtolength{\textheight}{1.2in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% -------------------------
+% SECTIONS
+% -------------------------
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-5pt}
+  \scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+
+% -------------------------
+% SECTION ELEMENT
+% -------------------------
+% sectionElement List
+
+\newcommand{\sectionElementListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+    \newcommand{\sectionElementListEnd}{\end{itemize}}
+
+% -------------------------
+% sectionElement
+
+% 6 arguments:  position, date, company, location. Optionally, description and keypoints
+\newcommand{\sectionElement}[6]{
+  % create new item in the list
+  \item
+  % table with 2 rows
+  % spands 97% of the text width
+  % [t] aligns content to the top
+  % l@{\extracolsep{\fill}}r creates 2 columns with equal width
+  % the first column is left aligned (l)
+  % the second column is right aligned (r)
+  % @{\extracolsep{\fill}} insert space that automatically streches to fill the width of the column
+  \begin{center}
+  \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+    \textbf{#1} & #2 \\
+    \textit{\small#3} & \textit{\small #4} \\
+    % if argument 5 is empty, do nothing
+  \end{tabular*}
+  \ifblank{#5}{}{
+    \begin{tabular*}{0.93\textwidth}[t]{@{}p{0.93\textwidth}@{}}
+      \multicolumn{1}{p{0.93\textwidth}}{\small #5}\\
+    \end{tabular*}
+  }
+  \ifblank{#6}{}{
+    \begin{itemize}
+      \forcsvlist{\sectionElementSubListItem}{#6}
+    \end{itemize}
+  }
+  \end{center}
+  \vspace{-10pt}
+}
+
+% -------------------------
+% sectionElement SubList Item
+
+% new item with 1 argument: text
+% small font size
+% -3pt vertical space after the item
+\newcommand{\sectionElementSubListItem}[1]{
+  %  bullet point list of text
+  % this line of code is redefining the second-level itemize label 
+  % to be a smaller, vertically centered bullet point.
+  \renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+  % create new item in the list
+  \item
+  \vspace{-5pt}
+  \small{#1 }
+}
+
+% -------------------------
+% SKILLS SECTION ELEMENT
+% -------------------------
+% skills list
+\usepackage{ifthen}
+\usepackage{multicol}
+\usepackage{setspace}
+
+
+\newcommand{\skillsListStart}[1]{
+  \ifthenelse{#1 > 1}{\vspace{-15pt}\begin{multicols}{#1}}{}
+  \begin{itemize}[leftmargin=0.15in, label={},itemsep=0.5pt, parsep=0.5pt]
+}
+\newcommand{\skillsListEnd}[1]{
+  \end{itemize}
+  \ifthenelse{#1 > 1}{\end{multicols}}{}
+  \vspace{-20pt}
+}
+% -------------------------
+% skills list item
+
+\newcommand{\skillsItem}[2]{
+  \item
+  \textbf{\small #1}: \small #2
+}
+
+% -------------------------
+% OTHERS
+% -------------------------
+
+% -------------------------
+% resumeSubItem 
+% ????
+
+\newcommand{\resumeSubItem}[1]{
+  \sectionElementSubListItem{#1}\vspace{-4pt}
+}
+
+% -------------------------
+% subSubHeading
+
+% This sectionElement is for experiences that involve multiple positions
+% 2 arguments:  position, date
+\newcommand{\subSubHeading}[2]{
+  % create new item in the list
+  \item
+  % new table with 2 columns like in sectionElement
+  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    % #1 is bold and #2 is italic and small
+    \textit{\small#1} & \textit{\small #2} \\
+  \end{tabular*}\vspace{-7pt}
+}
+
+% -------------------------
+% projectHeading
+
+% 2 arguments
+\newcommand{\projectHeading}[2]{
+  % create new item in the list
+  \item
+  % new table with 2 columns like in sectionElement
+  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \small#1 & #2 \\
+  \end{tabular*}\vspace{-7pt}
+}
