@@ -143,11 +143,19 @@
 
 
 \newcommand{\skillsListStart}[1]{
-  \ifthenelse{#1 > 1}{\vspace{-15pt}\begin{multicols}{#1}}{}
+  % if argument is greater than 1, then use multicols
+  % else do nothing
+  \ifthenelse{#1 > 1}{
+    \vspace{-15pt}
+    % column separation
+    \setlength{\columnsep}{-10pt}
+    \begin{multicols}{#1}
+  }{}
   \begin{itemize}[leftmargin=0.15in, label={},itemsep=0.5pt, parsep=0.5pt]
 }
 \newcommand{\skillsListEnd}[1]{
   \end{itemize}
+  % if using multicols, then end it
   \ifthenelse{#1 > 1}{\end{multicols}}{}
   \vspace{-20pt}
 }
