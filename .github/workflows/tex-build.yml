@@ -26,6 +26,10 @@ jobs:
         package-file: |
           requirements.txt
 
-    - name: Compile LaTeX document
+    - name: Compile LaTeX document "Example"
       run: |
         pdflatex example.tex
+
+    - name: Compile actual document
+      run: |
+        pdflatex giorgio-caizzi.tex
