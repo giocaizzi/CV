@@ -1,0 +1,37 @@
+name: Build LaTeX document
+
+on :
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Cache TeX Live
+      uses: actions/cache@v2
+      with:
+        path: /usr/local/texlive
+        key: ${{ runner.os }}-texlive-${{ hashFiles('**/*.sty') }}
+        restore-keys: |
+          ${{ runner.os }}-texlive-
+# checks if installed (cached)
+    - name: Install TeX Live
+      run: |
+        if ! command -v pdflatex &> /dev/null
+        then
+          sudo apt-get install texlive-full
+        fi
+
+    - name: Compile LaTeX document
+      run: |
+        pdflatex your-document.tex
