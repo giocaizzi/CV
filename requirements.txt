@@ -6,3 +6,4 @@ marvosym
 enumitem
 xifthen
 ifmtarg
+fontawesome
