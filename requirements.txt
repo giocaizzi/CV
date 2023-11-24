@@ -7,3 +7,4 @@ enumitem
 xifthen
 ifmtarg
 fontawesome
+setspace
