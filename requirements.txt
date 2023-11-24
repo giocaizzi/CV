@@ -1,0 +1,10 @@
+scheme-basic
+etoolbox
+fullpage
+titlesec
+marvosym
+enumitem
+xifthen
+ifmtarg
+fontawesome
+setspace
