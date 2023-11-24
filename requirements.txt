@@ -3,3 +3,4 @@ etoolbox
 fullpage
 titlesec
 marvosym
+enumitem
