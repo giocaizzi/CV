@@ -4,3 +4,4 @@ fullpage
 titlesec
 marvosym
 enumitem
+xifthen
