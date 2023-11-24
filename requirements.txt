@@ -2,3 +2,4 @@ scheme-basic
 etoolbox
 fullpage
 titlesec
+marvosym
