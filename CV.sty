@@ -165,9 +165,9 @@
 % % -------------------------
 
 \newcommand{\simpleSkillsElement}[1]{
-    \begin{simpleSkillsEnv}
-      #1
-    \end{simpleSkillsEnv}
+  \begin{simpleSkillsEnv}
+    #1
+  \end{simpleSkillsEnv}
 }
 
 \newenvironment{simpleSkillsEnv}{
@@ -197,20 +197,31 @@
   %renw command no bullet points
   \renewcommand\labelitemii{}
   \item
-  \textbf{\small #1}: \small #2
+  \textbf{\small #1}: \small #2 \\
 }
 
-\newcommand{\multicolSkillsElement}[2]{
-    % % vertical space before multicols
-    % \vspace{-1.3em}
-    % column separation
-    % \setlength{\multicolsep}{-100pt} 
-    % \setlength{\columnsep}{-50pt}
-    \begin{multicols}{#1}
-    #2
-    \end{multicols}{#1}
+% ignore items
 
-  }
+\newif\ifignoreitem
+\ignoreitemfalse % don't ignore \item by default
+
+\let\olditem\item % save the old \item command
+\renewcommand{\item}{\ifignoreitem\relax\else\olditem\fi} % redefine \item
+
+
+\newcommand{\multicolSkillsElement}[2]{
+% % vertical space before multicols
+\vspace{-0.7em}
+% column separation
+% \setlength{\multicolsep}{-100pt} 
+% \setlength{\columnsep}{-50pt}
+\begin{multicols}{#1}
+  \ignoreitemtrue
+    #2
+  \ignoreitemfalse
+\end{multicols}
+
+}
 
 
 % % -------------------------
