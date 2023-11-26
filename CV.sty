@@ -107,6 +107,7 @@
 }
 
 \newcommand{\sectionElement}[1]{
+  \vspace{-0.5em}
   \item #1
 }
 
@@ -115,7 +116,6 @@
 
 % 6 arguments:  position, date, company, location. Optionally, description and keypoints
 \newcommand{\experienceElement}[6]{
-  \vspace{-0.7em}
   \sectionElement{
     % table with 2 rows
     % spands 97% of the text width
@@ -172,7 +172,7 @@
 }
 
 \newenvironment{simpleSkillsEnv}{
-  \begin{itemize}[leftmargin=0in]
+  \begin{itemize}[leftmargin=0in, itemsep=0.02em, parsep=0pt]
     }{
   \end{itemize}
 }
