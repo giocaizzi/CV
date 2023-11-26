@@ -8,3 +8,4 @@ xifthen
 ifmtarg
 fontawesome
 setspace
+hanging

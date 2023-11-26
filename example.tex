@@ -21,97 +21,122 @@
 %-----------SECTION ELEMENTS-----------
 \section{Experience}
 % start list
-\sectionElementListStart
+\begin{sectionElementsList}
+  \experienceElement
+  {Basic Section Element}{Feb. 2021 -- Present}
+  {Company Name}{City, Country}
+  {}{}
 
-
-\sectionElement
-{Basic Section Element}{Feb. 2021 -- Present}
-{Company Name}{City, Country}
-{}{}
-
-\sectionElement
-{Section element with online description}{Apr. 2019 -- Feb. 2021}
-{Company Name}{City, Country}
-{
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-  eiusmod tempor incididunt ut labore.
-}
-{}
-
-\sectionElement
-{Section element with online description and keypoints.}{ May 2018 -- Apr. 2019}
-{Company Name}{City, Country}
-{
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-  eiusmod tempor incididunt ut labore et dolore magna aliqua.
-}
-{
+  \experienceElement
+  {Section element with online description}{Apr. 2019 -- Feb. 2021}
+  {Company Name}{City, Country}
   {
-    Loren ipsum dolor sit amet, consectetur adipiscing elit, sed do
-  },
-  {
-    Loren ipsum dolor sit amet, consectetur adipiscing elit, sed do
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  },
-}
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+    eiusmod tempor incididunt ut labore.
+  }
+  {}
 
-\sectionElement
-{Section element with long description and keypoints.}{ May 2018 -- Apr. 2019}
-{Company Name}{City, Country}
-{
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-}
-{
+  \experienceElement
+  {Section element with online description and keypoints.}{ May 2018 -- Apr. 2019}
+  {Company Name}{City, Country}
   {
-    Loren ipsum dolor sit amet, consectetur adipiscing elit, sed do
-  },
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+    eiusmod tempor incididunt ut labore et dolore magna aliqua.
+  }
   {
-    Loren ipsum dolor sit amet, consectetur adipiscing elit, sed do
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  },
-}
-\sectionElementListEnd
+    {
+        Loren ipsum dolor sit amet, consectetur adipiscing elit, sed do
+      },
+    {
+        Loren ipsum dolor sit amet, consectetur adipiscing elit, sed do
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      },
+  }
+
+  \experienceElement
+  {Section element with long description and keypoints.}{ May 2018 -- Apr. 2019}
+  {Company Name}{City, Country}
+  {
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+  }
+  {
+    {
+        Loren ipsum dolor sit amet, consectetur adipiscing elit, sed do
+      },
+    {
+        Loren ipsum dolor sit amet, consectetur adipiscing elit, sed do
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      },
+  }
+\end{sectionElementsList}
+
+%-----------EDUCATION-----------
+\section{Education}
+\begin{sectionElementsList}
+  \experienceElement
+  {BSc \& MSc in Science of Snacks}{Milan, Italy}
+  {Politecnico di Milano}{Sep. 2014 -- Dec. 2020}
+  {
+    Lorem impsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+  }
+  {}
+
+  \experienceElement
+  {King of Kindergarden}{Milan, Italy}
+  {Politecnico di Milano}{Sep. 2014 -- Dec. 2020}
+  {}
+  {}
+\end{sectionElementsList}
 
 
 %-----------SKILLS ELEMENTS-----------
 
 \section{ONE COLUMN SKILLS LIST}
-\skillsListStart{1}
-\skillsItem{Skill 1}{Brief description.}
-\skillsItem{Skill 2}
-{
-  Long description : Lorem ipsum dolor sit amet, 
-  consectetur adipiscing elit, sed do eiusmod tempor
-  incididunt ut labore et dolore magna aliqua.
-  Sed ut perspiciatis unde omnis iste natus error sit
-  voluptatem accusantium doloremque.
-}
-\skillsItem{Skill 3}{Brief description.}
-\skillsListEnd{1}
+\begin{sectionElementsList}
+  \skillsElement{1}{
+    \skillsItem{Skill 1}{Brief description.}
+    \skillsItem{Skill 2}
+    {
+      Long description : Lorem ipsum dolor sit amet,
+      consectetur adipiscing elit, sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua.
+      Sed ut perspiciatis unde omnis iste natus error sit
+      voluptatem accusantium doloremque.
+    }
+    \skillsItem{Skill 3}{Brief description.}
+  }
+\end{sectionElementsList}
 
 \section{TWO COLUMN SKILLS LIST}
-\skillsListStart{2}
-\skillsItem{Skill 1}{Brief description.}
-\skillsItem{Skill 2}
-{
-  Long description : Lorem ipsum dolor sit amet, 
-  consectetur adipiscing elit, sed do eiusmod tempor
-  incididunt ut labore et dolore magna aliqua.
-}
-\skillsItem{Skill 3}{Brief description.}
-\skillsItem{Skill 4}
-{
-  Long description : Lorem ipsum dolor sit amet, 
-  consectetur adipiscing elit, sed do eiusmod tempor
-  incididunt ut labore et dolore magna aliqua.
-}
-\skillsItem{Skill 5}{Brief description.}
-\skillsListEnd{2}
+\begin{sectionElementsList}
+  \skillsElement{2}{
+    \skillsItem{Skill 1}{Brief description.}
+    \skillsItem{Skill 2}
+    {
+      Long description : Lorem ipsum dolor sit amet,
+      consectetur adipiscing elit, sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua.
+    }
+    \skillsItem{Skill 3}{Brief description.}
+    \skillsItem{Skill 4}
+    {
+      Long description : Lorem ipsum dolor sit amet,
+      consectetur adipiscing elit, sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua.
+    }
+    \skillsItem{Skill 5}{Brief description.}
+  }
+\end{sectionElementsList}
 
 %-----------PROJECTS-----------
 
+\section{Projects}
+\begin{sectionElementsList}
+  \projectElement{Project 1}{This is a really cool project.}{python, GIS, JS}
+  \projectElement{Project 2}{This is a really cool project.}{HTML, Flask}
+\end{sectionElementsList}
 
 
 
