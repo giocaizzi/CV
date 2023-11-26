@@ -64,14 +64,23 @@
 \raggedright
 \setlength{\tabcolsep}{0in}
 
+% skills list
+\usepackage{ifthen}
+\usepackage{multicol}
+\usepackage{setspace}
+
 % -------------------------
 % SECTIONS
 % -------------------------
 % Sections formatting
 \titleformat{\section}{
-  \vspace{0pt}
   \scshape\raggedright\large
-}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+}{}{0em}{}[
+  \color{black}
+  \titlerule
+  % space after line
+  \vspace{-0.5em}
+]
 
 
 % -------------------------
@@ -85,7 +94,7 @@
 \newcommand{\sectionElementListEnd}{
   \end{itemize}
   % reduce space after last item
-  \vspace{-2em}
+  \vspace{-1.5em}
 }
 
 % -------------------------
@@ -114,45 +123,38 @@
     \end{tabular*}
   }
   \ifblank{#6}{}{
+    % space between description and bullet points
+    \vspace{-0.5em}
     \begin{itemize}
       \forcsvlist{\sectionElementSubListItem}{#6}
     \end{itemize}
   }
   \end{center}
-  % \vspace{-0.5em}
 }
 
 % -------------------------
 % sectionElement SubList Item
 
 % new item with 1 argument: text
-% small font size
-% -3pt vertical space after the item
 \newcommand{\sectionElementSubListItem}[1]{
   %  bullet point list of text
   % this line of code is redefining the second-level itemize label 
   % to be a smaller, vertically centered bullet point.
   \renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
-  % create new item in the list
   \item
-  \vspace{-0.5em}
   \small{#1 }
 }
 
 % -------------------------
 % SKILLS SECTION ELEMENT
 % -------------------------
-% skills list
-\usepackage{ifthen}
-\usepackage{multicol}
-\usepackage{setspace}
-
 
 \newcommand{\skillsListStart}[1]{
   % if argument is greater than 1, then use multicols
   % else do nothing
   \ifthenelse{#1 > 1}{
-    \vspace{-1.5em}
+    % vertical space before multicols
+    \vspace{-1.3em}
     % column separation
     \setlength{\columnsep}{-50pt}
     \begin{multicols}{#1}
@@ -163,7 +165,8 @@
   \end{itemize}
   % if using multicols, then end it
   \ifthenelse{#1 > 1}{\end{multicols}}{}
-  \vspace{-2em}
+  % reduce space after, like in sectionElementListEnd
+  \vspace{-1.5em}
 }
 % -------------------------
 % skills list item
@@ -182,7 +185,8 @@
 % ????
 
 \newcommand{\resumeSubItem}[1]{
-  \sectionElementSubListItem{#1}\vspace{-4pt}
+  \sectionElementSubListItem{#1}
+  % \vspace{-4pt}
 }
 
 % -------------------------
@@ -197,7 +201,8 @@
   \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
     % #1 is bold and #2 is italic and small
     \textit{\small#1} & \textit{\small #2} \\
-  \end{tabular*}\vspace{-7pt}
+  \end{tabular*}
+  % \vspace{-7pt}
 }
 
 % -------------------------
@@ -210,5 +215,6 @@
   % new table with 2 columns like in sectionElement
   \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
     \small#1 & #2 \\
-  \end{tabular*}\vspace{-7pt}
+  \end{tabular*}
+  % \vspace{-7pt}
 }
