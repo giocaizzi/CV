@@ -1,3 +1,5 @@
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Giorgio Caizzi
 % giocaizzi@gmail.com
@@ -8,8 +10,8 @@
 % The CV is made of:
 %   - a header section with info
 %   - a set of sections
-%     - each section contains a list of sectionElement
-%       - sectionElement contains 6 arguments:
+%     - each section contains a list of experienceElement
+%       - experienceElement contains 6 arguments:
 %         - position
 %         - date
 %         - company
@@ -74,9 +76,20 @@
 % -------------------------
 % Sections formatting
 \titleformat{\section}{
+  %the title small caps, left-aligned, and large-sized
   \scshape\raggedright\large
-}{}{0em}{}[
+}
+%label
+{}
+% separation between label and title body
+{0em}
+%code after title body
+{
+}
+% otional code after title 
+[
   \color{black}
+  % horizontal line
   \titlerule
   % space after line
   \vspace{-0.5em}
@@ -84,59 +97,61 @@
 
 
 % -------------------------
-% SECTION ELEMENT
+% SECTION ELEMENT ENVIROMENT
 % -------------------------
-% sectionElement List
-
-\newcommand{\sectionElementListStart}{
+% experienceElement List
+\newenvironment{sectionElementsList}{
   \begin{itemize}[leftmargin=0.15in, label={}]
-}
-\newcommand{\sectionElementListEnd}{
+    }{
   \end{itemize}
   % reduce space after last item
   \vspace{-1.5em}
 }
 
-% -------------------------
-% sectionElement
-
-% 6 arguments:  position, date, company, location. Optionally, description and keypoints
-\newcommand{\sectionElement}[6]{
-  % create new item in the list
-  \item
-  % table with 2 rows
-  % spands 97% of the text width
-  % [t] aligns content to the top
-  % l@{\extracolsep{\fill}}r creates 2 columns with equal width
-  % the first column is left aligned (l)
-  % the second column is right aligned (r)
-  % @{\extracolsep{\fill}} insert space that automatically streches to fill the width of the column
-  \begin{center}
-  \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
-    \textbf{#1} & #2 \\
-    \textit{\small#3} & \textit{\small #4} \\
-    % if argument 5 is empty, do nothing
-  \end{tabular*}
-  \ifblank{#5}{}{
-    \begin{tabular*}{0.93\textwidth}[t]{@{}p{0.93\textwidth}@{}}
-      \multicolumn{1}{p{0.93\textwidth}}{\small #5}\\
-    \end{tabular*}
-  }
-  \ifblank{#6}{}{
-    % space between description and bullet points
-    \vspace{-0.5em}
-    \begin{itemize}
-      \forcsvlist{\sectionElementSubListItem}{#6}
-    \end{itemize}
-  }
-  \end{center}
+\newcommand{\sectionElement}[1]{
+  \item #1
 }
 
 % -------------------------
-% sectionElement SubList Item
+% experienceElement
+
+% 6 arguments:  position, date, company, location. Optionally, description and keypoints
+\newcommand{\experienceElement}[6]{
+  \sectionElement{
+    % table with 2 rows
+    % spands 97% of the text width
+    % [t] aligns content to the top
+    % l@{\extracolsep{\fill}}r creates 2 columns with equal width
+    % the first column is left aligned (l)
+    % the second column is right aligned (r)
+    % @{\extracolsep{\fill}} insert space that automatically streches to fill the width of the column
+    \begin{center}
+      \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+        \textbf{#1} & #2 \\
+        \textit{\small#3} & \textit{\small #4} \\
+        % if argument 5 is empty, do nothing
+      \end{tabular*}
+      \ifblank{#5}{}{
+        \begin{tabular*}{0.93\textwidth}[t]{@{}p{0.93\textwidth}@{}}
+          \multicolumn{1}{p{0.93\textwidth}}{\small #5}\\
+        \end{tabular*}
+      }
+      \ifblank{#6}{}{
+        % space between description and bullet points
+        \vspace{-0.5em}
+        \begin{itemize}
+          \forcsvlist{\experienceElementSubListItem}{#6}
+        \end{itemize}
+      }
+    \end{center}
+  }
+}
+
+% -------------------------
+% experienceElement SubList Item
 
 % new item with 1 argument: text
-\newcommand{\sectionElementSubListItem}[1]{
+\newcommand{\experienceElementSubListItem}[1]{
   %  bullet point list of text
   % this line of code is redefining the second-level itemize label 
   % to be a smaller, vertically centered bullet point.
@@ -145,76 +160,91 @@
   \small{#1 }
 }
 
-% -------------------------
-% SKILLS SECTION ELEMENT
-% -------------------------
+% % -------------------------
+% % SKILLS SECTION ELEMENT
+% % -------------------------
 
-\newcommand{\skillsListStart}[1]{
-  % if argument is greater than 1, then use multicols
-  % else do nothing
-  \ifthenelse{#1 > 1}{
-    % vertical space before multicols
-    \vspace{-1.3em}
-    % column separation
-    \setlength{\columnsep}{-50pt}
-    \begin{multicols}{#1}
-  }{}
-  \begin{itemize}[leftmargin=0.15in, label={},itemsep=0.5pt, parsep=0.5pt]
+\newcommand{\simpleSkillsElement}[1]{
+  \begin{simpleSkillsEnv}
+    \item #1
+  \end{simpleSkillsEnv}
 }
-\newcommand{\skillsListEnd}[1]{
+
+\newenvironment{simpleSkillsEnv}{
+  \begin{itemize}[leftmargin=0in]
+    }
+    {
   \end{itemize}
-  % if using multicols, then end it
-  \ifthenelse{#1 > 1}{\end{multicols}}{}
-  % reduce space after, like in sectionElementListEnd
-  \vspace{-1.5em}
 }
-% -------------------------
-% skills list item
+
+
+\newcommand{\skillsElement}[2]{
+  \ifthenelse{#1 > 1}{
+    \multicolSkillsElement{#1}{#2}
+  }
+  {
+    \simpleSkillsElement{#2}
+  }
+}
+
+% % skills list item
 
 \newcommand{\skillsItem}[2]{
-  \item
   \textbf{\small #1}: \small #2
 }
 
-% -------------------------
-% OTHERS
-% -------------------------
+\newcommand{\multicolSkillsElement}[2]{
+  % % vertical space before multicols
+  % \vspace{-1.3em}
+  % column separation
+  % \setlength{\multicolsep}{-100pt} 
+  % \setlength{\columnsep}{-50pt}
+  \begin{multicols}{#1}
+  #2
+  \end{multicols}{#1}
 
-% -------------------------
-% resumeSubItem 
-% ????
-
-\newcommand{\resumeSubItem}[1]{
-  \sectionElementSubListItem{#1}
-  % \vspace{-4pt}
 }
 
-% -------------------------
-% subSubHeading
 
-% This sectionElement is for experiences that involve multiple positions
-% 2 arguments:  position, date
-\newcommand{\subSubHeading}[2]{
-  % create new item in the list
-  \item
-  % new table with 2 columns like in sectionElement
-  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
-    % #1 is bold and #2 is italic and small
-    \textit{\small#1} & \textit{\small #2} \\
-  \end{tabular*}
-  % \vspace{-7pt}
-}
+% % -------------------------
+% % OTHERS
+% % -------------------------
 
-% -------------------------
-% projectHeading
+% % -------------------------
+% % resumeSubItem 
+% % ????
 
-% 2 arguments
-\newcommand{\projectHeading}[2]{
-  % create new item in the list
-  \item
-  % new table with 2 columns like in sectionElement
-  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
-    \small#1 & #2 \\
-  \end{tabular*}
-  % \vspace{-7pt}
-}
+% \newcommand{\resumeSubItem}[1]{
+%   \experienceElementSubListItem{#1}
+%   % \vspace{-4pt}
+% }
+
+% % -------------------------
+% % subSubHeading
+
+% % This experienceElement is for experiences that involve multiple positions
+% % 2 arguments:  position, date
+% \newcommand{\subSubHeading}[2]{
+%   % create new item in the list
+%   \item
+%   % new table with 2 columns like in experienceElement
+%   \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+%     % #1 is bold and #2 is italic and small
+%     \textit{\small#1} & \textit{\small #2} \\
+%   \end{tabular*}
+%   % \vspace{-7pt}
+% }
+
+% % -------------------------
+% % projectHeading
+
+% % 2 arguments
+% \newcommand{\projectHeading}[2]{
+%   % create new item in the list
+%   \item
+%   % new table with 2 columns like in experienceElement
+%   \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+%     \small#1 & #2 \\
+%   \end{tabular*}
+%   % \vspace{-7pt}
+% }
