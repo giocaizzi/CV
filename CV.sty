@@ -165,45 +165,52 @@
 % % -------------------------
 
 \newcommand{\simpleSkillsElement}[1]{
-  \begin{simpleSkillsEnv}
-    \item #1
-  \end{simpleSkillsEnv}
+    \begin{simpleSkillsEnv}
+      #1
+    \end{simpleSkillsEnv}
 }
 
 \newenvironment{simpleSkillsEnv}{
   \begin{itemize}[leftmargin=0in]
-    }
-    {
+    }{
   \end{itemize}
 }
 
 
 \newcommand{\skillsElement}[2]{
   \ifthenelse{#1 > 1}{
-    \multicolSkillsElement{#1}{#2}
+    \sectionElement{
+      \multicolSkillsElement{#1}{#2}
+    }
+    % multicols
   }
   {
-    \simpleSkillsElement{#2}
+    \sectionElement{
+      \simpleSkillsElement{#2}
+    }
   }
 }
 
 % % skills list item
 
 \newcommand{\skillsItem}[2]{
+  %renw command no bullet points
+  \renewcommand\labelitemii{}
+  \item
   \textbf{\small #1}: \small #2
 }
 
 \newcommand{\multicolSkillsElement}[2]{
-  % % vertical space before multicols
-  % \vspace{-1.3em}
-  % column separation
-  % \setlength{\multicolsep}{-100pt} 
-  % \setlength{\columnsep}{-50pt}
-  \begin{multicols}{#1}
-  #2
-  \end{multicols}{#1}
+    % % vertical space before multicols
+    % \vspace{-1.3em}
+    % column separation
+    % \setlength{\multicolsep}{-100pt} 
+    % \setlength{\columnsep}{-50pt}
+    \begin{multicols}{#1}
+    #2
+    \end{multicols}{#1}
 
-}
+  }
 
 
 % % -------------------------
