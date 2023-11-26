@@ -221,7 +221,25 @@
     #2
   \ignoreitemfalse
 \end{multicols}
+\vspace{-1em}
+}
 
+% -------------------------
+% PROJECTS
+% -------------------------
+% projectHeading
+
+% 2 arguments
+\newcommand{\projectElement}[3]{
+  \sectionElement{
+    \begin{tabular*}{0.97\textwidth}[t]{ll@{\extracolsep{\fill}}r}
+      \faGithubSquare{} 
+      \small\textbf{#1 } & 
+      \scriptsize #2 & 
+      \scriptsize#3
+    \end{tabular*}
+    \vspace{-0.4em}
+  }
 }
 
 
@@ -250,20 +268,6 @@
 %   \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
 %     % #1 is bold and #2 is italic and small
 %     \textit{\small#1} & \textit{\small #2} \\
-%   \end{tabular*}
-%   % \vspace{-7pt}
-% }
-
-% % -------------------------
-% % projectHeading
-
-% % 2 arguments
-% \newcommand{\projectHeading}[2]{
-%   % create new item in the list
-%   \item
-%   % new table with 2 columns like in experienceElement
-%   \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
-%     \small#1 & #2 \\
 %   \end{tabular*}
 %   % \vspace{-7pt}
 % }
