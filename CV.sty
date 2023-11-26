@@ -128,12 +128,12 @@
     \begin{center}
       \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
         \textbf{#1} & #2 \\
-        \textit{\small#3} & \textit{\small #4} \\
+        \textit{\small#3} & \textit{\small #4}
         % if argument 5 is empty, do nothing
       \end{tabular*}
       \ifblank{#5}{}{
-        \begin{tabular*}{0.93\textwidth}[t]{@{}p{0.93\textwidth}@{}}
-          \multicolumn{1}{p{0.93\textwidth}}{\small #5}\\
+        \begin{tabular*}{0.92\textwidth}[t]{@{}p{0.92\textwidth}@{}}
+          \small #5\\
         \end{tabular*}
       }
       \ifblank{#6}{}{
