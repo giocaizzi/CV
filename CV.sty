@@ -91,8 +91,6 @@
   \color{black}
   % horizontal line
   \titlerule
-  % space after line
-  \vspace{-0.5em}
 ]
 
 
@@ -117,6 +115,7 @@
 
 % 6 arguments:  position, date, company, location. Optionally, description and keypoints
 \newcommand{\experienceElement}[6]{
+  \vspace{-0.7em}
   \sectionElement{
     % table with 2 rows
     % spands 97% of the text width
@@ -138,8 +137,10 @@
       }
       \ifblank{#6}{}{
         % space between description and bullet points
-        \vspace{-0.5em}
-        \begin{itemize}
+        \vspace{-0.7em}
+        %itemsep space between items
+        %parsep space between paragraphs within an item
+        \begin{itemize}[itemsep=0.01em, parsep=0pt]
           \forcsvlist{\experienceElementSubListItem}{#6}
         \end{itemize}
       }
