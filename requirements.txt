@@ -9,3 +9,4 @@ ifmtarg
 fontawesome
 setspace
 hanging
+GoSans
