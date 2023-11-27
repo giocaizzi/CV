@@ -31,21 +31,38 @@
 % ----------------------
 % DOCUMENT CONFIGURATION
 % ----------------------
-\usepackage{etoolbox} % for list processing and \ifblank
-\RequirePackage{latexsym} % or \LaTeX logo
+% for list processing and \ifblank
+\usepackage{etoolbox} 
+% \LaTeX logo
+\RequirePackage{latexsym} 
+% changes the page layout parameters
 \RequirePackage[empty]{fullpage}
+% sectioning commands
 \RequirePackage{titlesec}
+% additonal symbols
 \RequirePackage{marvosym}
+% ?
 \RequirePackage[usenames,dvipsnames]{color}
+% verbatim text
 \RequirePackage{verbatim}
+% customizing lists
 \RequirePackage{enumitem}
+% urls
 \RequirePackage[hidelinks]{hyperref}
+% headers and footers
 \RequirePackage{fancyhdr}
+% language specific settings
 \RequirePackage[english]{babel}
+% tables with specified width
 \RequirePackage{tabularx}
+% conditional commans
 \RequirePackage{xifthen}
+% social logos
 \RequirePackage{fontawesome}
+% hanging
 \RequirePackage{hanging}
+% font encoding
+\usepackage[T1]{fontenc}
 
 \pagestyle{fancy}
 \fancyhf{} % clear all header and footer fields
