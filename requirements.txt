@@ -9,4 +9,5 @@ ifmtarg
 fontawesome
 setspace
 hanging
+xkeyval
 gofonts
