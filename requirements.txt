@@ -9,3 +9,6 @@ ifmtarg
 fontawesome
 setspace
 hanging
+xkeyval
+fontaxes
+gofonts
