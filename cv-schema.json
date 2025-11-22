@@ -5,11 +5,13 @@
   "description": "JSON schema for CV data",
   "type": "object",
   "required": ["personalInfo", "experience", "education", "licenses", "technicalSkills", "projects", "personalSkills"],
+  "additionalProperties": false,
   "properties": {
     "personalInfo": {
       "type": "object",
       "description": "Personal contact information",
       "required": ["name", "phone", "email", "location", "linkedin", "github"],
+      "additionalProperties": false,
       "properties": {
         "name": {
           "type": "string",
@@ -46,6 +48,7 @@
       "items": {
         "type": "object",
         "required": ["title", "company", "location", "startDate", "description", "responsibilities", "inResume"],
+        "additionalProperties": false,
         "properties": {
           "title": {
             "type": "string",
@@ -95,6 +98,7 @@
             "items": {
               "type": "object",
               "required": ["name", "description"],
+              "additionalProperties": false,
               "properties": {
                 "name": {
                   "type": "string",
@@ -144,6 +148,7 @@
       "items": {
         "type": "object",
         "required": ["degree", "institution", "location", "startDate", "endDate", "details", "inResume"],
+        "additionalProperties": false,
         "properties": {
           "degree": {
             "type": "string",
@@ -195,6 +200,7 @@
       "items": {
         "type": "object",
         "required": ["name", "year", "inResume"],
+        "additionalProperties": false,
         "properties": {
           "name": {
             "type": "string",
@@ -235,6 +241,7 @@
       "items": {
         "type": "object",
         "required": ["name", "url", "description", "technologies", "inResume"],
+        "additionalProperties": false,
         "properties": {
           "name": {
             "type": "string",
