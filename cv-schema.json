@@ -7,6 +7,10 @@
   "required": ["personalInfo", "experience", "education", "licenses", "technicalSkills", "projects", "personalSkills"],
   "additionalProperties": false,
   "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema reference"
+    },
     "personalInfo": {
       "type": "object",
       "description": "Personal contact information",
