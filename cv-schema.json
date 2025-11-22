@@ -1,0 +1,286 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/giocaizzi/CV/cv-schema.json",
+  "title": "CV Schema",
+  "description": "JSON schema for CV data",
+  "type": "object",
+  "required": ["personalInfo", "experience", "education", "licenses", "technicalSkills", "projects", "personalSkills"],
+  "properties": {
+    "personalInfo": {
+      "type": "object",
+      "description": "Personal contact information",
+      "required": ["name", "phone", "email", "location", "linkedin", "github"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Full name"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Email address"
+        },
+        "location": {
+          "type": "string",
+          "description": "Current location"
+        },
+        "linkedin": {
+          "type": "string",
+          "format": "uri",
+          "description": "LinkedIn profile URL"
+        },
+        "github": {
+          "type": "string",
+          "format": "uri",
+          "description": "GitHub profile URL"
+        }
+      }
+    },
+    "experience": {
+      "type": "array",
+      "description": "Work experience entries",
+      "items": {
+        "type": "object",
+        "required": ["title", "company", "location", "startDate", "description", "responsibilities", "inResume"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Job title"
+          },
+          "company": {
+            "type": "string",
+            "description": "Company name"
+          },
+          "location": {
+            "type": "string",
+            "description": "Work location"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date (format: 'Mon. YYYY' or 'Mon YYYY')"
+          },
+          "endDate": {
+            "type": ["string", "null"],
+            "description": "End date (format: 'Mon. YYYY' or 'Mon YYYY', null if current)"
+          },
+          "description": {
+            "type": "string",
+            "description": "Job description"
+          },
+          "resumeDescription": {
+            "type": "string",
+            "description": "Shortened description for resume (optional, if different from full description)"
+          },
+          "responsibilities": {
+            "type": "array",
+            "description": "List of responsibilities",
+            "items": {
+              "type": "string"
+            }
+          },
+          "resumeResponsibilities": {
+            "type": "array",
+            "description": "Subset of responsibilities for resume (optional, if different from full list)",
+            "items": {
+              "type": "string"
+            }
+          },
+          "projects": {
+            "type": "array",
+            "description": "Detailed projects worked on during this position",
+            "items": {
+              "type": "object",
+              "required": ["name", "description"],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Project name"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Detailed project description"
+                },
+                "technologies": {
+                  "type": "string",
+                  "description": "Technologies used in the project (comma-separated)"
+                },
+                "achievements": {
+                  "type": "array",
+                  "description": "Key achievements or outcomes from the project",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "url": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "Project URL if publicly available"
+                },
+                "client": {
+                  "type": "string",
+                  "description": "Client name (if applicable)"
+                },
+                "inResume": {
+                  "type": "boolean",
+                  "description": "Whether this project appears in the LaTeX resume"
+                }
+              }
+            }
+          },
+          "inResume": {
+            "type": "boolean",
+            "description": "Whether this experience appears in the LaTeX resume"
+          }
+        }
+      }
+    },
+    "education": {
+      "type": "array",
+      "description": "Education entries",
+      "items": {
+        "type": "object",
+        "required": ["degree", "institution", "location", "startDate", "endDate", "details", "inResume"],
+        "properties": {
+          "degree": {
+            "type": "string",
+            "description": "Degree name"
+          },
+          "institution": {
+            "type": "string",
+            "description": "Educational institution name"
+          },
+          "location": {
+            "type": "string",
+            "description": "Institution location"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date (format: 'Mon. YYYY' or 'Mon YYYY')"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date (format: 'Mon. YYYY' or 'Mon YYYY')"
+          },
+          "details": {
+            "type": "object",
+            "description": "Additional details about the education",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "courses": {
+                  "type": "string",
+                  "description": "Relevant courses"
+                },
+                "thesis": {
+                  "type": "string",
+                  "description": "Thesis title"
+                }
+              }
+            }
+          },
+          "inResume": {
+            "type": "boolean",
+            "description": "Whether this education appears in the LaTeX resume"
+          }
+        }
+      }
+    },
+    "licenses": {
+      "type": "array",
+      "description": "Professional licenses and certifications",
+      "items": {
+        "type": "object",
+        "required": ["name", "year", "inResume"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "License or certification name"
+          },
+          "year": {
+            "type": ["string", "number"],
+            "description": "Year obtained"
+          },
+          "inResume": {
+            "type": "boolean",
+            "description": "Whether this license appears in the LaTeX resume"
+          }
+        }
+      }
+    },
+    "technicalSkills": {
+      "type": "object",
+      "description": "Technical skills organized by category",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["value", "inResume"],
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Comma-separated list of skills in this category"
+          },
+          "inResume": {
+            "type": "boolean",
+            "description": "Whether this skill category appears in the LaTeX resume"
+          }
+        }
+      }
+    },
+    "projects": {
+      "type": "array",
+      "description": "Personal or professional projects",
+      "items": {
+        "type": "object",
+        "required": ["name", "url", "description", "technologies", "inResume"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Project name"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Project URL (typically GitHub repository)"
+          },
+          "description": {
+            "type": "string",
+            "description": "Short project description"
+          },
+          "technologies": {
+            "type": "string",
+            "description": "Technologies used (comma-separated)"
+          },
+          "inResume": {
+            "type": "boolean",
+            "description": "Whether this project appears in the LaTeX resume"
+          }
+        }
+      }
+    },
+    "personalSkills": {
+      "type": "object",
+      "description": "Personal skills like languages and interests",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["value", "inResume"],
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Description of the personal skill"
+          },
+          "inResume": {
+            "type": "boolean",
+            "description": "Whether this personal skill appears in the LaTeX resume"
+          }
+        }
+      }
+    },
+    "footer": {
+      "type": "string",
+      "description": "Footer text for the CV"
+    }
+  }
+}
