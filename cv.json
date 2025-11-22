@@ -1,5 +1,5 @@
 {
-  "$schema": "./cv-schema.json",
+  "$schema": "https://raw.githubusercontent.com/giocaizzi/CV/main/cv-schema.json",
   "personalInfo": {
     "name": "Giorgio Caizzi",
     "phone": "+39 340 8247713",
