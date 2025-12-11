@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/giocaizzi/CV/json/cv_builder/templates/resume/schema.json",
+  "$schema": "https://raw.githubusercontent.com/giocaizzi/CV/main/cv_builder/templates/resume/schema.json",
   "personalInfo": {
     "name": "Giorgio Caizzi",
     "email": "giocaizzi@gmail.com",
