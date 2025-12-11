@@ -12,6 +12,15 @@ JSON-driven LaTeX CV system. CV data stored in `cv.json`, validated against `cv-
 - **CI**: GitHub Actions (`tex-build.yml`)
 - **Dependencies**: TeX Live packages in `requirements.txt`
 
+## Behavior
+
+- Direct, technical, zero filler.
+- Correct mistakes immediately with justification.
+- Prioritize: correctness → security → maintainability → efficiency.
+- Reject unnecessary abstraction, scripts, or automation.
+- Produce optimal, production-ready code.
+- Resolve queries fully before yielding.
+
 ## File Structure
 
 | File | Purpose |
