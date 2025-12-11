@@ -43,10 +43,9 @@ JSON-driven LaTeX CV system. CV data stored in `cv.json`, validated against `cv-
 
 ### LaTeX (`CV.sty`, `*.tex`)
 
-- Use custom commands defined in `CV.sty`:
-  - `\experienceElement{title}{date}{company}{location}{description}{responsibilities}`
-  - `\sectionElementsList` environment for section items
+- Use custom commands defined in `CV.sty`.
 - Keep styling in `CV.sty`, content in `.tex` files.
+- Update version in `CV.sty` on changes.
 - Test compilation locally with `pdflatex`.
 
 ### Schema (`cv-schema.json`)
