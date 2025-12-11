@@ -61,6 +61,8 @@
 \RequirePackage{fontawesome}
 % hanging
 \RequirePackage{hanging}
+% string manipulation for URL parsing
+\RequirePackage{xstring}
 % font encoding
 \usepackage[T1]{fontenc}
 
@@ -269,6 +271,64 @@
   }
 }
 
+
+% -------------------------
+% HEADER
+% -------------------------
+% 5 arguments: name, email, location, linkedin url, github url
+\newcommand{\resumeHeader}[5]{
+  \begin{center}
+    \textbf{\Huge \bfseries #1} \\
+    \vspace{3pt}
+    \small \href{mailto:#2}{\underline{#2}}
+    | #3\\
+    \vspace{3pt}
+    \faLinkedinSquare{} : \href{#4}{\underline{\linkedinUsername{#4}}}
+    \faGithubSquare{} : \href{#5}{\underline{\githubUsername{#5}}}\\
+  \end{center}
+  \vspace{-30pt}
+}
+
+% Helper to extract linkedin username from URL
+\newcommand{\linkedinUsername}[1]{%
+  \StrBehind{#1}{linkedin.com/in/}[\templinkedin]%
+  \StrBefore{\templinkedin}{/}%
+}
+
+% Helper to extract github username from URL
+\newcommand{\githubUsername}[1]{%
+  \StrBehind{#1}{github.com/}[\tempgithub]%
+  \StrBefore{\tempgithub}{/}%
+}
+
+% -------------------------
+% FOOTER
+% -------------------------
+% 1 argument: footer text
+\newcommand{\resumeFooter}[1]{
+  \rfoot{
+    \\
+    \textbf{#1}
+  }
+}
+
+% -------------------------
+% EDUCATION WITH DETAILS
+% -------------------------
+% 6 arguments: degree, location, institution, dates, msc content, bsc content
+\newcommand{\educationElementWithDetails}[6]{
+  \experienceElement
+  {#1}{#2}
+  {#3}{#4}
+  {\scriptsize #5 #6}{}
+}
+
+% Format for degree details (MSc/BSc)
+\newcommand{\degreeDetail}[3]{
+  \textbf{#1}: #2
+  \newline
+  \textit{"#3"}
+}
 
 % % -------------------------
 % % OTHERS

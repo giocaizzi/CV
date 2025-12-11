@@ -10,16 +10,12 @@
 \begin{document}
 
 %----------HEADING----------
-\begin{center}
-  \textbf{\Huge \bfseries << cv.personalInfo.name >>} \\
-  \vspace{3pt}
-  \small \href{mailto:<< cv.personalInfo.email >>}{\underline{<< cv.personalInfo.email >>}}
-  | << cv.personalInfo.location >>\\
-  \vspace{3pt}
-  \faLinkedinSquare{} : \href{<< cv.personalInfo.linkedin >>}{\underline{<< cv.personalInfo.linkedin | replace("https://linkedin.com/in/", "") | replace("/", "") >>}}
-  \faGithubSquare{} : \href{<< cv.personalInfo.github >>}{\underline{<< cv.personalInfo.github | replace("https://www.github.com/", "") | replace("/", "") >>}}\\
-\end{center}
-\vspace{-30pt}
+\resumeHeader
+  {<< cv.personalInfo.name >>}
+  {<< cv.personalInfo.email >>}
+  {<< cv.personalInfo.location >>}
+  {<< cv.personalInfo.linkedin >>}
+  {<< cv.personalInfo.github >>}
 
 %-----------EXPERIENCE-----------
 \section{Experience}
@@ -38,28 +34,16 @@
 \begin{sectionElementsList}
 <% for edu in cv.education if edu.inResume %>
 <% if edu.details and (edu.details.msc or edu.details.bsc) %>
-  \experienceElement
-  {<< edu.degree | latex >>}{<< edu.location >>}
-  {<< edu.institution >>}{<< edu.startDate >> -- << edu.endDate >>}
-  {
-    \scriptsize
-<% if edu.details.msc %>
-    \textbf{MSc}: << edu.details.msc.courses | latex >>
-    \newline
-    \textit{"<< edu.details.msc.thesis >>"}
-<% endif %>
-<% if edu.details.bsc %>
-
-    \textbf{BSc}: << edu.details.bsc.courses | latex >>
-    \newline
-    \textit{"<< edu.details.bsc.thesis >>"}
-<% endif %>
-  }{}
+  \educationElementWithDetails
+    {<< edu.degree | latex >>}{<< edu.location >>}
+    {<< edu.institution >>}{<< edu.startDate >> -- << edu.endDate >>}
+    {<% if edu.details.msc %>\degreeDetail{MSc}{<< edu.details.msc.courses | latex >>}{<< edu.details.msc.thesis >>}<% endif %>}
+    {<% if edu.details.bsc %>\degreeDetail{BSc}{<< edu.details.bsc.courses | latex >>}{<< edu.details.bsc.thesis >>}<% endif %>}
 <% else %>
   \experienceElement
-  {<< edu.institution >>}{<< edu.location >>}
-  {<< edu.degree >>}{<< edu.startDate >> -- << edu.endDate >>}
-  {}{}
+    {<< edu.institution >>}{<< edu.location >>}
+    {<< edu.degree >>}{<< edu.startDate >> -- << edu.endDate >>}
+    {}{}
 <% endif %>
 <% endfor %>
 \end{sectionElementsList}
@@ -107,10 +91,7 @@
 \end{sectionElementsList}
 
 %-----------FOOTER TEXT-----------
-\rfoot{
-  \\
-  \textbf{<< cv.footer >>}
-}
+\resumeFooter{<< cv.footer >>}
 
 %-------------------------------------------
 \end{document}

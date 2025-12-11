@@ -158,7 +158,7 @@ def compile_pdf(tex_file: Path) -> bool:
             ],
             capture_output=True,
             text=True,
-            cwd=ROOT,
+            cwd=output_dir,  # Run from variant directory where .sty file is
         )
         if result.returncode == 0:
             pdf_file = tex_file.with_suffix(".pdf")
