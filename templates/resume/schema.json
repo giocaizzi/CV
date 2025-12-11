@@ -31,14 +31,55 @@
           "description": "Current location"
         },
         "linkedin": {
-          "type": "string",
-          "format": "uri",
-          "description": "LinkedIn profile URL"
+          "type": "object",
+          "description": "LinkedIn profile",
+          "required": ["url", "inResume"],
+          "additionalProperties": false,
+          "properties": {
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "description": "LinkedIn profile URL"
+            },
+            "inResume": {
+              "type": "boolean",
+              "description": "Whether to show in resume"
+            }
+          }
         },
         "github": {
-          "type": "string",
-          "format": "uri",
-          "description": "GitHub profile URL"
+          "type": "object",
+          "description": "GitHub profile",
+          "required": ["url", "inResume"],
+          "additionalProperties": false,
+          "properties": {
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "description": "GitHub profile URL"
+            },
+            "inResume": {
+              "type": "boolean",
+              "description": "Whether to show in resume"
+            }
+          }
+        },
+        "webpage": {
+          "type": "object",
+          "description": "Personal webpage",
+          "required": ["url", "inResume"],
+          "additionalProperties": false,
+          "properties": {
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "description": "Personal webpage URL"
+            },
+            "inResume": {
+              "type": "boolean",
+              "description": "Whether to show in resume"
+            }
+          }
         }
       }
     },

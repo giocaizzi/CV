@@ -275,18 +275,38 @@
 % -------------------------
 % HEADER
 % -------------------------
-% 5 arguments: name, email, location, linkedin url, github url
-\newcommand{\resumeHeader}[5]{
+% 3 arguments: name, info row, links row
+\newcommand{\resumeHeader}[3]{
   \begin{center}
     \textbf{\Huge \bfseries #1} \\
     \vspace{3pt}
-    \small \href{mailto:#2}{\underline{#2}}
-    | #3\\
+    \small #2\\
     \vspace{3pt}
-    \faLinkedinSquare{} : \href{#4}{\underline{\linkedinUsername{#4}}}
-    \faGithubSquare{} : \href{#5}{\underline{\githubUsername{#5}}}\\
+    #3
   \end{center}
   \vspace{-30pt}
+}
+
+% Info items (to be used conditionally in template)
+\newcommand{\emailInfo}[1]{%
+  \href{mailto:#1}{\underline{#1}}%
+}
+
+\newcommand{\locationInfo}[1]{%
+  #1%
+}
+
+% Social link items (to be used conditionally in template)
+\newcommand{\linkedinLink}[1]{%
+  \faLinkedinSquare{} : \href{#1}{\underline{\linkedinUsername{#1}}}%
+}
+
+\newcommand{\githubLink}[1]{%
+  \faGithubSquare{} : \href{#1}{\underline{\githubUsername{#1}}}%
+}
+
+\newcommand{\webpageLink}[1]{%
+  \faGlobe{} : \href{#1}{\underline{\webpageHostname{#1}}}%
 }
 
 % Helper to extract linkedin username from URL
@@ -299,6 +319,12 @@
 \newcommand{\githubUsername}[1]{%
   \StrBehind{#1}{github.com/}[\tempgithub]%
   \StrBefore{\tempgithub}{/}%
+}
+
+% Helper to extract hostname from webpage URL
+\newcommand{\webpageHostname}[1]{%
+  \StrBehind{#1}{://}[\tempweb]%
+  \StrBefore{\tempweb}{/}%
 }
 
 % -------------------------

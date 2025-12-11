@@ -10,12 +10,23 @@
 \begin{document}
 
 %----------HEADING----------
+<% set info_items = [] %>
+<% set _ = info_items.append("\\emailInfo{" ~ cv.personalInfo.email ~ "}") %>
+<% set _ = info_items.append("\\locationInfo{" ~ cv.personalInfo.location ~ "}") %>
+<% set social_links = [] %>
+<% if cv.personalInfo.linkedin.inResume %>
+<% set _ = social_links.append("\\linkedinLink{" ~ cv.personalInfo.linkedin.url ~ "}") %>
+<% endif %>
+<% if cv.personalInfo.github.inResume %>
+<% set _ = social_links.append("\\githubLink{" ~ cv.personalInfo.github.url ~ "}") %>
+<% endif %>
+<% if cv.personalInfo.webpage and cv.personalInfo.webpage.inResume %>
+<% set _ = social_links.append("\\webpageLink{" ~ cv.personalInfo.webpage.url ~ "}") %>
+<% endif %>
 \resumeHeader
   {<< cv.personalInfo.name >>}
-  {<< cv.personalInfo.email >>}
-  {<< cv.personalInfo.location >>}
-  {<< cv.personalInfo.linkedin >>}
-  {<< cv.personalInfo.github >>}
+  {<< info_items | join(" | ") >>}
+  {<< social_links | join(" ") >>\\}
 
 %-----------EXPERIENCE-----------
 \section{Experience}

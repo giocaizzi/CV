@@ -1,11 +1,21 @@
 {
-  "$schema": "https://raw.githubusercontent.com/giocaizzi/CV/main/cv-schema.json",
+  "$schema": "https://raw.githubusercontent.com/giocaizzi/CV/json/templates/resume/schema.json",
   "personalInfo": {
     "name": "Giorgio Caizzi",
     "email": "giocaizzi@gmail.com",
     "location": "Milan, Italy",
-    "linkedin": "https://linkedin.com/in/giorgio-caizzi/",
-    "github": "https://www.github.com/giocaizzi/"
+    "linkedin": {
+      "url": "https://linkedin.com/in/giorgio-caizzi/",
+      "inResume": true
+    },
+    "github": {
+      "url": "https://www.github.com/giocaizzi/",
+      "inResume": true
+    },
+    "webpage": {
+      "url": "https://giocaizzi.github.io/",
+      "inResume": true
+    }
   },
   "experience": [
     {
