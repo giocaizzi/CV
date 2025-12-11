@@ -14,16 +14,12 @@
     "personalInfo": {
       "type": "object",
       "description": "Personal contact information",
-      "required": ["name", "phone", "email", "location", "linkedin", "github"],
+      "required": ["name", "email", "location", "linkedin", "github"],
       "additionalProperties": false,
       "properties": {
         "name": {
           "type": "string",
           "description": "Full name"
-        },
-        "phone": {
-          "type": "string",
-          "description": "Phone number"
         },
         "email": {
           "type": "string",
