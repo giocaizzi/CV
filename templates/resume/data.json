@@ -248,5 +248,8 @@
       "inResume": true
     }
   },
-  "footer": "References and letters of recommendation available on request."
+  "footer": {
+    "value": "References and letters of recommendation available on request.",
+    "inResume": false
+  }
 }

@@ -332,8 +332,20 @@
       }
     },
     "footer": {
-      "type": "string",
-      "description": "Footer text for the CV"
+      "type": "object",
+      "description": "Footer text for the CV",
+      "required": ["value", "inResume"],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": "string",
+          "description": "Footer text content"
+        },
+        "inResume": {
+          "type": "boolean",
+          "description": "Whether to show footer in resume"
+        }
+      }
     }
   }
 }

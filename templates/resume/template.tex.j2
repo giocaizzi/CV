@@ -102,7 +102,9 @@
 \end{sectionElementsList}
 
 %-----------FOOTER TEXT-----------
-\resumeFooter{<< cv.footer >>}
+<% if cv.footer.inResume %>
+\resumeFooter{<< cv.footer.value >>}
+<% endif %>
 
 %-------------------------------------------
 \end{document}
