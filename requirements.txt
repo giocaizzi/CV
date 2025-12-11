@@ -1,14 +1,2 @@
-scheme-basic
-etoolbox
-fullpage
-titlesec
-marvosym
-enumitem
-xifthen
-ifmtarg
-fontawesome
-setspace
-hanging
-xkeyval
-fontaxes
-gofonts
+jinja2
+jsonschema

@@ -16,9 +16,10 @@
       "startDate": "May 2024",
       "endDate": null,
       "description": "Developement of end-to-end Generative AI solutions tailored to industry needs -from research and prototyping to deployment to the Cloud- with a focus on observability and cost-effectiveness.",
+      "longDescription": "",
       "responsibilities": [
-        "RAG and BI Agents, multimodal LLMs, Multi-agentic patterns and orchestration.",
-        "DevOps for GenAI and LLMOps: TDD for GenAI Agents, groundedness and guardrailing, deployment to production, CloudOps, monitoring and evaluation of Agents outputs and performance."
+        {"value": "RAG and BI Agents, multimodal LLMs, Multi-agentic patterns and orchestration.", "inResume": true},
+        {"value": "DevOps for GenAI and LLMOps: TDD for GenAI Agents, groundedness and guardrailing, deployment to production, CloudOps, monitoring and evaluation of Agents outputs and performance.", "inResume": true}
       ],
       "projects": [
         {
@@ -42,18 +43,15 @@
       "startDate": "Feb. 2021",
       "endDate": "May 2024",
       "description": "Technical consultancy on remediation procedures in industrial sites across Italy, in compliance with D.Lgs.152/06.",
+      "longDescription": "",
       "responsibilities": [
-        "Developing solutions for effective collection, processing, analysis and restitution of environmental spatial data.",
-        "Project management: budgeting, proposals, planning, and billing. Regular meetings with clients.",
-        "Design and implementation of investigation and remediation activities for contaminated water and soils.",
-        "Field supervision of technical activities carried out by subcontractors.",
-        "Relations with national and local authorities (ARPA, Ministry of Environment, Municipalities)."
+        {"value": "Developing solutions for effective collection, processing, analysis and restitution of environmental spatial data.", "inResume": true},
+        {"value": "Project management: budgeting, proposals, planning, and billing. Regular meetings with clients.", "inResume": true},
+        {"value": "Design and implementation of investigation and remediation activities for contaminated water and soils.", "inResume": false},
+        {"value": "Field supervision of technical activities carried out by subcontractors.", "inResume": false},
+        {"value": "Relations with national and local authorities (ARPA, Ministry of Environment, Municipalities).", "inResume": false}
       ],
-      "inResume": true,
-      "resumeResponsibilities": [
-        "Developing solutions for effective collection, processing, analysis and restitution of environmental spatial data.",
-        "Project management: budgeting, proposals, planning, and billing. Regular meetings with clients."
-      ]
+      "inResume": true
     },
     {
       "title": "External Collaborator",
@@ -61,11 +59,11 @@
       "location": "Milan, Italy & Lisbon, Portugal",
       "startDate": "Mar. 2020",
       "endDate": "Dec. 2020",
-      "description": "Development of a GIS-based framework for spatial interpolation of PM2.5 concentration data, using real-time data from a dense network of measuring stations and taking into account the contribution of urban features and their morphology in the dispersion of pollutants.",
-      "resumeDescription": "Development of a GIS-based framework for spatial interpolation of PM2.5 concentration data, taking into account the contribution of urban features and their morphology in the dispersion of pollutants.",
+      "description": "Development of a GIS-based framework for spatial interpolation of PM2.5 concentration data, taking into account the contribution of urban features and their morphology in the dispersion of pollutants.",
+      "longDescription": "Development of a GIS-based framework for spatial interpolation of PM2.5 concentration data, using real-time data from a dense network of measuring stations and taking into account the contribution of urban features and their morphology in the dispersion of pollutants.",
       "responsibilities": [
-        "Automated processing of real-time pollutant concentration data, using python and GIS tools.",
-        "Development of a tool to assess compliance with air quality international health guidelines."
+        {"value": "Automated processing of real-time pollutant concentration data, using python and GIS tools.", "inResume": false},
+        {"value": "Development of a tool to assess compliance with air quality international health guidelines.", "inResume": false}
       ],
       "inResume": true
     },
@@ -76,6 +74,7 @@
       "startDate": "Sep. 2017",
       "endDate": "Sep. 2020",
       "description": "Managining brand-activation of Red Bull Citycrusher event-car in selected sport events in Italy.",
+      "longDescription": "",
       "responsibilities": [],
       "inResume": true
     },
@@ -86,6 +85,7 @@
       "startDate": "May. 2014",
       "endDate": "Sep. 2019",
       "description": "Promotion of cameras and brand-activation in selected events in Europe.",
+      "longDescription": "",
       "responsibilities": [],
       "inResume": true
     }

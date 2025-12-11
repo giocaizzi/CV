@@ -1,0 +1,116 @@
+\documentclass[letterpaper,11pt]{article}
+
+%-----------------------------------------------
+% import resume.sty with necessary packages,
+% document definition and custom commands
+\usepackage{resume}
+
+%-----------------------------------------------
+% CV starts here
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+  \textbf{\Huge \bfseries << cv.personalInfo.name >>} \\
+  \vspace{3pt}
+  \small << cv.personalInfo.phone >> | \href{mailto:<< cv.personalInfo.email >>}{\underline{<< cv.personalInfo.email >>}}
+  | << cv.personalInfo.location >>\\
+  \vspace{3pt}
+  \faLinkedinSquare{} : \href{<< cv.personalInfo.linkedin >>}{\underline{<< cv.personalInfo.linkedin | replace("https://linkedin.com/in/", "") | replace("/", "") >>}}
+  \faGithubSquare{} : \href{<< cv.personalInfo.github >>}{\underline{<< cv.personalInfo.github | replace("https://www.github.com/", "") | replace("/", "") >>}}\\
+\end{center}
+\vspace{-30pt}
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+\begin{sectionElementsList}
+<% for exp in cv.experience if exp.inResume %>
+  \experienceElement
+  {<< exp.title >>}{<< exp | date_range >>}
+  {<< exp.company >>}{<< exp.location | latex >>}
+  {<< exp.description >>}
+  {<% set responsibilities = exp | get_resp %><% if responsibilities %><% for resp in responsibilities %>{<< resp >>}<% if not loop.last %>,<% endif %><% endfor %><% endif %>}
+<% endfor %>
+\end{sectionElementsList}
+
+%-----------EDUCATION-----------
+\section{Education}
+\begin{sectionElementsList}
+<% for edu in cv.education if edu.inResume %>
+<% if edu.details and (edu.details.msc or edu.details.bsc) %>
+  \experienceElement
+  {<< edu.degree | latex >>}{<< edu.location >>}
+  {<< edu.institution >>}{<< edu.startDate >> -- << edu.endDate >>}
+  {
+    \scriptsize
+<% if edu.details.msc %>
+    \textbf{MSc}: << edu.details.msc.courses | latex >>
+    \newline
+    \textit{"<< edu.details.msc.thesis >>"}
+<% endif %>
+<% if edu.details.bsc %>
+
+    \textbf{BSc}: << edu.details.bsc.courses | latex >>
+    \newline
+    \textit{"<< edu.details.bsc.thesis >>"}
+<% endif %>
+  }{}
+<% else %>
+  \experienceElement
+  {<< edu.institution >>}{<< edu.location >>}
+  {<< edu.degree >>}{<< edu.startDate >> -- << edu.endDate >>}
+  {}{}
+<% endif %>
+<% endfor %>
+\end{sectionElementsList}
+
+%-----------LICENSES-----------
+\section{Licenses}
+\begin{sectionElementsList}
+  \skillsElement{1}{
+<% for license in cv.licenses if license.inResume %>
+    \skillsItem{<< license.name >>}{<< license.year >>}
+<% endfor %>
+  }
+\end{sectionElementsList}
+
+%-----------TECH SKILLS-----------
+\section{Technical Skills}
+\begin{sectionElementsList}
+  \skillsElement{2}{
+<% for skill_name, skill in cv.technicalSkills.items() if skill.inResume %>
+    \skillsItem{<< skill_name >>}{<< skill.value | latex >>}
+<% endfor %>
+  }
+\end{sectionElementsList}
+
+%-----------PROJECTS-----------
+\section{Projects}
+\begin{sectionElementsList}
+<% for project in cv.projects if project.inResume %>
+  \projectElement{
+    \href{<< project.url >>}{<< project.name >>}
+    }{
+    << project.description >>
+  }{<< project.technologies | latex >>}
+<% endfor %>
+\end{sectionElementsList}
+
+%-----------PERSONAL SKILLS-----------
+\section{Personal skills}
+\begin{sectionElementsList}
+  \skillsElement{1}{
+<% for skill_name, skill in cv.personalSkills.items() if skill.inResume %>
+    \skillsItem{<< skill_name >>}{<< skill.value >>}
+<% endfor %>
+  }
+\end{sectionElementsList}
+
+%-----------FOOTER TEXT-----------
+\rfoot{
+  \\
+  \textbf{<< cv.footer >>}
+}
+
+%-------------------------------------------
+\end{document}
