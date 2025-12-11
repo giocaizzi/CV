@@ -1,6 +1,6 @@
 scheme-basic
 etoolbox
-fullpage
+preprint
 titlesec
 marvosym
 enumitem
@@ -12,3 +12,6 @@ hanging
 xkeyval
 fontaxes
 gofonts
+babel-english
+hyphen-english
+xstring

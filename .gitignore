@@ -1,3 +1,13 @@
+
+# Ignore built artifacts styles
+output/**/*.sty
+#----
+## Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
@@ -274,6 +284,3 @@ TSWLatexianTemp*
 
 # Makeindex log files
 *.lpz
-
-
-__latexindent_temp.tex

@@ -14,16 +14,12 @@
     "personalInfo": {
       "type": "object",
       "description": "Personal contact information",
-      "required": ["name", "phone", "email", "location", "linkedin", "github"],
+      "required": ["name", "email", "location", "linkedin", "github"],
       "additionalProperties": false,
       "properties": {
         "name": {
           "type": "string",
           "description": "Full name"
-        },
-        "phone": {
-          "type": "string",
-          "description": "Phone number"
         },
         "email": {
           "type": "string",
@@ -35,14 +31,55 @@
           "description": "Current location"
         },
         "linkedin": {
-          "type": "string",
-          "format": "uri",
-          "description": "LinkedIn profile URL"
+          "type": "object",
+          "description": "LinkedIn profile",
+          "required": ["url", "inResume"],
+          "additionalProperties": false,
+          "properties": {
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "description": "LinkedIn profile URL"
+            },
+            "inResume": {
+              "type": "boolean",
+              "description": "Whether to show in resume"
+            }
+          }
         },
         "github": {
-          "type": "string",
-          "format": "uri",
-          "description": "GitHub profile URL"
+          "type": "object",
+          "description": "GitHub profile",
+          "required": ["url", "inResume"],
+          "additionalProperties": false,
+          "properties": {
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "description": "GitHub profile URL"
+            },
+            "inResume": {
+              "type": "boolean",
+              "description": "Whether to show in resume"
+            }
+          }
+        },
+        "webpage": {
+          "type": "object",
+          "description": "Personal webpage",
+          "required": ["url", "inResume"],
+          "additionalProperties": false,
+          "properties": {
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "description": "Personal webpage URL"
+            },
+            "inResume": {
+              "type": "boolean",
+              "description": "Whether to show in resume"
+            }
+          }
         }
       }
     },
@@ -76,24 +113,29 @@
           },
           "description": {
             "type": "string",
-            "description": "Job description"
+            "description": "Short job description (used in resume)"
           },
-          "resumeDescription": {
+          "longDescription": {
             "type": "string",
-            "description": "Shortened description for resume (optional, if different from full description)"
+            "description": "Full detailed job description (not shown in resume)"
           },
           "responsibilities": {
             "type": "array",
             "description": "List of responsibilities",
             "items": {
-              "type": "string"
-            }
-          },
-          "resumeResponsibilities": {
-            "type": "array",
-            "description": "Subset of responsibilities for resume (optional, if different from full list)",
-            "items": {
-              "type": "string"
+              "type": "object",
+              "required": ["value", "inResume"],
+              "additionalProperties": false,
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "description": "Responsibility description"
+                },
+                "inResume": {
+                  "type": "boolean",
+                  "description": "Whether this responsibility appears in the resume"
+                }
+              }
             }
           },
           "projects": {
@@ -290,8 +332,20 @@
       }
     },
     "footer": {
-      "type": "string",
-      "description": "Footer text for the CV"
+      "type": "object",
+      "description": "Footer text for the CV",
+      "required": ["value", "inResume"],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": "string",
+          "description": "Footer text content"
+        },
+        "inResume": {
+          "type": "boolean",
+          "description": "Whether to show footer in resume"
+        }
+      }
     }
   }
 }
