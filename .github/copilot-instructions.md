@@ -2,25 +2,29 @@
 
 ## Project Overview
 
-JSON-driven LaTeX CV with Jinja2 templating. Self-contained templates in `templates/<name>/`.
+JSON-driven LaTeX CV with Jinja2 templating.
 
 ## Stack
 
 - **Data**: JSON with JSON Schema validation
 - **Templating**: Jinja2 (Python) with custom delimiters
 - **Rendering**: LaTeX (pdflatex)
-- **Build**: `build.py` orchestrates validation + templating
+- **Build**: `cv-build` CLI orchestrates validation + templating
 
 ## Structure
 
 ```
-templates/<name>/
-├── data.json        # CV data (single source of truth)
-├── schema.json      # JSON Schema for validation
-├── template.tex.j2  # Jinja2 LaTeX template
-├── <name>.sty       # LaTeX styling
-├── <name>.tex       # Generated output (tracked)
-└── <name>.pdf       # Compiled PDF (tracked)
+cv_builder/templates/<name>/   # Package templates
+├── schema.json                # JSON Schema for validation
+├── template.tex.j2            # Jinja2 LaTeX template
+└── <name>.sty                 # LaTeX styling
+
+data/<name>/                   # User data
+└── data.json                  # CV data (single source of truth)
+
+output/<name>/                 # Generated files
+├── <name>.tex                 # Generated output (tracked)
+└── <name>.pdf                 # Compiled PDF (tracked)
 ```
 
 ## Rules
@@ -40,9 +44,10 @@ templates/<name>/
 ## Workflow
 
 ```bash
-python build.py                 # Generate .tex
-python build.py --compile       # Generate and compile PDF
-python build.py --variant name  # Build specific variant
+poetry install                              # Install dependencies
+poetry run cv-build                         # Generate .tex
+poetry run cv-build --compile               # Generate and compile PDF
+poetry run cv-build --variant name          # Build specific variant
 ```
 
 ## Jinja2 Syntax

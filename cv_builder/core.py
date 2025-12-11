@@ -1,42 +1,11 @@
-#!/usr/bin/env python3
-"""
-Build script for CV generation.
+"""Core CV building functionality."""
 
-Self-contained variant structure:
-  variants/<name>/
-    data.json       # CV data
-    schema.json     # JSON schema
-    template.tex.j2 # Jinja2 template
-    output/         # Generated files
-
-Usage:
-    python build.py                    # Build default variant (resume)
-    python build.py --variant resume   # Build specific variant
-    python build.py --compile          # Also compile to PDF
-"""
-
-import argparse
 import json
 import subprocess
-import sys
 from pathlib import Path
 
-try:
-    import jsonschema
-except ImportError:
-    print("Missing dependency: pip install jsonschema")
-    sys.exit(1)
-
-try:
-    from jinja2 import Environment, FileSystemLoader
-except ImportError:
-    print("Missing dependency: pip install jinja2")
-    sys.exit(1)
-
-
-# Paths
-ROOT = Path(__file__).parent
-TEMPLATES_DIR = ROOT / "templates"
+import jsonschema
+from jinja2 import Environment, FileSystemLoader
 
 
 def load_json(path: Path) -> dict:
@@ -91,7 +60,7 @@ def filter_by_resume(items: list) -> list:
 
 def get_responsibilities(item: dict) -> list:
     """Get responsibilities filtered by inResume flag.
-    
+
     Each responsibility is an object with 'value' and 'inResume' fields.
     Returns list of responsibility strings where inResume=true.
     """
@@ -125,28 +94,34 @@ def create_jinja_env(variant_dir: Path) -> Environment:
     return env
 
 
-def build_variant(variant_name: str, cv_data: dict) -> Path:
+def build_variant(
+    template_dir: Path, output_dir: Path, variant_name: str, cv_data: dict
+) -> Path:
     """Render a variant template with CV data."""
-    variant_dir = TEMPLATES_DIR / variant_name
-    
-    env = create_jinja_env(variant_dir)
+    env = create_jinja_env(template_dir)
     template = env.get_template("template.tex.j2")
 
     # Render
     output = template.render(cv=cv_data)
 
-    # Write output directly to variant folder
-    output_file = variant_dir / f"{variant_name}.tex"
+    # Write output to output directory
+    output_file = output_dir / f"{variant_name}.tex"
     output_file.write_text(output, encoding="utf-8")
 
     print(f"✓ Generated {output_file}")
     return output_file
 
 
-def compile_pdf(tex_file: Path) -> bool:
+def compile_pdf(tex_file: Path, template_dir: Path) -> bool:
     """Compile LaTeX to PDF using pdflatex."""
     output_dir = tex_file.parent
     print(f"  Compiling {tex_file.name}...")
+
+    # Copy .sty file to output directory for compilation
+    import shutil
+    for sty_file in template_dir.glob("*.sty"):
+        shutil.copy(sty_file, output_dir / sty_file.name)
+
     try:
         result = subprocess.run(
             [
@@ -158,7 +133,7 @@ def compile_pdf(tex_file: Path) -> bool:
             ],
             capture_output=True,
             text=True,
-            cwd=output_dir,  # Run from variant directory where .sty file is
+            cwd=output_dir,
         )
         if result.returncode == 0:
             pdf_file = tex_file.with_suffix(".pdf")
@@ -172,58 +147,3 @@ def compile_pdf(tex_file: Path) -> bool:
     except FileNotFoundError:
         print("✗ pdflatex not found. Install TeX Live or MacTeX.")
         return False
-
-
-def main():
-    parser = argparse.ArgumentParser(description="Build CV variant")
-    parser.add_argument(
-        "--variant",
-        "-v",
-        default="resume",
-        help="Variant to build (default: resume)",
-    )
-    parser.add_argument(
-        "--compile",
-        "-c",
-        action="store_true",
-        help="Compile to PDF after generating",
-    )
-    parser.add_argument(
-        "--skip-validation",
-        action="store_true",
-        help="Skip JSON schema validation",
-    )
-    args = parser.parse_args()
-
-    # Paths for this variant
-    variant_dir = TEMPLATES_DIR / args.variant
-    data_file = variant_dir / "data.json"
-    schema_file = variant_dir / "schema.json"
-
-    if not variant_dir.exists():
-        print(f"✗ Variant '{args.variant}' not found at {variant_dir}")
-        sys.exit(1)
-
-    # Load data
-    print(f"Building variant: {args.variant}")
-    cv_data = load_json(data_file)
-
-    # Validate
-    if not args.skip_validation:
-        schema = load_json(schema_file)
-        if not validate_cv(cv_data, schema):
-            sys.exit(1)
-
-    # Build
-    tex_file = build_variant(args.variant, cv_data)
-
-    # Compile
-    if args.compile:
-        if not compile_pdf(tex_file):
-            sys.exit(1)
-
-    print("\nDone!")
-
-
-if __name__ == "__main__":
-    main()
