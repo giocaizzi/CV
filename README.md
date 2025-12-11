@@ -27,8 +27,10 @@ output/resume/                 # Generated files
 ### Local build
 
 ```bash
+# Activate virtual environment
+source .venv/bin/activate
 poetry install
-poetry run cv-build --help
+cv-build --help
 ```
 
 ### Examples
