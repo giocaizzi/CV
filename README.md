@@ -36,9 +36,9 @@ cv-build --help
 **Examples**:
 
 ```bash
-cv-build                              # Build default variant
+cv-build                              # Build default template
 cv-build --compile                    # Build and compile to PDF
-cv-build --variant resume --compile   # Explicit variant
+cv-build --template resume --compile  # Explicit template
 cv-build --data ~/mydata --output ~/out  # Custom paths
 ```
 

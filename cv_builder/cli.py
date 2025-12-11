@@ -19,10 +19,10 @@ def main() -> None:
         description="Build CV variant from JSON data and Jinja2 templates",
     )
     parser.add_argument(
-        "--variant",
-        "-v",
+        "--template",
+        "-t",
         default="resume",
-        help="Variant to build (default: resume)",
+        help="Template to build (default: resume)",
     )
     parser.add_argument(
         "--data",
@@ -55,14 +55,14 @@ def main() -> None:
     data_dir = args.data
     output_dir = args.output
 
-    # Paths for this variant
-    template_variant_dir = templates_dir / args.variant
-    data_file = data_dir / args.variant / "data.json"
+    # Paths for this template
+    template_variant_dir = templates_dir / args.template
+    data_file = data_dir / args.template / "data.json"
     schema_file = template_variant_dir / "schema.json"
-    output_variant_dir = output_dir / args.variant
+    output_variant_dir = output_dir / args.template
 
     if not template_variant_dir.exists():
-        print(f"✗ Variant '{args.variant}' not found at {template_variant_dir}")
+        print(f"✗ Template '{args.template}' not found at {template_variant_dir}")
         sys.exit(1)
 
     if not data_file.exists():
@@ -73,7 +73,7 @@ def main() -> None:
     output_variant_dir.mkdir(parents=True, exist_ok=True)
 
     # Load data
-    print(f"Building variant: {args.variant}")
+    print(f"Building template: {args.template}")
     cv_data = load_json(data_file)
 
     # Validate
@@ -84,7 +84,7 @@ def main() -> None:
 
     # Build
     tex_file = build_variant(
-        template_variant_dir, output_variant_dir, args.variant, cv_data
+        template_variant_dir, output_variant_dir, args.template, cv_data
     )
 
     # Compile
