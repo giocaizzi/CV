@@ -29,6 +29,10 @@ output/<name>/                 # Generated files
 
 ## Rules
 
+### Python
+
+- Use Poetry for dependency management and version tracking
+
 ### JSON Data
 
 - All elements have `inResume: boolean` for visibility control
