@@ -31,7 +31,7 @@ output/<name>/                 # Generated files
 
 ### Python
 
-- Use Poetry for dependency management and version tracking
+- Use `poetry` for dependency management and version tracking
 
 ### JSON Data
 
@@ -40,7 +40,7 @@ output/<name>/                 # Generated files
 - Date format: `Mon. YYYY` or `Mon YYYY`
 - `endDate: null` = current/ongoing
 
-### Schema
+### JSON Schema
 
 - `additionalProperties: false` enforced
 - Update schema when adding new fields
@@ -66,6 +66,10 @@ Filters:
 - `| latex` — escape LaTeX special characters
 - `| date_range` — format start/end dates
 - `| get_resp` — get visible responsibilities
+
+## Latex
+
+- Keep `.sty` files versioned via header comments.
 
 ## Prohibited
 
