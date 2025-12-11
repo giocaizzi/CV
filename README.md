@@ -4,6 +4,8 @@
 
 JSON-driven LaTeX CV with Jinja2 templating.
 
+[Download CV](https://raw.githubusercontent.com/giocaizzi/CV/main/templates/resume/resume.pdf)
+
 ## Structure
 
 ```

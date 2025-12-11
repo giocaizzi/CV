@@ -28,7 +28,6 @@ templates/<name>/
 ### JSON Data
 
 - All elements have `inResume: boolean` for visibility control
-- Responsibilities: `[{value: string, inResume: boolean}]`
 - `description` for resume, `longDescription` for full version
 - Date format: `Mon. YYYY` or `Mon YYYY`
 - `endDate: null` = current/ongoing
