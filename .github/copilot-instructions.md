@@ -52,6 +52,7 @@ poetry install                              # Install dependencies
 poetry run cv-build                         # Generate .tex
 poetry run cv-build --compile               # Generate and compile PDF
 poetry run cv-build --variant name          # Build specific variant
+poetry run cv-build --data /path --output /path  # Custom paths
 ```
 
 ## Jinja2 Syntax

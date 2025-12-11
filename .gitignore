@@ -1,3 +1,7 @@
+
+# Ignore built artifacts styles
+output/**/*.sty
+#----
 ## Python
 __pycache__/
 *.pyc
@@ -280,7 +284,3 @@ TSWLatexianTemp*
 
 # Makeindex log files
 *.lpz
-
-
-__latexindent_temp.tex
-output/**/*.sty

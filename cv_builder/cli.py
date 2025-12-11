@@ -12,16 +12,6 @@ def get_package_templates_dir() -> Path:
     return Path(__file__).parent / "templates"
 
 
-def get_data_dir() -> Path:
-    """Get the data directory relative to cwd."""
-    return Path.cwd() / "data"
-
-
-def get_output_dir() -> Path:
-    """Get the output directory relative to cwd."""
-    return Path.cwd() / "output"
-
-
 def main() -> None:
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(
@@ -33,6 +23,20 @@ def main() -> None:
         "-v",
         default="resume",
         help="Variant to build (default: resume)",
+    )
+    parser.add_argument(
+        "--data",
+        "-d",
+        type=Path,
+        default=Path.cwd() / "data",
+        help="Path to data directory (default: ./data)",
+    )
+    parser.add_argument(
+        "--output",
+        "-o",
+        type=Path,
+        default=Path.cwd() / "output",
+        help="Path to output directory (default: ./output)",
     )
     parser.add_argument(
         "--compile",
@@ -48,8 +52,8 @@ def main() -> None:
     args = parser.parse_args()
 
     templates_dir = get_package_templates_dir()
-    data_dir = get_data_dir()
-    output_dir = get_output_dir()
+    data_dir = args.data
+    output_dir = args.output
 
     # Paths for this variant
     template_variant_dir = templates_dir / args.variant

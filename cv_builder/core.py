@@ -114,7 +114,8 @@ def build_variant(
 
 def compile_pdf(tex_file: Path, template_dir: Path) -> bool:
     """Compile LaTeX to PDF using pdflatex."""
-    output_dir = tex_file.parent
+    tex_file = tex_file.resolve()
+    output_dir = tex_file.parent.resolve()
     print(f"  Compiling {tex_file.name}...")
 
     # Copy .sty file to output directory for compilation

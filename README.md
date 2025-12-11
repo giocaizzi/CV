@@ -28,15 +28,19 @@ output/resume/                 # Generated files
 
 ```bash
 poetry install
-# Help
 poetry run cv-build --help
-# Build and compile to PDF
-poetry run cv-build --compile            # Build and compile PDF
-poetry run cv-build --variant resume     # Build specific variant
-poetry run cv-build --variant resume --compile  # Build and compile specific variant
 ```
 
-### Mobile editing
+### Examples
+
+```bash
+cv-build                              # Build default variant
+cv-build --compile                    # Build and compile to PDF
+cv-build --variant resume --compile   # Explicit variant
+cv-build --data ~/mydata --output ~/out  # Custom paths
+```
+
+### Editing aand building on-the-fly
 
 Edit `data/resume/data.json` directly on GitHub (web/mobile). CI automatically rebuilds and commits the updated PDF.
 
