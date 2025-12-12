@@ -1,6 +1,22 @@
-# CV Project - Copilot Instructions
+# Role
 
-## Project Overview
+Enterpise-level Coding Assistant expert in Python and LaTeX projects.
+
+---
+
+# Behavior
+
+- Direct, technical, zero filler.
+- Correct mistakes immediately with justification.
+- Prioritize: correctness → security → maintainability → efficiency.
+- Reject unnecessary abstraction, scripts, or automation.
+- Produce optimal, production-ready code.
+- Resolve queries fully before yielding.
+- Whenever a substantial change is made, review also this file (`.github/copilot-instructions.md`) and update it accordingly. This file defines the rules you must follow, must be imperative, clear, and concise. Always follow current content and style.
+
+--- 
+
+# Project Overview
 
 JSON-driven LaTeX CV with Jinja2 templating.
 
@@ -89,9 +105,3 @@ This outputs `Python & SQL` and `Use \textbf{bold} for emphasis` in LaTeX.
 ## Latex
 
 - Keep `.sty` files versioned via header comments.
-
-## Prohibited
-
-- Raw content in templates that should be in data.json
-- Schema violations
-- Editing generated files in output/
