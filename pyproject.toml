@@ -34,3 +34,13 @@ markers = [
     "integration: Integration tests (real file I/O, no LaTeX compilation)",
 ]
 addopts = "-v"
+
+[tool.coverage.run]
+source = ["cv_builder"]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+]
