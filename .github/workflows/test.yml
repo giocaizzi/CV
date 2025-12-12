@@ -38,10 +38,8 @@ jobs:
     - name: Run integration tests
       run: poetry run pytest -m integration -v
 
-    - name: Upload coverage artifact
-      uses: actions/upload-artifact@v4
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v5
       if: matrix.python-version == '3.11'
       with:
-        name: coverage-report
-        path: coverage.xml
-        retention-days: 30
+        token: ${{ secrets.CODECOV_TOKEN }}
