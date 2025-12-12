@@ -1,0 +1,59 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "poetry run cv-build",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Build & Compile PDF",
+            "type": "shell",
+            "command": "poetry run cv-build --compile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Test",
+            "type": "shell",
+            "command": "poetry run pytest",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Test: Unit",
+            "type": "shell",
+            "command": "poetry run pytest -m unit",
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "Test: Integration",
+            "type": "shell",
+            "command": "poetry run pytest -m integration",
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "Test: Coverage",
+            "type": "shell",
+            "command": "poetry run pytest --cov=cv_builder",
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "Install Dependencies",
+            "type": "shell",
+            "command": "poetry install",
+            "problemMatcher": []
+        }
+    ]
+}
