@@ -54,6 +54,14 @@ data/<name>/                   # User data + generated output
 - When fixing bugs, write a test that reproduces the bug first, only then fix the bug and verify the test passes
 - Tests behaviour, not implementation details
 - Consider edge cases and invalid, missing data
+- Mark tests with `@pytest.mark.unit` (fast, mocked) or `@pytest.mark.integration` (real I/O)
+
+```bash
+poetry run pytest                    # Run all tests
+poetry run pytest -m unit            # Run unit tests only
+poetry run pytest -m integration     # Run integration tests only
+poetry run pytest --cov=cv_builder   # Run with coverage report
+```
 
 ### JSON Data
 
