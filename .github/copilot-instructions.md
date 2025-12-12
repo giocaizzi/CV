@@ -31,6 +31,14 @@ data/<name>/                   # User data + generated output
 
 - Use `poetry` for dependency management and version tracking
 
+#### Python tests
+
+- Use `pytest` for unit tests
+- Use Test-Driven Development (TDD) approach, writing tests before code
+- When fixing bugs, write a test that reproduces the bug first, only then fix the bug and verify the test passes
+- Tests behaviour, not implementation details
+- Consider edge cases and invalid, missing data
+
 ### JSON Data
 
 - All elements have `inResume: boolean` for visibility control
@@ -61,9 +69,22 @@ Custom delimiters (LaTeX-safe):
 - Comments: `<# comment #>`
 
 Filters:
-- `| latex` — escape LaTeX special characters
+- `| latex` — escape LaTeX special characters (supports `/latex{...}` for raw LaTeX)
 - `| date_range` — format start/end dates
 - `| get_resp` — get visible responsibilities
+
+### Raw LaTeX in data.json
+
+Use `/latex{...}` syntax to include raw LaTeX that won't be escaped:
+
+```json
+{
+  "value": "Python /latex{\\&} SQL",
+  "skills": "Use /latex{\\textbf{bold}} for emphasis"
+}
+```
+
+This outputs `Python & SQL` and `Use \textbf{bold} for emphasis` in LaTeX.
 
 ## Latex
 
