@@ -19,10 +19,8 @@ cv_builder/templates/<name>/   # Package templates
 ├── template.tex.j2            # Jinja2 LaTeX template
 └── <name>.sty                 # LaTeX styling
 
-data/<name>/                   # User data
-└── data.json                  # CV data (single source of truth)
-
-output/<name>/                 # Generated files
+data/<name>/                   # User data + generated output
+├── data.json                  # CV data (single source of truth)
 ├── <name>.tex                 # Generated output (tracked)
 └── <name>.pdf                 # Compiled PDF (tracked)
 ```
@@ -52,7 +50,7 @@ poetry install                              # Install dependencies
 poetry run cv-build                         # Generate .tex
 poetry run cv-build --compile               # Generate and compile PDF
 poetry run cv-build --template name         # Build specific template
-poetry run cv-build --data /path --output /path  # Custom paths
+poetry run cv-build --data /path            # Custom data path
 ```
 
 ## Jinja2 Syntax

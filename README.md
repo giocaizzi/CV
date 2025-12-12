@@ -4,7 +4,7 @@
 
 JSON-driven LaTeX CV building with Jinja2 templating.
 
-📄 [Download CV](https://raw.githubusercontent.com/giocaizzi/CV/main/output/resume/resume.pdf)
+📄 [Download CV](https://raw.githubusercontent.com/giocaizzi/CV/main/data/resume/resume.pdf)
 
 ## 📁 Structure
 
@@ -14,10 +14,8 @@ cv_builder/templates/resume/   # Package templates (versioned)
 ├── template.tex.j2            # Jinja2 LaTeX template
 └── resume.sty                 # LaTeX styling
 
-data/resume/                   # User data
-└── data.json                  # CV data (editable)
-
-output/resume/                 # Generated files
+data/resume/                   # User data + generated output
+├── data.json                  # CV data (editable)
 ├── resume.tex                 # Generated (tracked)
 └── resume.pdf                 # Compiled (tracked)
 ```
@@ -39,7 +37,7 @@ cv-build --help
 cv-build                              # Build default template
 cv-build --compile                    # Build and compile to PDF
 cv-build --template resume --compile  # Explicit template
-cv-build --data ~/mydata --output ~/out  # Custom paths
+cv-build --data ~/mydata              # Custom data path
 ```
 
 ### ✏️ Editing and building on-the-fly
