@@ -50,7 +50,7 @@ def main() -> None:
     # Paths for this template
     template_variant_dir = templates_dir / args.template
     data_variant_dir = data_dir / args.template
-    data_file = data_variant_dir / "data.json"
+    data_file = data_variant_dir / f"{args.template}.json"
     schema_file = template_variant_dir / "schema.json"
 
     if not template_variant_dir.exists():
