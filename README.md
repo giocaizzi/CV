@@ -15,7 +15,7 @@ cv_builder/templates/resume/   # Package templates (versioned)
 └── resume.sty                 # LaTeX styling
 
 data/resume/                   # User data + generated output
-├── data.json                  # CV data (editable)
+├── resume.json                # CV data (editable)
 ├── resume.tex                 # Generated (tracked)
 └── resume.pdf                 # Compiled (tracked)
 ```
@@ -42,7 +42,7 @@ cv-build --data ~/mydata              # Custom data path
 
 ### ✏️ Editing and building on-the-fly
 
-Edit `data/resume/data.json` directly on GitHub (web/mobile). CI automatically rebuilds and commits the updated PDF.
+Edit `data/resume/resume.json` directly on GitHub (web/mobile). CI automatically rebuilds and commits the updated PDF.
 
 ## 📋 Requirements
 

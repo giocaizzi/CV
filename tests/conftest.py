@@ -139,7 +139,7 @@ def tmp_data_dir(tmp_path: Path, sample_cv_data: dict) -> Path:
     data_dir = tmp_path / "data" / "test_template"
     data_dir.mkdir(parents=True)
 
-    (data_dir / "data.json").write_text(
+    (data_dir / "test_template.json").write_text(
         json.dumps(sample_cv_data, indent=2), encoding="utf-8"
     )
 

@@ -36,7 +36,7 @@ cv_builder/templates/<name>/   # Package templates
 └── <name>.sty                 # LaTeX styling
 
 data/<name>/                   # User data + generated output
-├── data.json                  # CV data (single source of truth)
+├── <name>.json                # CV data (single source of truth)
 ├── <name>.tex                 # Generated output (tracked)
 └── <name>.pdf                 # Compiled PDF (tracked)
 ```
@@ -97,7 +97,7 @@ Filters:
 - `| date_range` — format start/end dates
 - `| get_resp` — get visible responsibilities
 
-### Raw LaTeX in data.json
+### Raw LaTeX in JSON data
 
 Use `/latex{...}` syntax to include raw LaTeX that won't be escaped:
 

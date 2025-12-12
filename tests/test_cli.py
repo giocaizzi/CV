@@ -85,7 +85,7 @@ class TestMainCli:
         """Schema validation failure causes exit with code 1."""
         # Write invalid data
         invalid_data = '{"invalid": "data"}'
-        (tmp_data_dir / "data.json").write_text(invalid_data)
+        (tmp_data_dir / "test_template.json").write_text(invalid_data)
 
         # Use parent dirs for templates and data
         templates_parent = tmp_template_dir.parent
@@ -125,7 +125,7 @@ class TestMainCli:
             "personalInfo": {"name": "Test"},
             "experience": []
         }"""
-        (tmp_data_dir / "data.json").write_text(minimal_data)
+        (tmp_data_dir / "test_template.json").write_text(minimal_data)
 
         templates_parent = tmp_template_dir.parent
         data_parent = tmp_data_dir.parent
@@ -165,7 +165,7 @@ class TestMainCli:
         """Successful build generates .tex file."""
         import json
 
-        (tmp_data_dir / "data.json").write_text(
+        (tmp_data_dir / "test_template.json").write_text(
             json.dumps(sample_cv_data), encoding="utf-8"
         )
 
@@ -207,7 +207,7 @@ class TestMainCli:
         """--compile flag triggers PDF compilation."""
         import json
 
-        (tmp_data_dir / "data.json").write_text(
+        (tmp_data_dir / "test_template.json").write_text(
             json.dumps(sample_cv_data), encoding="utf-8"
         )
 
@@ -248,7 +248,7 @@ class TestMainCli:
         """PDF compilation failure causes exit with code 1."""
         import json
 
-        (tmp_data_dir / "data.json").write_text(
+        (tmp_data_dir / "test_template.json").write_text(
             json.dumps(sample_cv_data), encoding="utf-8"
         )
 

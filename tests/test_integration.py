@@ -45,9 +45,9 @@ class TestLoadValidateBuildFlow:
         assert "Tech Corp" in content
 
     def test_flow_with_real_data_file(self, tmp_path):
-        """Test with actual data/resume/data.json if available."""
+        """Test with actual data/resume/resume.json if available."""
         project_root = Path(__file__).parent.parent
-        data_file = project_root / "data" / "resume" / "data.json"
+        data_file = project_root / "data" / "resume" / "resume.json"
         template_dir = get_package_templates_dir() / "resume"
 
         if not data_file.exists():
