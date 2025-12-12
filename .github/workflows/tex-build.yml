@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - 'data/*/*.json'
+      - 'data/**/*.json'
 
 jobs:
   build:
@@ -29,17 +29,16 @@ jobs:
     - name: Install Python dependencies
       run: poetry install
 
-    - name: Install TeX Live
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y texlive texlive-latex-extra texlive-fonts-recommended
-        if [ -f latex_requirements.txt ]; then
-          sudo tlmgr update --self || true
-          xargs -a latex_requirements.txt sudo tlmgr install || true
-        fi
+    - name: Generate .tex files
+      run: poetry run cv-build
 
-    - name: Build all variants
-      run: poetry run cv-build --compile
+    - name: Compile LaTeX
+      uses: xu-cheng/latex-action@v4
+      with:
+        root_file: data/*/*.tex
+        work_in_root_file_dir: true
+        pre_compile: |
+          tlmgr install $(cat latex_requirements.txt | tr '\n' ' ')
 
     - name: Commit generated files
       run: |
