@@ -1,6 +1,6 @@
 
-# Ignore built artifacts styles
-output/**/*.sty
+# Ignore copied .sty files in data (originals are in cv_builder/templates/)
+data/**/*.sty
 #----
 ## Python
 __pycache__/

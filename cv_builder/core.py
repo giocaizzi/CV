@@ -27,9 +27,37 @@ def validate_cv(cv_data: dict, schema: dict) -> bool:
 
 
 def latex_escape(text: str) -> str:
-    """Escape special LaTeX characters."""
+    """Escape special LaTeX characters.
+
+    Supports raw LaTeX passthrough using /latex{...} syntax.
+    Content inside /latex{...} will not be escaped.
+
+    Example:
+        "Python /latex{\\&} SQL" -> "Python & SQL"
+        "Use /latex{\\textbf{bold}} text" -> "Use \\textbf{bold} text"
+    """
+    import re
+
     if not isinstance(text, str):
         return text
+
+    # Pattern to match /latex{...} with balanced braces (one level deep)
+    # Allows any characters including backslashes, with nested braces one level deep
+    pattern = r"/latex\{((?:[^{}]|\{[^{}]*\})*)\}"
+
+    # Find all raw LaTeX sections and store them with placeholders
+    raw_sections = []
+
+    def store_raw(match):
+        idx = len(raw_sections)
+        raw_sections.append(match.group(1))
+        # Use null bytes as placeholder - won't appear in normal text
+        return f"\x00\x01{idx}\x02\x00"
+
+    # Replace raw LaTeX sections with placeholders
+    text = re.sub(pattern, store_raw, text)
+
+    # Escape the remaining text
     replacements = {
         "&": r"\&",
         "%": r"\%",
@@ -43,6 +71,11 @@ def latex_escape(text: str) -> str:
     }
     for char, escape in replacements.items():
         text = text.replace(char, escape)
+
+    # Restore raw LaTeX sections
+    for i, raw in enumerate(raw_sections):
+        text = text.replace(f"\x00\x01{i}\x02\x00", raw)
+
     return text
 
 

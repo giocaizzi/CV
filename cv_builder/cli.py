@@ -32,13 +32,6 @@ def main() -> None:
         help="Path to data directory (default: ./data)",
     )
     parser.add_argument(
-        "--output",
-        "-o",
-        type=Path,
-        default=Path.cwd() / "output",
-        help="Path to output directory (default: ./output)",
-    )
-    parser.add_argument(
         "--compile",
         "-c",
         action="store_true",
@@ -53,13 +46,12 @@ def main() -> None:
 
     templates_dir = get_package_templates_dir()
     data_dir = args.data
-    output_dir = args.output
 
     # Paths for this template
     template_variant_dir = templates_dir / args.template
-    data_file = data_dir / args.template / "data.json"
+    data_variant_dir = data_dir / args.template
+    data_file = data_variant_dir / "data.json"
     schema_file = template_variant_dir / "schema.json"
-    output_variant_dir = output_dir / args.template
 
     if not template_variant_dir.exists():
         print(f"✗ Template '{args.template}' not found at {template_variant_dir}")
@@ -69,8 +61,8 @@ def main() -> None:
         print(f"✗ Data file not found at {data_file}")
         sys.exit(1)
 
-    # Ensure output directory exists
-    output_variant_dir.mkdir(parents=True, exist_ok=True)
+    # Ensure data directory exists (for output)
+    data_variant_dir.mkdir(parents=True, exist_ok=True)
 
     # Load data
     print(f"Building template: {args.template}")
@@ -84,7 +76,7 @@ def main() -> None:
 
     # Build
     tex_file = build_variant(
-        template_variant_dir, output_variant_dir, args.template, cv_data
+        template_variant_dir, data_variant_dir, args.template, cv_data
     )
 
     # Compile
