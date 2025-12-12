@@ -26,10 +26,14 @@ jobs:
     - name: Install Python dependencies
       run: pip install -r requirements.txt
 
-    - name: Setup TeX Live
-      uses: teatimeguest/setup-texlive-action@v3
-      with:
-        package-file: latex_requirements.txt
+    - name: Install TeX Live
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y texlive texlive-latex-extra texlive-fonts-recommended
+        if [ -f latex_requirements.txt ]; then
+          sudo tlmgr update --self || true
+          xargs -a latex_requirements.txt sudo tlmgr install || true
+        fi
 
     - name: Build all variants
       run: python build.py --compile
