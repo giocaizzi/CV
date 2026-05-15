@@ -91,37 +91,41 @@ class TestJinjaEnvironmentIntegration:
 
         # Data with special characters in location field (which uses | latex)
         cv_data = {
-            "personalInfo": {
+            "basics": {
                 "name": "John Doe",
                 "email": "test@example.com",
                 "location": "City & State",
-                "linkedin": {
-                    "url": "https://linkedin.com/in/test",
-                    "inResume": True,
-                },
-                "github": {
-                    "url": "https://github.com/test",
-                    "inResume": True,
-                },
+                "profiles": [
+                    {
+                        "network": "LinkedIn",
+                        "url": "https://linkedin.com/in/test",
+                        "x-inResume": True,
+                    },
+                    {
+                        "network": "GitHub",
+                        "url": "https://github.com/test",
+                        "x-inResume": True,
+                    },
+                ],
             },
-            "experience": [
+            "work": [
                 {
-                    "title": "Engineer",
-                    "company": "Tech Co",
+                    "position": "Engineer",
+                    "name": "Tech Co",
                     "location": "New York & LA",  # location uses | latex
-                    "startDate": "Jan 2020",
+                    "startDate": "2020-01",
                     "endDate": None,
-                    "description": "Work",
-                    "responsibilities": [],
-                    "inResume": True,
+                    "summary": "Work",
+                    "highlights": [],
+                    "x-inResume": True,
                 }
             ],
             "education": [],
-            "licenses": [],
+            "certificates": [],
             "technicalSkills": {},
             "projects": [],
             "personalSkills": {},
-            "footer": {"value": "", "inResume": False},
+            "meta": {"footer": {"value": "", "x-inResume": False}},
         }
 
         output = template.render(cv=cv_data)
@@ -136,31 +140,35 @@ class TestJinjaEnvironmentIntegration:
         template = env.get_template("template.tex.j2")
 
         cv_data = {
-            "personalInfo": {
+            "basics": {
                 "name": "John Doe",
                 "email": "test@example.com",
                 "location": "City",
-                "linkedin": {
-                    "url": "https://linkedin.com/in/test",
-                    "inResume": True,
-                },
-                "github": {
-                    "url": "https://github.com/test",
-                    "inResume": True,
-                },
+                "profiles": [
+                    {
+                        "network": "LinkedIn",
+                        "url": "https://linkedin.com/in/test",
+                        "x-inResume": True,
+                    },
+                    {
+                        "network": "GitHub",
+                        "url": "https://github.com/test",
+                        "x-inResume": True,
+                    },
+                ],
             },
-            "experience": [],
+            "work": [],
             "education": [],
-            "licenses": [],
+            "certificates": [],
             "technicalSkills": {
                 "Languages": {
                     "value": r"Python /latex{\&} SQL",
-                    "inResume": True,
+                    "x-inResume": True,
                 }
             },
             "projects": [],
             "personalSkills": {},
-            "footer": {"value": "", "inResume": False},
+            "meta": {"footer": {"value": "", "x-inResume": False}},
         }
 
         output = template.render(cv=cv_data)
@@ -182,26 +190,19 @@ class TestSchemaValidation:
     def test_schema_rejects_extra_properties(self, valid_schema):
         """Schema rejects data with extra properties."""
         invalid_data = {
-            "personalInfo": {
+            "basics": {
                 "name": "John",
                 "email": "john@example.com",
                 "location": "NYC",
-                "linkedin": {
-                    "url": "https://linkedin.com/in/john",
-                    "inResume": True,
-                },
-                "github": {
-                    "url": "https://github.com/john",
-                    "inResume": True,
-                },
+                "profiles": [],
                 "extraField": "not allowed",  # Should fail
             },
-            "experience": [],
+            "work": [],
             "education": [],
-            "licenses": [],
-            "technicalSkills": [],
+            "certificates": [],
+            "technicalSkills": {},
             "projects": [],
-            "personalSkills": [],
+            "personalSkills": {},
         }
 
         assert validate_cv(invalid_data, valid_schema) is False
@@ -209,20 +210,13 @@ class TestSchemaValidation:
     def test_schema_requires_all_sections(self, valid_schema):
         """Schema requires all top-level sections."""
         incomplete_data = {
-            "personalInfo": {
+            "basics": {
                 "name": "John",
                 "email": "john@example.com",
                 "location": "NYC",
-                "linkedin": {
-                    "url": "https://linkedin.com/in/john",
-                    "inResume": True,
-                },
-                "github": {
-                    "url": "https://github.com/john",
-                    "inResume": True,
-                },
+                "profiles": [],
             },
-            # Missing: experience, education, licenses, etc.
+            # Missing: work, education, certificates, etc.
         }
 
         assert validate_cv(incomplete_data, valid_schema) is False
@@ -251,7 +245,7 @@ class TestOutputFileGeneration:
     def test_output_encoding_is_utf8(self, sample_cv_data, tmp_path):
         """Output file uses UTF-8 encoding."""
         # Add UTF-8 characters to data
-        sample_cv_data["personalInfo"]["name"] = "José García"
+        sample_cv_data["basics"]["name"] = "José García"
 
         template_dir = get_package_templates_dir() / "resume"
         output_dir = tmp_path / "output"

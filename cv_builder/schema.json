@@ -2,19 +2,19 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/giocaizzi/CV/cv-schema.json",
   "title": "CV Schema",
-  "description": "JSON schema for CV data",
+  "description": "JSON schema for CV data (JSON Resume-aligned)",
   "type": "object",
-  "required": ["personalInfo", "experience", "education", "licenses", "technicalSkills", "projects", "personalSkills"],
+  "required": ["basics", "work", "education", "certificates", "technicalSkills", "projects", "personalSkills"],
   "additionalProperties": false,
   "properties": {
     "$schema": {
       "type": "string",
       "description": "JSON Schema reference"
     },
-    "personalInfo": {
+    "basics": {
       "type": "object",
-      "description": "Personal contact information",
-      "required": ["name", "email", "location", "linkedin", "github"],
+      "description": "Basic personal and contact information",
+      "required": ["name", "email", "location", "profiles"],
       "additionalProperties": false,
       "properties": {
         "name": {
@@ -28,74 +28,47 @@
         },
         "location": {
           "type": "string",
-          "description": "Current location"
+          "description": "Current location (kept as simple string)"
         },
-        "linkedin": {
-          "type": "object",
-          "description": "LinkedIn profile",
-          "required": ["url", "inResume"],
-          "additionalProperties": false,
-          "properties": {
-            "url": {
-              "type": "string",
-              "format": "uri",
-              "description": "LinkedIn profile URL"
-            },
-            "inResume": {
-              "type": "boolean",
-              "description": "Whether to show in resume"
-            }
-          }
-        },
-        "github": {
-          "type": "object",
-          "description": "GitHub profile",
-          "required": ["url", "inResume"],
-          "additionalProperties": false,
-          "properties": {
-            "url": {
-              "type": "string",
-              "format": "uri",
-              "description": "GitHub profile URL"
-            },
-            "inResume": {
-              "type": "boolean",
-              "description": "Whether to show in resume"
-            }
-          }
-        },
-        "webpage": {
-          "type": "object",
-          "description": "Personal webpage",
-          "required": ["url", "inResume"],
-          "additionalProperties": false,
-          "properties": {
-            "url": {
-              "type": "string",
-              "format": "uri",
-              "description": "Personal webpage URL"
-            },
-            "inResume": {
-              "type": "boolean",
-              "description": "Whether to show in resume"
+        "profiles": {
+          "type": "array",
+          "description": "Social/professional network profiles",
+          "items": {
+            "type": "object",
+            "required": ["network", "url", "x-inResume"],
+            "additionalProperties": false,
+            "properties": {
+              "network": {
+                "type": "string",
+                "description": "Network name (e.g. LinkedIn, GitHub, Website)"
+              },
+              "url": {
+                "type": "string",
+                "format": "uri",
+                "description": "Profile URL"
+              },
+              "x-inResume": {
+                "type": "boolean",
+                "description": "Whether to show in resume"
+              }
             }
           }
         }
       }
     },
-    "experience": {
+    "work": {
       "type": "array",
       "description": "Work experience entries",
       "items": {
         "type": "object",
-        "required": ["title", "company", "location", "startDate", "description", "responsibilities", "inResume"],
+        "required": ["position", "name", "location", "startDate", "summary", "highlights", "x-inResume"],
         "additionalProperties": false,
         "properties": {
-          "title": {
+          "position": {
             "type": "string",
-            "description": "Job title"
+            "description": "Job title / position"
           },
-          "company": {
+          "name": {
             "type": "string",
             "description": "Company name"
           },
@@ -105,40 +78,40 @@
           },
           "startDate": {
             "type": "string",
-            "description": "Start date (format: 'Mon. YYYY' or 'Mon YYYY')"
+            "description": "Start date (ISO 8601: YYYY-MM)"
           },
           "endDate": {
             "type": ["string", "null"],
-            "description": "End date (format: 'Mon. YYYY' or 'Mon YYYY', null if current)"
+            "description": "End date (ISO 8601: YYYY-MM, or null if current)"
           },
-          "description": {
+          "summary": {
             "type": "string",
             "description": "Short job description (used in resume)"
           },
-          "longDescription": {
+          "x-longSummary": {
             "type": "string",
             "description": "Full detailed job description (not shown in resume)"
           },
-          "responsibilities": {
+          "highlights": {
             "type": "array",
-            "description": "List of responsibilities",
+            "description": "List of highlights/responsibilities",
             "items": {
               "type": "object",
-              "required": ["value", "inResume"],
+              "required": ["value", "x-inResume"],
               "additionalProperties": false,
               "properties": {
                 "value": {
                   "type": "string",
-                  "description": "Responsibility description"
+                  "description": "Highlight description"
                 },
-                "inResume": {
+                "x-inResume": {
                   "type": "boolean",
-                  "description": "Whether this responsibility appears in the resume"
+                  "description": "Whether this highlight appears in the resume"
                 }
               }
             }
           },
-          "projects": {
+          "x-projects": {
             "type": "array",
             "description": "Detailed projects worked on during this position",
             "items": {
@@ -154,7 +127,7 @@
                   "type": "string",
                   "description": "Detailed project description"
                 },
-                "technologies": {
+                "x-technologies": {
                   "type": "string",
                   "description": "Technologies used in the project (comma-separated)"
                 },
@@ -174,16 +147,16 @@
                   "type": "string",
                   "description": "Client name (if applicable)"
                 },
-                "inResume": {
+                "x-inResume": {
                   "type": "boolean",
-                  "description": "Whether this project appears in the LaTeX resume"
+                  "description": "Whether this project appears in the resume"
                 }
               }
             }
           },
-          "inResume": {
+          "x-inResume": {
             "type": "boolean",
-            "description": "Whether this experience appears in the LaTeX resume"
+            "description": "Whether this work entry appears in the resume"
           }
         }
       }
@@ -193,12 +166,12 @@
       "description": "Education entries",
       "items": {
         "type": "object",
-        "required": ["degree", "institution", "location", "startDate", "endDate", "details", "inResume"],
+        "required": ["area", "institution", "location", "startDate", "endDate", "x-details", "x-inResume"],
         "additionalProperties": false,
         "properties": {
-          "degree": {
+          "area": {
             "type": "string",
-            "description": "Degree name"
+            "description": "Field of study / degree name"
           },
           "institution": {
             "type": "string",
@@ -210,15 +183,15 @@
           },
           "startDate": {
             "type": "string",
-            "description": "Start date (format: 'Mon. YYYY' or 'Mon YYYY')"
+            "description": "Start date (ISO 8601: YYYY-MM)"
           },
           "endDate": {
             "type": "string",
-            "description": "End date (format: 'Mon. YYYY' or 'Mon YYYY')"
+            "description": "End date (ISO 8601: YYYY-MM)"
           },
-          "details": {
+          "x-details": {
             "type": "object",
-            "description": "Additional details about the education",
+            "description": "Additional details about the education (e.g. msc, bsc sub-objects)",
             "additionalProperties": {
               "type": "object",
               "properties": {
@@ -233,32 +206,32 @@
               }
             }
           },
-          "inResume": {
+          "x-inResume": {
             "type": "boolean",
-            "description": "Whether this education appears in the LaTeX resume"
+            "description": "Whether this education entry appears in the resume"
           }
         }
       }
     },
-    "licenses": {
+    "certificates": {
       "type": "array",
       "description": "Professional licenses and certifications",
       "items": {
         "type": "object",
-        "required": ["name", "year", "inResume"],
+        "required": ["name", "date", "x-inResume"],
         "additionalProperties": false,
         "properties": {
           "name": {
             "type": "string",
             "description": "License or certification name"
           },
-          "year": {
-            "type": ["string", "number"],
-            "description": "Year obtained"
+          "date": {
+            "type": "string",
+            "description": "Year obtained (ISO year-only: YYYY)"
           },
-          "inResume": {
+          "x-inResume": {
             "type": "boolean",
-            "description": "Whether this license appears in the LaTeX resume"
+            "description": "Whether this certificate appears in the resume"
           }
         }
       }
@@ -268,15 +241,16 @@
       "description": "Technical skills organized by category",
       "additionalProperties": {
         "type": "object",
-        "required": ["value", "inResume"],
+        "required": ["value", "x-inResume"],
+        "additionalProperties": false,
         "properties": {
           "value": {
             "type": "string",
             "description": "Comma-separated list of skills in this category"
           },
-          "inResume": {
+          "x-inResume": {
             "type": "boolean",
-            "description": "Whether this skill category appears in the LaTeX resume"
+            "description": "Whether this skill category appears in the resume"
           }
         }
       }
@@ -286,7 +260,7 @@
       "description": "Personal or professional projects",
       "items": {
         "type": "object",
-        "required": ["name", "url", "description", "technologies", "inResume"],
+        "required": ["name", "url", "description", "x-technologies", "x-inResume"],
         "additionalProperties": false,
         "properties": {
           "name": {
@@ -302,13 +276,13 @@
             "type": "string",
             "description": "Short project description"
           },
-          "technologies": {
+          "x-technologies": {
             "type": "string",
             "description": "Technologies used (comma-separated)"
           },
-          "inResume": {
+          "x-inResume": {
             "type": "boolean",
-            "description": "Whether this project appears in the LaTeX resume"
+            "description": "Whether this project appears in the resume"
           }
         }
       }
@@ -318,32 +292,40 @@
       "description": "Personal skills like languages and interests",
       "additionalProperties": {
         "type": "object",
-        "required": ["value", "inResume"],
+        "required": ["value", "x-inResume"],
+        "additionalProperties": false,
         "properties": {
           "value": {
             "type": "string",
             "description": "Description of the personal skill"
           },
-          "inResume": {
+          "x-inResume": {
             "type": "boolean",
-            "description": "Whether this personal skill appears in the LaTeX resume"
+            "description": "Whether this personal skill appears in the resume"
           }
         }
       }
     },
-    "footer": {
+    "meta": {
       "type": "object",
-      "description": "Footer text for the CV",
-      "required": ["value", "inResume"],
+      "description": "Metadata about the CV document",
       "additionalProperties": false,
       "properties": {
-        "value": {
-          "type": "string",
-          "description": "Footer text content"
-        },
-        "inResume": {
-          "type": "boolean",
-          "description": "Whether to show footer in resume"
+        "footer": {
+          "type": "object",
+          "description": "Footer text for the CV",
+          "required": ["value", "x-inResume"],
+          "additionalProperties": false,
+          "properties": {
+            "value": {
+              "type": "string",
+              "description": "Footer text content"
+            },
+            "x-inResume": {
+              "type": "boolean",
+              "description": "Whether to show footer in resume"
+            }
+          }
         }
       }
     }

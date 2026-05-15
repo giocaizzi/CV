@@ -121,8 +121,8 @@ class TestMainCli:
         """--skip-validation flag bypasses schema validation."""
         # Write minimal data that wouldn't pass full schema
         minimal_data = """{
-            "personalInfo": {"name": "Test"},
-            "experience": []
+            "basics": {"name": "Test"},
+            "work": []
         }"""
         (tmp_data_dir / "cv.json").write_text(minimal_data)
 

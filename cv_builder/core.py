@@ -7,6 +7,9 @@ from pathlib import Path
 import jsonschema
 from jinja2 import Environment, FileSystemLoader
 
+MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+               "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
 
 def load_json(path: Path) -> dict:
     """Load and parse JSON file."""
@@ -79,26 +82,55 @@ def latex_escape(text: str) -> str:
     return text
 
 
+def format_month_year(iso_date: str) -> str:
+    """Convert ISO 8601 date string to display format.
+
+    "2024-05" -> "May 2024"
+    "2020-07" -> "Jul 2020"
+    "2023"    -> "2023"  (year-only)
+    ""        -> ""
+    None      -> ""
+    """
+    if not iso_date:
+        return ""
+    iso_date = str(iso_date).strip()
+    if not iso_date:
+        return ""
+    parts = iso_date.split("-")
+    if len(parts) == 1:
+        # Year-only
+        return parts[0]
+    year = parts[0]
+    try:
+        month_idx = int(parts[1]) - 1
+        month = MONTH_NAMES[month_idx]
+    except (ValueError, IndexError):
+        return iso_date
+    return f"{month} {year}"
+
+
 def format_date_range(start: str, end: str | None) -> str:
     """Format date range for display. None end means 'Present'."""
+    start_fmt = format_month_year(start)
     if end is None:
-        return start
-    return f"{start} -- {end}"
+        return start_fmt
+    end_fmt = format_month_year(end)
+    return f"{start_fmt} -- {end_fmt}"
 
 
 def filter_by_resume(items: list) -> list:
-    """Filter items by inResume flag."""
-    return [item for item in items if item.get("inResume", True)]
+    """Filter items by x-inResume flag."""
+    return [item for item in items if item.get("x-inResume", True)]
 
 
-def get_responsibilities(item: dict) -> list:
-    """Get responsibilities filtered by inResume flag.
+def get_highlights(item: dict) -> list:
+    """Get highlights filtered by x-inResume flag.
 
-    Each responsibility is an object with 'value' and 'inResume' fields.
-    Returns list of responsibility strings where inResume=true.
+    Each highlight is an object with 'value' and 'x-inResume' fields.
+    Returns list of highlight strings where x-inResume=true.
     """
-    responsibilities = item.get("responsibilities", [])
-    return [r["value"] for r in responsibilities if r.get("inResume", True)]
+    highlights = item.get("highlights", [])
+    return [h["value"] for h in highlights if h.get("x-inResume", True)]
 
 
 def create_jinja_env(variant_dir: Path) -> Environment:
@@ -122,7 +154,8 @@ def create_jinja_env(variant_dir: Path) -> Environment:
         item.get("startDate", ""), item.get("endDate")
     )
     env.filters["resume_filter"] = filter_by_resume
-    env.filters["get_resp"] = get_responsibilities
+    env.filters["get_highlights"] = get_highlights
+    env.filters["month_year"] = format_month_year
 
     return env
 
