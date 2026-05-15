@@ -49,6 +49,13 @@ jobs:
     - name: Generate .tex and JSON Resume artifact
       run: poetry run cv-build
 
+    - name: Stage template .sty files next to .tex for compilation
+      run: |
+        shopt -s nullglob
+        for sty in cv_builder/templates/*/*.sty; do
+          cp "$sty" data/
+        done
+
     - name: Compile LaTeX
       uses: xu-cheng/latex-action@v4
       with:
