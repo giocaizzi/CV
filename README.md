@@ -18,7 +18,8 @@ cv_builder/
 data/
 ├── cv.json                    # CV data (editable, template-agnostic)
 ├── resume.tex                 # Generated (tracked)
-└── resume.pdf                 # Compiled (tracked)
+├── resume.pdf                 # Compiled (tracked)
+└── cv.jsonresume.json         # Vanilla JSON Resume artifact (tracked, auto-emitted)
 ```
 
 ## 🚀 Usage
@@ -35,11 +36,17 @@ cv-build --help
 **Examples**:
 
 ```bash
-cv-build                              # Build default template
+cv-build                              # Build default template + emit cv.jsonresume.json
 cv-build --compile                    # Build and compile to PDF
 cv-build --template resume --compile  # Explicit template
 cv-build --data ~/mydata              # Custom data path
+cv-build --no-emit-jsonresume         # Skip JSON Resume artifact
 ```
+
+The project is compatible with the [JSON Resume](https://jsonresume.org) ecosystem.
+`cv-build` automatically emits a vanilla `data/cv.jsonresume.json` artifact on
+every run, suitable for hosting on `registry.jsonresume.org` or feeding into
+any of the 400+ JSON Resume themes.
 
 ### ✏️ Editing and building on-the-fly
 

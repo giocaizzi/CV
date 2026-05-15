@@ -178,6 +178,18 @@ def build_variant(
     return output_file
 
 
+def build_jsonresume(cv_data: dict, output_path: Path) -> Path:
+    """Emit vanilla JSON Resume artifact alongside the .tex output."""
+    from .jsonresume import to_jsonresume
+    vanilla = to_jsonresume(cv_data)
+    output_path.write_text(
+        json.dumps(vanilla, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    print(f"✓ Generated {output_path}")
+    return output_path
+
+
 def compile_pdf(tex_file: Path, template_dir: Path) -> bool:
     """Compile LaTeX to PDF using pdflatex."""
     tex_file = tex_file.resolve()

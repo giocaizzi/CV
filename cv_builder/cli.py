@@ -4,7 +4,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from .core import build_variant, compile_pdf, load_json, validate_cv
+from .core import build_jsonresume, build_variant, compile_pdf, load_json, validate_cv
 
 
 def get_package_templates_dir() -> Path:
@@ -42,6 +42,11 @@ def main() -> None:
         action="store_true",
         help="Skip JSON schema validation",
     )
+    parser.add_argument(
+        "--no-emit-jsonresume",
+        action="store_true",
+        help="Skip writing data/cv.jsonresume.json",
+    )
     args = parser.parse_args()
 
     templates_dir = get_package_templates_dir()
@@ -77,6 +82,10 @@ def main() -> None:
     tex_file = build_variant(
         template_variant_dir, data_dir, args.template, cv_data
     )
+
+    # Emit JSON Resume artifact (default-on, independent of --template)
+    if not args.no_emit_jsonresume:
+        build_jsonresume(cv_data, data_dir / "cv.jsonresume.json")
 
     # Compile
     if args.compile:
