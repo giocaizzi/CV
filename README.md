@@ -1,6 +1,6 @@
 # CV Builder
 
-[![Build CV](https://github.com/giocaizzi/CV/actions/workflows/tex-build.yml/badge.svg)](https://github.com/giocaizzi/CV/actions/workflows/tex-build.yml)
+[![CI](https://github.com/giocaizzi/CV/actions/workflows/ci.yml/badge.svg)](https://github.com/giocaizzi/CV/actions/workflows/ci.yml)
 
 JSON-driven LaTeX CV building with Jinja2 templating.
 

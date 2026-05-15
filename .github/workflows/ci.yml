@@ -1,0 +1,129 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ci-${{ github.event.pull_request.head.ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12', '3.13']
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Poetry
+      run: pip install poetry
+
+    - name: Install dependencies
+      run: poetry install --with dev
+
+    - name: Run unit tests with coverage
+      run: |
+        poetry run pytest -m unit \
+          --cov=cv_builder \
+          --cov-report=xml \
+          --cov-report=term-missing
+
+    - name: Run integration tests
+      run: poetry run pytest -m integration -v
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v5
+      if: matrix.python-version == '3.11'
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+
+  # Single aggregated gate for the matrix above — set this as the required
+  # status check in branch rulesets. It passes only if every matrix job
+  # passed; runs even when matrix jobs fail (if: always) so a failure
+  # surfaces here instead of getting stuck on a skipped check.
+  tests-pass:
+    needs: test
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Verify all matrix jobs succeeded
+        run: |
+          if [[ "${{ needs.test.result }}" != "success" ]]; then
+            echo "Test matrix result: ${{ needs.test.result }}"
+            exit 1
+          fi
+          echo "All test matrix jobs passed."
+
+  # Rebuild CV artifacts (.tex, .pdf, .jsonresume.json) only after tests pass.
+  # Commits the regenerated outputs back to the PR head branch so reviewers
+  # see the rendered result before merging.
+  build:
+    needs: tests-pass
+    runs-on: ubuntu-latest
+    # PR-only: skip on push to main (the merge already brings the artifacts)
+    # and skip on fork PRs (GITHUB_TOKEN can't write to a fork's branch).
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+
+    steps:
+    - name: Checkout PR head
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install Poetry
+      run: pip install poetry
+
+    - name: Install Python dependencies
+      run: poetry install
+
+    - name: Generate .tex and JSON Resume artifact
+      run: poetry run cv-build
+
+    - name: Stage template .sty files next to .tex for compilation
+      run: |
+        shopt -s nullglob
+        for sty in cv_builder/templates/*/*.sty; do
+          cp "$sty" data/
+        done
+
+    - name: Compile LaTeX
+      uses: xu-cheng/latex-action@v4
+      with:
+        root_file: data/*.tex
+        work_in_root_file_dir: true
+        pre_compile: |
+          tlmgr install $(cat latex_requirements.txt | tr '\n' ' ')
+
+    - name: Commit regenerated artifacts to PR branch
+      run: |
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git config user.name "github-actions[bot]"
+        git add data/*.tex data/*.pdf data/cv.jsonresume.json
+        if git diff --staged --quiet; then
+          echo "No artifact changes to commit."
+        else
+          git commit -m "ci: rebuild CV artifacts"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+        fi

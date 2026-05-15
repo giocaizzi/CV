@@ -89,14 +89,17 @@ poetry run cv-build --no-emit-jsonresume    # Skip cv.jsonresume.json emission
 
 ### CI / publish flow
 
-- `test.yml` runs unit + integration tests on every PR against `main`
-  across Python 3.10–3.13.
-- `tex-build.yml` runs on every PR against `main` that touches CV-relevant
-  files (`data/cv.json`, `cv_builder/**`, `latex_requirements.txt`). It
-  regenerates `.tex` / `.pdf` / `cv.jsonresume.json` and commits them back
-  to the PR head branch — so the rendered PDF is part of review.
-- Merging the PR publishes the rebuilt artifacts to `main`. No bot push
-  to `main`; works under a "require PR" ruleset without bypass.
+A single `ci.yml` workflow runs on every PR against `main`:
+
+1. `test` (matrix: Python 3.10–3.13) — runs unit + integration tests.
+2. `tests-pass` — aggregator that succeeds only if all matrix jobs passed.
+   This is the single status check to require in branch rulesets.
+3. `build` — depends on `tests-pass`, so it only runs after tests are green.
+   Regenerates `.tex` / `.pdf` / `cv.jsonresume.json` and commits them
+   back to the PR head branch, so the rendered PDF is part of review.
+
+Merging the PR publishes the rebuilt artifacts to `main`. No bot push
+to `main`; works under a "require PR" ruleset without bypass.
 
 ## JSON Resume compatibility
 
