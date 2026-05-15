@@ -1,22 +1,39 @@
 name: Build CV
 
-# Automatically rebuild CV when JSON data changes
-# Allows editing JSON from mobile/web and auto-generating PDF
+# Rebuild CV artifacts (.tex, .pdf, .jsonresume.json) as part of PR review.
+# Commits the regenerated outputs back to the PR head branch so reviewers see
+# the rendered result before merging. Works with a ruleset that requires PRs
+# for main — no bot push to main needed.
 
 on:
-  push:
+  pull_request:
     branches:
       - main
     paths:
-      - 'data/*.json'
+      - 'data/cv.json'
+      - 'cv_builder/**'
+      - 'latex_requirements.txt'
+      - '.github/workflows/tex-build.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tex-build-${{ github.event.pull_request.head.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Skip on PRs from forks: GITHUB_TOKEN can't write to a fork's branch.
+    if: github.event.pull_request.head.repo.full_name == github.repository
 
     steps:
-    - name: Checkout repository
+    - name: Checkout PR head
       uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Setup Python
       uses: actions/setup-python@v5
@@ -29,7 +46,7 @@ jobs:
     - name: Install Python dependencies
       run: poetry install
 
-    - name: Generate .tex files
+    - name: Generate .tex and JSON Resume artifact
       run: poetry run cv-build
 
     - name: Compile LaTeX
@@ -40,10 +57,14 @@ jobs:
         pre_compile: |
           tlmgr install $(cat latex_requirements.txt | tr '\n' ' ')
 
-    - name: Commit generated files
+    - name: Commit regenerated artifacts to PR branch
       run: |
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git config user.name "github-actions[bot]"
         git add data/*.tex data/*.pdf data/cv.jsonresume.json
-        git diff --staged --quiet || git commit -m "ci: rebuild CV from JSON changes"
-        git push
+        if git diff --staged --quiet; then
+          echo "No artifact changes to commit."
+        else
+          git commit -m "ci: rebuild CV artifacts"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+        fi

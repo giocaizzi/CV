@@ -50,7 +50,10 @@ any of the 400+ JSON Resume themes.
 
 ### ✏️ Editing and building on-the-fly
 
-Edit `data/cv.json` directly on GitHub (web/mobile). CI automatically rebuilds and commits the updated PDF.
+Edit `data/cv.json` directly on GitHub (web/mobile). The "Build CV" workflow
+runs on the resulting pull request, regenerates `resume.tex`, `resume.pdf`,
+and `cv.jsonresume.json`, and commits them back to the PR branch — so the
+rendered PDF is part of the review. Merge the PR to publish.
 
 ## 📋 Requirements
 
