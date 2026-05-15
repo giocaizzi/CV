@@ -49,10 +49,26 @@ poetry run pytest --cov=cv_builder   # Run with coverage report
 
 ### JSON Data
 
-- All elements have `inResume: boolean` for visibility control
-- `description` for resume, `longDescription` for full version
-- Date format: `Mon. YYYY` or `Mon YYYY`
-- `endDate: null` = current/ongoing
+- The source schema is a pragmatic superset of [JSON Resume](https://jsonresume.org):
+  field names are vanilla (`basics`, `work`, `education`, `certificates`,
+  `projects`, etc.), augmented with `x-` extension fields for CV-specific
+  curation (`x-inResume`, `x-longSummary`, `x-technologies`, `x-details`,
+  `x-projects`).
+- Curation flags: every element has `x-inResume: boolean` for visibility
+  control on the printed resume.
+- Short vs full: `summary` (printed) and `x-longSummary` (full version, not
+  printed). For experience entries, `highlights` are objects
+  `{value, x-inResume}` so each bullet is individually toggleable.
+- Date format: **ISO 8601** in the source — `"2024-05"` (month) or `"2023"`
+  (year-only for certificates). A `| month_year` Jinja filter renders them
+  as `Mon YYYY` for LaTeX.
+- `basics.location` is the canonical JSON Resume object shape:
+  `{city, countryCode, region?, address?, postalCode?}`. A `| location_str`
+  Jinja filter joins it into `"City, Country"` for LaTeX, with country code
+  lookup in `COUNTRY_NAMES` (extend as needed).
+- `endDate: null` = current/ongoing in the source. The JSON Resume emitter
+  drops the key entirely for the vanilla artifact (vanilla doesn't permit
+  `null`).
 
 ### JSON Schema
 
@@ -67,8 +83,20 @@ poetry run cv-build                         # Generate .tex + cv.jsonresume.json
 poetry run cv-build --compile               # Generate and compile PDF
 poetry run cv-build --template name         # Build specific template
 poetry run cv-build --data /path            # Custom data path
+poetry run cv-build --skip-validation       # Skip JSON schema validation
 poetry run cv-build --no-emit-jsonresume    # Skip cv.jsonresume.json emission
 ```
+
+### CI / publish flow
+
+- `test.yml` runs unit + integration tests on every PR against `main`
+  across Python 3.10–3.13.
+- `tex-build.yml` runs on every PR against `main` that touches CV-relevant
+  files (`data/cv.json`, `cv_builder/**`, `latex_requirements.txt`). It
+  regenerates `.tex` / `.pdf` / `cv.jsonresume.json` and commits them back
+  to the PR head branch — so the rendered PDF is part of review.
+- Merging the PR publishes the rebuilt artifacts to `main`. No bot push
+  to `main`; works under a "require PR" ruleset without bypass.
 
 ## JSON Resume compatibility
 
@@ -97,10 +125,13 @@ Custom delimiters (LaTeX-safe):
 - Blocks: `<% for item in list %>`
 - Comments: `<# comment #>`
 
-Filters:
+Filters (registered in `cv_builder/core.py::create_jinja_env`):
 - `| latex` — escape LaTeX special characters (supports `/latex{...}` for raw LaTeX)
-- `| date_range` — format start/end dates
-- `| get_resp` — get visible responsibilities
+- `| date_range` — format `{startDate, endDate}` as `"Mon YYYY -- Mon YYYY"` (or just start if `endDate` is null)
+- `| month_year` — convert an ISO `"YYYY-MM"` string to `"Mon YYYY"` for display
+- `| location_str` — convert a JSON Resume location object to `"City, Region, Country"`
+- `| resume_filter` — filter a list of items by `x-inResume`
+- `| get_highlights` — get visible highlights (objects → list of `value` strings, filtered by `x-inResume`)
 
 ### Raw LaTeX in JSON data
 
