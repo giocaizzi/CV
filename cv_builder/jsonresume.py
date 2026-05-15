@@ -82,6 +82,9 @@ def to_jsonresume(cv_data: dict) -> dict:
         ]
         # Drop x-projects (top-level projects[] already covers projects)
         entry.pop("x-projects", None)
+        # Vanilla JSON Resume omits endDate for ongoing positions (no null).
+        if entry.get("endDate") is None:
+            entry.pop("endDate", None)
         work_out.append(_strip_x_keys(entry))
     data["work"] = work_out
 
@@ -92,6 +95,8 @@ def to_jsonresume(cv_data: dict) -> dict:
         if not entry.get("x-inResume", True):
             continue
         # x-details has no vanilla equivalent — drop it (handled by _strip_x_keys)
+        if entry.get("endDate") is None:
+            entry.pop("endDate", None)
         education_out.append(_strip_x_keys(entry))
     data["education"] = education_out
 

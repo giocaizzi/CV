@@ -3,7 +3,10 @@
   "basics": {
     "name": "Giorgio Caizzi",
     "email": "giocaizzi@gmail.com",
-    "location": "Milan, Italy",
+    "location": {
+      "city": "Milan",
+      "countryCode": "IT"
+    },
     "profiles": [
       {
         "network": "LinkedIn",

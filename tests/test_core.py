@@ -12,6 +12,7 @@ from cv_builder.core import (
     create_jinja_env,
     filter_by_resume,
     format_date_range,
+    format_location,
     format_month_year,
     get_highlights,
     latex_escape,
@@ -182,6 +183,13 @@ class TestCreateJinjaEnv:
         env = create_jinja_env(tmp_template_dir)
         assert "month_year" in env.filters
         assert env.filters["month_year"]("2024-05") == "May 2024"
+
+    def test_location_str_filter_registered(self, tmp_template_dir: Path):
+        """location_str filter is registered and works."""
+        env = create_jinja_env(tmp_template_dir)
+        assert "location_str" in env.filters
+        loc = {"city": "Milan", "countryCode": "IT"}
+        assert env.filters["location_str"](loc) == "Milan, Italy"
 
     def test_autoescape_disabled(self, tmp_template_dir: Path):
         """Autoescape is disabled for LaTeX output."""
@@ -466,6 +474,50 @@ class TestFormatMonthYear:
     def test_whitespace_stripped(self):
         """Leading/trailing whitespace is stripped."""
         assert format_month_year("  2024-05  ") == "May 2024"
+
+    def test_whitespace_only(self):
+        """Whitespace-only input strips to empty and returns empty string."""
+        assert format_month_year("   ") == ""
+
+
+# =============================================================================
+# format_location tests
+# =============================================================================
+@pytest.mark.unit
+class TestFormatLocation:
+    """Tests for format_location function."""
+
+    def test_full_object(self):
+        loc = {"city": "Milan", "region": "Lombardy", "countryCode": "IT"}
+        assert format_location(loc) == "Milan, Lombardy, Italy"
+
+    def test_city_and_country(self):
+        assert format_location({"city": "Milan", "countryCode": "IT"}) == "Milan, Italy"
+
+    def test_city_only(self):
+        assert format_location({"city": "Milan"}) == "Milan"
+
+    def test_country_only(self):
+        assert format_location({"countryCode": "US"}) == "United States"
+
+    def test_empty_object(self):
+        assert format_location({}) == ""
+
+    def test_unknown_country_code_passes_through(self):
+        """Unknown ISO codes pass through unchanged (caller can extend COUNTRY_NAMES)."""
+        assert format_location({"city": "X", "countryCode": "ZZ"}) == "X, ZZ"
+
+    def test_none_returns_empty(self):
+        assert format_location(None) == ""
+
+    def test_plain_string_returned_as_is(self):
+        """Backward compatibility: a plain string is returned unchanged."""
+        assert format_location("Milan, Italy") == "Milan, Italy"
+
+    def test_unexpected_type_returns_empty(self):
+        """List or other non-supported type returns empty string."""
+        assert format_location([1, 2, 3]) == ""
+        assert format_location(42) == ""
 
 
 # =============================================================================

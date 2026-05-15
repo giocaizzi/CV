@@ -14,7 +14,7 @@ def sample_cv_data() -> dict:
         "basics": {
             "name": "John Doe",
             "email": "john@example.com",
-            "location": "New York, NY",
+            "location": {"city": "New York", "region": "NY", "countryCode": "US"},
             "profiles": [
                 {
                     "network": "LinkedIn",

@@ -27,8 +27,31 @@
           "description": "Email address"
         },
         "location": {
-          "type": "string",
-          "description": "Current location (kept as simple string)"
+          "type": "object",
+          "description": "Current location (JSON Resume canonical object shape)",
+          "additionalProperties": true,
+          "properties": {
+            "address": {
+              "type": "string",
+              "description": "Street address"
+            },
+            "postalCode": {
+              "type": "string",
+              "description": "Postal code"
+            },
+            "city": {
+              "type": "string",
+              "description": "City"
+            },
+            "countryCode": {
+              "type": "string",
+              "description": "ISO 3166-1 alpha-2 country code"
+            },
+            "region": {
+              "type": "string",
+              "description": "Region or state"
+            }
+          }
         },
         "profiles": {
           "type": "array",

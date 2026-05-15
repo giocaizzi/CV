@@ -31,7 +31,7 @@ def minimal_cv() -> dict:
         "basics": {
             "name": "Jane Doe",
             "email": "jane@example.com",
-            "location": "Rome, Italy",
+            "location": {"city": "Rome", "countryCode": "IT"},
             "profiles": [
                 {"network": "GitHub", "url": "https://github.com/jane", "x-inResume": True},
                 {"network": "Hidden", "url": "https://hidden.example.com", "x-inResume": False},
@@ -257,7 +257,7 @@ class TestSkillsConversion:
 
     def test_comma_split_keywords(self):
         cv = {
-            "basics": {"name": "X", "email": "x@x.com", "location": "X", "profiles": []},
+            "basics": {"name": "X", "email": "x@x.com", "location": {"city": "X"}, "profiles": []},
             "work": [],
             "education": [],
             "certificates": [],
@@ -283,7 +283,7 @@ class TestMetaHandling:
 
     def test_meta_absent_if_empty_after_cleanup(self):
         cv = {
-            "basics": {"name": "X", "email": "x@x.com", "location": "X", "profiles": []},
+            "basics": {"name": "X", "email": "x@x.com", "location": {"city": "X"}, "profiles": []},
             "work": [],
             "education": [],
             "certificates": [],
@@ -294,6 +294,107 @@ class TestMetaHandling:
         }
         result = to_jsonresume(cv)
         assert "meta" not in result
+
+    def test_meta_kept_when_non_footer_fields_remain(self):
+        """meta is preserved when it has fields other than the dropped footer."""
+        cv = {
+            "basics": {"name": "X", "email": "x@x.com", "location": {"city": "X"}, "profiles": []},
+            "work": [],
+            "education": [],
+            "certificates": [],
+            "projects": [],
+            "technicalSkills": {},
+            "personalSkills": {},
+            "meta": {
+                "canonical": "https://example.com/cv.json",
+                "version": "v1.0.0",
+                "footer": {"value": "Refs.", "x-inResume": False},
+            },
+        }
+        result = to_jsonresume(cv)
+        assert result["meta"] == {
+            "canonical": "https://example.com/cv.json",
+            "version": "v1.0.0",
+        }
+
+
+@pytest.mark.unit
+class TestEndDateHandling:
+    """to_jsonresume drops null endDate so the artifact matches vanilla JSON Resume."""
+
+    def test_work_null_end_date_dropped(self):
+        cv = {
+            "basics": {"name": "X", "email": "x@x.com", "location": {"city": "X"}, "profiles": []},
+            "work": [
+                {
+                    "position": "Eng",
+                    "name": "Co",
+                    "location": "X",
+                    "startDate": "2024-01",
+                    "endDate": None,
+                    "summary": "now",
+                    "highlights": [],
+                    "x-inResume": True,
+                }
+            ],
+            "education": [],
+            "certificates": [],
+            "projects": [],
+            "technicalSkills": {},
+            "personalSkills": {},
+            "meta": {},
+        }
+        result = to_jsonresume(cv)
+        assert "endDate" not in result["work"][0]
+
+    def test_work_present_end_date_kept(self):
+        cv = {
+            "basics": {"name": "X", "email": "x@x.com", "location": {"city": "X"}, "profiles": []},
+            "work": [
+                {
+                    "position": "Eng",
+                    "name": "Co",
+                    "location": "X",
+                    "startDate": "2020-01",
+                    "endDate": "2022-12",
+                    "summary": "old",
+                    "highlights": [],
+                    "x-inResume": True,
+                }
+            ],
+            "education": [],
+            "certificates": [],
+            "projects": [],
+            "technicalSkills": {},
+            "personalSkills": {},
+            "meta": {},
+        }
+        result = to_jsonresume(cv)
+        assert result["work"][0]["endDate"] == "2022-12"
+
+    def test_education_null_end_date_dropped(self):
+        cv = {
+            "basics": {"name": "X", "email": "x@x.com", "location": {"city": "X"}, "profiles": []},
+            "work": [],
+            "education": [
+                {
+                    "area": "PhD",
+                    "institution": "Uni",
+                    "location": "X",
+                    "startDate": "2024-09",
+                    "endDate": None,
+                    "x-details": {},
+                    "x-inResume": True,
+                }
+            ],
+            "certificates": [],
+            "projects": [],
+            "technicalSkills": {},
+            "personalSkills": {},
+            "meta": {},
+        }
+        result = to_jsonresume(cv)
+        assert "endDate" not in result["education"][0]
 
 
 @pytest.mark.unit
@@ -307,7 +408,7 @@ class TestEducationHandling:
 
     def test_hidden_education_entry_dropped(self):
         cv = {
-            "basics": {"name": "X", "email": "x@x.com", "location": "X", "profiles": []},
+            "basics": {"name": "X", "email": "x@x.com", "location": {"city": "X"}, "profiles": []},
             "work": [],
             "education": [
                 {

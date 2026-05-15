@@ -12,7 +12,7 @@
 %----------HEADING----------
 <% set info_items = [] %>
 <% set _ = info_items.append("\\emailInfo{" ~ cv.basics.email ~ "}") %>
-<% set _ = info_items.append("\\locationInfo{" ~ cv.basics.location ~ "}") %>
+<% set _ = info_items.append("\\locationInfo{" ~ (cv.basics.location | location_str) ~ "}") %>
 <% set social_links = [] %>
 <% for profile in cv.basics.profiles | resume_filter %>
 <% if profile.network == "LinkedIn" %>

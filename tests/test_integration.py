@@ -96,7 +96,7 @@ class TestJinjaEnvironmentIntegration:
             "basics": {
                 "name": "John Doe",
                 "email": "test@example.com",
-                "location": "City & State",
+                "location": {"city": "City", "region": "State"},
                 "profiles": [
                     {
                         "network": "LinkedIn",
@@ -145,7 +145,7 @@ class TestJinjaEnvironmentIntegration:
             "basics": {
                 "name": "John Doe",
                 "email": "test@example.com",
-                "location": "City",
+                "location": {"city": "City"},
                 "profiles": [
                     {
                         "network": "LinkedIn",
@@ -195,7 +195,7 @@ class TestSchemaValidation:
             "basics": {
                 "name": "John",
                 "email": "john@example.com",
-                "location": "NYC",
+                "location": {"city": "NYC"},
                 "profiles": [],
                 "extraField": "not allowed",  # Should fail
             },
@@ -215,7 +215,7 @@ class TestSchemaValidation:
             "basics": {
                 "name": "John",
                 "email": "john@example.com",
-                "location": "NYC",
+                "location": {"city": "NYC"},
                 "profiles": [],
             },
             # Missing: work, education, certificates, etc.

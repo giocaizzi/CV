@@ -2,7 +2,10 @@
   "basics": {
     "name": "Giorgio Caizzi",
     "email": "giocaizzi@gmail.com",
-    "location": "Milan, Italy",
+    "location": {
+      "city": "Milan",
+      "countryCode": "IT"
+    },
     "profiles": [
       {
         "network": "LinkedIn",
@@ -24,7 +27,6 @@
       "name": "Jakala S.p.A.",
       "location": "Milan, Italy",
       "startDate": "2024-05",
-      "endDate": null,
       "summary": "Developement of end-to-end Generative AI solutions tailored to industry needs -from research and prototyping to deployment to the Cloud- with a focus on observability and cost-effectiveness.",
       "highlights": [
         "RAG and BI Agents, multimodal LLMs, Multi-agentic patterns and orchestration.",

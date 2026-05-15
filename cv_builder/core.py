@@ -10,6 +10,34 @@ from jinja2 import Environment, FileSystemLoader
 MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
+# ISO 3166-1 alpha-2 → display name. Extend as needed; falls back to the code.
+COUNTRY_NAMES = {
+    "IT": "Italy",
+    "US": "United States",
+    "GB": "United Kingdom",
+    "DE": "Germany",
+    "FR": "France",
+    "ES": "Spain",
+    "BE": "Belgium",
+    "NL": "Netherlands",
+    "PT": "Portugal",
+    "CH": "Switzerland",
+    "AT": "Austria",
+    "IE": "Ireland",
+    "DK": "Denmark",
+    "SE": "Sweden",
+    "NO": "Norway",
+    "FI": "Finland",
+    "PL": "Poland",
+    "CZ": "Czechia",
+    "GR": "Greece",
+    "JP": "Japan",
+    "CN": "China",
+    "CA": "Canada",
+    "AU": "Australia",
+    "BR": "Brazil",
+}
+
 
 def load_json(path: Path) -> dict:
     """Load and parse JSON file."""
@@ -109,6 +137,33 @@ def format_month_year(iso_date: str) -> str:
     return f"{month} {year}"
 
 
+def format_location(loc) -> str:
+    """Format a JSON Resume location object as a display string.
+
+    Accepts the canonical object shape {city, region, countryCode, ...} and
+    returns "City, Region, Country". Missing fields are skipped. Unknown
+    country codes pass through unchanged.
+
+    Also accepts a plain string for backward compatibility, returning it
+    unchanged.
+    """
+    if loc is None:
+        return ""
+    if isinstance(loc, str):
+        return loc
+    if not isinstance(loc, dict):
+        return ""
+    parts = []
+    if loc.get("city"):
+        parts.append(loc["city"])
+    if loc.get("region"):
+        parts.append(loc["region"])
+    code = loc.get("countryCode")
+    if code:
+        parts.append(COUNTRY_NAMES.get(code, code))
+    return ", ".join(parts)
+
+
 def format_date_range(start: str, end: str | None) -> str:
     """Format date range for display. None end means 'Present'."""
     start_fmt = format_month_year(start)
@@ -156,6 +211,7 @@ def create_jinja_env(variant_dir: Path) -> Environment:
     env.filters["resume_filter"] = filter_by_resume
     env.filters["get_highlights"] = get_highlights
     env.filters["month_year"] = format_month_year
+    env.filters["location_str"] = format_location
 
     return env
 
