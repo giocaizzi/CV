@@ -96,8 +96,14 @@ A single `ci.yml` workflow runs on every PR against `main`:
 3. `build` — depends on `tests-pass`. Regenerates `.tex` / `.pdf` /
    `cv.jsonresume.json` and commits them back to the PR head branch, so
    the rendered PDF is part of review.
+4. `ci-pass` — final fan-in. Succeeds iff `tests-pass` and `build` both
+   succeeded or were legitimately skipped (build skips on push-to-main
+   and fork PRs).
 
-Required status checks for branch rulesets: `tests-pass` AND `build`.
+Required status check for branch rulesets: **just `ci-pass`**. Everything
+else (matrix jobs, tests-pass, build) runs as supporting infrastructure
+but isn't required individually — adding/removing Python versions or
+restructuring the build never requires touching the ruleset.
 
 Merging the PR publishes the rebuilt artifacts to `main`. No bot push
 to `main`; works under a "require PR" ruleset without bypass.

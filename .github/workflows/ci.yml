@@ -143,3 +143,22 @@ jobs:
           git commit -m "ci: rebuild CV artifacts"
           git push origin HEAD:${{ github.event.pull_request.head.ref }}
         fi
+
+  # Single fan-in check — set this as the ONLY required status check in the
+  # branch ruleset. Succeeds when both tests-pass and build either succeeded
+  # or were legitimately skipped (build skips on push-to-main and fork PRs).
+  # Fails if either upstream job failed or was cancelled.
+  ci-pass:
+    needs: [tests-pass, build]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Verify all upstream jobs succeeded or were skipped
+        run: |
+          for status in "${{ needs.tests-pass.result }}" "${{ needs.build.result }}"; do
+            case "$status" in
+              success|skipped) ;;
+              *) echo "Upstream job result: $status"; exit 1 ;;
+            esac
+          done
+          echo "CI passed (tests-pass: ${{ needs.tests-pass.result }}, build: ${{ needs.build.result }})"
