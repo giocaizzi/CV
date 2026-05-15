@@ -43,3 +43,20 @@ jobs:
       if: matrix.python-version == '3.11'
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
+
+  # Single aggregated gate for the matrix above — set this as the required
+  # status check in branch rulesets. It passes only if every matrix job
+  # passed; it runs even when matrix jobs fail (if: always) so a failure
+  # surfaces here instead of getting stuck on a skipped check.
+  tests-pass:
+    needs: test
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Verify all matrix jobs succeeded
+        run: |
+          if [[ "${{ needs.test.result }}" != "success" ]]; then
+            echo "Test matrix result: ${{ needs.test.result }}"
+            exit 1
+          fi
+          echo "All test matrix jobs passed."
