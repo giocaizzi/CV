@@ -49,9 +49,8 @@ def main() -> None:
 
     # Paths for this template
     template_variant_dir = templates_dir / args.template
-    data_variant_dir = data_dir / args.template
-    data_file = data_variant_dir / f"{args.template}.json"
-    schema_file = template_variant_dir / "schema.json"
+    data_file = data_dir / "cv.json"
+    schema_file = templates_dir.parent / "schema.json"
 
     if not template_variant_dir.exists():
         print(f"✗ Template '{args.template}' not found at {template_variant_dir}")
@@ -62,7 +61,7 @@ def main() -> None:
         sys.exit(1)
 
     # Ensure data directory exists (for output)
-    data_variant_dir.mkdir(parents=True, exist_ok=True)
+    data_dir.mkdir(parents=True, exist_ok=True)
 
     # Load data
     print(f"Building template: {args.template}")
@@ -76,7 +75,7 @@ def main() -> None:
 
     # Build
     tex_file = build_variant(
-        template_variant_dir, data_variant_dir, args.template, cv_data
+        template_variant_dir, data_dir, args.template, cv_data
     )
 
     # Compile

@@ -25,7 +25,7 @@ class TestLoadValidateBuildFlow:
         """Complete flow: load schema, validate data, build .tex."""
         # Setup
         template_dir = get_package_templates_dir() / "resume"
-        schema = load_json(template_dir / "schema.json")
+        schema = load_json(get_package_templates_dir().parent / "schema.json")
         output_dir = tmp_path / "output"
         output_dir.mkdir()
 
@@ -45,9 +45,9 @@ class TestLoadValidateBuildFlow:
         assert "Tech Corp" in content
 
     def test_flow_with_real_data_file(self, tmp_path):
-        """Test with actual data/resume/resume.json if available."""
+        """Test with actual data/cv.json if available."""
         project_root = Path(__file__).parent.parent
-        data_file = project_root / "data" / "resume" / "resume.json"
+        data_file = project_root / "data" / "cv.json"
         template_dir = get_package_templates_dir() / "resume"
 
         if not data_file.exists():
@@ -55,7 +55,7 @@ class TestLoadValidateBuildFlow:
 
         # Load and validate
         cv_data = load_json(data_file)
-        schema = load_json(template_dir / "schema.json")
+        schema = load_json(get_package_templates_dir().parent / "schema.json")
         assert validate_cv(cv_data, schema) is True
 
         # Build

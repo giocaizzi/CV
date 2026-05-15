@@ -85,11 +85,10 @@ class TestMainCli:
         """Schema validation failure causes exit with code 1."""
         # Write invalid data
         invalid_data = '{"invalid": "data"}'
-        (tmp_data_dir / "test_template.json").write_text(invalid_data)
+        (tmp_data_dir / "cv.json").write_text(invalid_data)
 
         # Use parent dirs for templates and data
         templates_parent = tmp_template_dir.parent
-        data_parent = tmp_data_dir.parent
 
         monkeypatch.setattr(
             sys,
@@ -99,7 +98,7 @@ class TestMainCli:
                 "--template",
                 "test_template",
                 "--data",
-                str(data_parent),
+                str(tmp_data_dir),
             ],
         )
 
@@ -125,10 +124,9 @@ class TestMainCli:
             "personalInfo": {"name": "Test"},
             "experience": []
         }"""
-        (tmp_data_dir / "test_template.json").write_text(minimal_data)
+        (tmp_data_dir / "cv.json").write_text(minimal_data)
 
         templates_parent = tmp_template_dir.parent
-        data_parent = tmp_data_dir.parent
 
         monkeypatch.setattr(
             sys,
@@ -138,7 +136,7 @@ class TestMainCli:
                 "--template",
                 "test_template",
                 "--data",
-                str(data_parent),
+                str(tmp_data_dir),
                 "--skip-validation",
             ],
         )
@@ -165,12 +163,11 @@ class TestMainCli:
         """Successful build generates .tex file."""
         import json
 
-        (tmp_data_dir / "test_template.json").write_text(
+        (tmp_data_dir / "cv.json").write_text(
             json.dumps(sample_cv_data), encoding="utf-8"
         )
 
         templates_parent = tmp_template_dir.parent
-        data_parent = tmp_data_dir.parent
 
         monkeypatch.setattr(
             sys,
@@ -180,7 +177,7 @@ class TestMainCli:
                 "--template",
                 "test_template",
                 "--data",
-                str(data_parent),
+                str(tmp_data_dir),
                 "--skip-validation",
             ],
         )
@@ -207,12 +204,11 @@ class TestMainCli:
         """--compile flag triggers PDF compilation."""
         import json
 
-        (tmp_data_dir / "test_template.json").write_text(
+        (tmp_data_dir / "cv.json").write_text(
             json.dumps(sample_cv_data), encoding="utf-8"
         )
 
         templates_parent = tmp_template_dir.parent
-        data_parent = tmp_data_dir.parent
 
         monkeypatch.setattr(
             sys,
@@ -222,7 +218,7 @@ class TestMainCli:
                 "--template",
                 "test_template",
                 "--data",
-                str(data_parent),
+                str(tmp_data_dir),
                 "--skip-validation",
                 "--compile",
             ],
@@ -248,12 +244,11 @@ class TestMainCli:
         """PDF compilation failure causes exit with code 1."""
         import json
 
-        (tmp_data_dir / "test_template.json").write_text(
+        (tmp_data_dir / "cv.json").write_text(
             json.dumps(sample_cv_data), encoding="utf-8"
         )
 
         templates_parent = tmp_template_dir.parent
-        data_parent = tmp_data_dir.parent
 
         monkeypatch.setattr(
             sys,
@@ -263,7 +258,7 @@ class TestMainCli:
                 "--template",
                 "test_template",
                 "--data",
-                str(data_parent),
+                str(tmp_data_dir),
                 "--skip-validation",
                 "--compile",
             ],
@@ -278,18 +273,25 @@ class TestMainCli:
 
         assert exc_info.value.code == 1
 
-    def test_default_template_is_resume(self, monkeypatch, capsys):
+    def test_default_template_is_resume(self, monkeypatch, tmp_path, capsys):
         """Default template is 'resume'."""
-        # This will fail because data doesn't exist, but we can check
-        # the error message references 'resume'
+        # Create a templates dir with no 'resume' subdir so the error
+        # message reveals which template was attempted
+        templates_dir = tmp_path / "templates"
+        templates_dir.mkdir()
+
         monkeypatch.setattr(
             sys,
             "argv",
-            ["cv-build", "--data", "/nonexistent/path"],
+            ["cv-build", "--data", str(tmp_path / "data")],
         )
 
-        with pytest.raises(SystemExit):
-            main()
+        with patch(
+            "cv_builder.cli.get_package_templates_dir",
+            return_value=templates_dir,
+        ):
+            with pytest.raises(SystemExit):
+                main()
 
         captured = capsys.readouterr()
         assert "resume" in captured.out

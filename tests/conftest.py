@@ -85,8 +85,6 @@ def valid_schema() -> dict:
     schema_path = (
         Path(__file__).parent.parent
         / "cv_builder"
-        / "templates"
-        / "resume"
         / "schema.json"
     )
     with open(schema_path, "r", encoding="utf-8") as f:
@@ -115,7 +113,11 @@ def tmp_template_dir(tmp_path: Path) -> Path:
         "% Test style file\n", encoding="utf-8"
     )
 
-    # Create minimal schema
+    # Create minimal schema two levels above template dir (at tmp_path level),
+    # matching production layout where cv_builder/schema.json sits above
+    # cv_builder/templates/<name>/. In tests, get_package_templates_dir is
+    # mocked to return tmp_path/templates, so schema_file = templates_dir.parent
+    # / "schema.json" = tmp_path/schema.json.
     schema = {
         "$schema": "http://json-schema.org/draft-07/schema#",
         "type": "object",
@@ -126,7 +128,7 @@ def tmp_template_dir(tmp_path: Path) -> Path:
             "experience": {"type": "array"},
         },
     }
-    (template_dir / "schema.json").write_text(
+    (template_dir.parent.parent / "schema.json").write_text(
         json.dumps(schema, indent=2), encoding="utf-8"
     )
 
@@ -135,11 +137,15 @@ def tmp_template_dir(tmp_path: Path) -> Path:
 
 @pytest.fixture
 def tmp_data_dir(tmp_path: Path, sample_cv_data: dict) -> Path:
-    """Create a temporary data directory with sample data."""
-    data_dir = tmp_path / "data" / "test_template"
+    """Create a temporary data directory with sample data.
+
+    Data lives at tmp_path/data/cv.json (flat, template-agnostic).
+    Returns tmp_path/data so tests can reference data_dir / "cv.json".
+    """
+    data_dir = tmp_path / "data"
     data_dir.mkdir(parents=True)
 
-    (data_dir / "test_template.json").write_text(
+    (data_dir / "cv.json").write_text(
         json.dumps(sample_cv_data, indent=2), encoding="utf-8"
     )
 

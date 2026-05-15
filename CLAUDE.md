@@ -12,15 +12,16 @@ JSON-driven LaTeX CV with Jinja2 templating.
 ## Structure
 
 ```
-cv_builder/templates/<name>/   # Package templates
-├── schema.json                # JSON Schema for validation
-├── template.tex.j2            # Jinja2 LaTeX template
-└── <name>.sty                 # LaTeX styling
+cv_builder/
+├── schema.json                # JSON Schema for validation (single, top-level)
+└── templates/<name>/          # Package templates (per-template rendering assets)
+    ├── template.tex.j2        # Jinja2 LaTeX template
+    └── <name>.sty             # LaTeX styling
 
-data/<name>/                   # User data + generated output
-├── <name>.json                # CV data (single source of truth)
-├── <name>.tex                 # Generated output (tracked)
-└── <name>.pdf                 # Compiled PDF (tracked)
+data/
+├── cv.json                    # CV data (single source of truth, template-agnostic)
+├── <name>.tex                 # Generated output (named after template, tracked)
+└── <name>.pdf                 # Compiled PDF (named after template, tracked)
 ```
 
 ## Rules
