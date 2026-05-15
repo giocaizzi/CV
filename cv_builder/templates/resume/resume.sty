@@ -71,6 +71,11 @@
 \usepackage{multicol}
 \usepackage{setspace}
 
+% Reproducible PDF output: empty /ID trailer + honour SOURCE_DATE_EPOCH for
+% /CreationDate. With both set, the same .tex source produces a byte-identical
+% PDF, so CI rebuilds don't generate no-op "rebuild artifacts" commits.
+\pdftrailerid{}
+
 % ----------------------
 % DOCUMENT CONFIG
 % ----------------------

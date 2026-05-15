@@ -12,7 +12,9 @@ from cv_builder.core import (
     create_jinja_env,
     filter_by_resume,
     format_date_range,
-    get_responsibilities,
+    format_location,
+    format_month_year,
+    get_highlights,
     latex_escape,
     load_json,
     validate_cv,
@@ -83,7 +85,7 @@ class TestValidateCv:
 
     def test_missing_required_field_returns_false(self, valid_schema, capsys):
         """Missing required field fails validation."""
-        invalid_data = {"personalInfo": {"name": "John"}}
+        invalid_data = {"basics": {"name": "John"}}
         result = validate_cv(invalid_data, valid_schema)
         assert result is False
         captured = capsys.readouterr()
@@ -153,28 +155,41 @@ class TestCreateJinjaEnv:
         """date_range filter is registered and works."""
         env = create_jinja_env(tmp_template_dir)
         assert "date_range" in env.filters
-        item = {"startDate": "Jan 2020", "endDate": "Dec 2021"}
+        item = {"startDate": "2020-01", "endDate": "2021-12"}
         assert env.filters["date_range"](item) == "Jan 2020 -- Dec 2021"
 
     def test_date_range_filter_with_none_end(self, tmp_template_dir: Path):
         """date_range filter handles None endDate."""
         env = create_jinja_env(tmp_template_dir)
-        item = {"startDate": "Jan 2020", "endDate": None}
+        item = {"startDate": "2020-01", "endDate": None}
         assert env.filters["date_range"](item) == "Jan 2020"
 
     def test_resume_filter_registered(self, tmp_template_dir: Path):
         """resume_filter is registered and works."""
         env = create_jinja_env(tmp_template_dir)
         assert "resume_filter" in env.filters
-        items = [{"inResume": True}, {"inResume": False}]
+        items = [{"x-inResume": True}, {"x-inResume": False}]
         assert len(env.filters["resume_filter"](items)) == 1
 
-    def test_get_resp_filter_registered(self, tmp_template_dir: Path):
-        """get_resp filter is registered and works."""
+    def test_get_highlights_filter_registered(self, tmp_template_dir: Path):
+        """get_highlights filter is registered and works."""
         env = create_jinja_env(tmp_template_dir)
-        assert "get_resp" in env.filters
-        item = {"responsibilities": [{"value": "Task", "inResume": True}]}
-        assert env.filters["get_resp"](item) == ["Task"]
+        assert "get_highlights" in env.filters
+        item = {"highlights": [{"value": "Task", "x-inResume": True}]}
+        assert env.filters["get_highlights"](item) == ["Task"]
+
+    def test_month_year_filter_registered(self, tmp_template_dir: Path):
+        """month_year filter is registered and works."""
+        env = create_jinja_env(tmp_template_dir)
+        assert "month_year" in env.filters
+        assert env.filters["month_year"]("2024-05") == "May 2024"
+
+    def test_location_str_filter_registered(self, tmp_template_dir: Path):
+        """location_str filter is registered and works."""
+        env = create_jinja_env(tmp_template_dir)
+        assert "location_str" in env.filters
+        loc = {"city": "Milan", "countryCode": "IT"}
+        assert env.filters["location_str"](loc) == "Milan, Italy"
 
     def test_autoescape_disabled(self, tmp_template_dir: Path):
         """Autoescape is disabled for LaTeX output."""
@@ -219,7 +234,7 @@ class TestBuildVariant:
         assert "Software Engineer" in content
         assert "Tech Corp" in content
         assert "Write code" in content
-        # Filtered out responsibility should not appear
+        # Filtered out highlight should not appear
         assert "Review PRs" not in content
 
     def test_template_not_found_raises(self, tmp_path: Path, sample_cv_data):
@@ -395,32 +410,152 @@ class TestLatexEscapeRawLatex:
         assert result == r"\LaTeX"
 
 
+# =============================================================================
+# format_month_year tests
+# =============================================================================
+@pytest.mark.unit
+class TestFormatMonthYear:
+    """Tests for format_month_year function."""
+
+    def test_iso_month_year(self):
+        """ISO YYYY-MM format converts to Mon YYYY."""
+        assert format_month_year("2024-05") == "May 2024"
+
+    def test_iso_july(self):
+        assert format_month_year("2020-07") == "Jul 2020"
+
+    def test_iso_january(self):
+        assert format_month_year("2020-01") == "Jan 2020"
+
+    def test_iso_december(self):
+        assert format_month_year("2021-12") == "Dec 2021"
+
+    def test_year_only(self):
+        """Year-only string returns as-is."""
+        assert format_month_year("2023") == "2023"
+
+    def test_empty_string(self):
+        """Empty string returns empty string."""
+        assert format_month_year("") == ""
+
+    def test_none(self):
+        """None returns empty string."""
+        assert format_month_year(None) == ""
+
+    def test_no_periods_in_output(self):
+        """Output month abbreviations have no trailing periods."""
+        result = format_month_year("2021-02")
+        assert "." not in result
+        assert result == "Feb 2021"
+
+    def test_all_months(self):
+        """All 12 months map correctly."""
+        expected = [
+            ("2020-01", "Jan 2020"),
+            ("2020-02", "Feb 2020"),
+            ("2020-03", "Mar 2020"),
+            ("2020-04", "Apr 2020"),
+            ("2020-05", "May 2020"),
+            ("2020-06", "Jun 2020"),
+            ("2020-07", "Jul 2020"),
+            ("2020-08", "Aug 2020"),
+            ("2020-09", "Sep 2020"),
+            ("2020-10", "Oct 2020"),
+            ("2020-11", "Nov 2020"),
+            ("2020-12", "Dec 2020"),
+        ]
+        for iso, display in expected:
+            assert format_month_year(iso) == display
+
+    def test_invalid_month_returns_original(self):
+        """Invalid month index returns original string."""
+        assert format_month_year("2020-13") == "2020-13"
+
+    def test_whitespace_stripped(self):
+        """Leading/trailing whitespace is stripped."""
+        assert format_month_year("  2024-05  ") == "May 2024"
+
+    def test_whitespace_only(self):
+        """Whitespace-only input strips to empty and returns empty string."""
+        assert format_month_year("   ") == ""
+
+
+# =============================================================================
+# format_location tests
+# =============================================================================
+@pytest.mark.unit
+class TestFormatLocation:
+    """Tests for format_location function."""
+
+    def test_full_object(self):
+        loc = {"city": "Milan", "region": "Lombardy", "countryCode": "IT"}
+        assert format_location(loc) == "Milan, Lombardy, Italy"
+
+    def test_city_and_country(self):
+        assert format_location({"city": "Milan", "countryCode": "IT"}) == "Milan, Italy"
+
+    def test_city_only(self):
+        assert format_location({"city": "Milan"}) == "Milan"
+
+    def test_country_only(self):
+        assert format_location({"countryCode": "US"}) == "United States"
+
+    def test_empty_object(self):
+        assert format_location({}) == ""
+
+    def test_unknown_country_code_passes_through(self):
+        """Unknown ISO codes pass through unchanged (caller can extend COUNTRY_NAMES)."""
+        assert format_location({"city": "X", "countryCode": "ZZ"}) == "X, ZZ"
+
+    def test_none_returns_empty(self):
+        assert format_location(None) == ""
+
+    def test_plain_string_returned_as_is(self):
+        """Backward compatibility: a plain string is returned unchanged."""
+        assert format_location("Milan, Italy") == "Milan, Italy"
+
+    def test_unexpected_type_returns_empty(self):
+        """List or other non-supported type returns empty string."""
+        assert format_location([1, 2, 3]) == ""
+        assert format_location(42) == ""
+
+
+# =============================================================================
+# format_date_range tests
+# =============================================================================
 @pytest.mark.unit
 class TestFormatDateRange:
     """Tests for format_date_range function."""
 
     def test_with_end_date(self):
-        result = format_date_range("Jan 2020", "Dec 2021")
+        result = format_date_range("2020-01", "2021-12")
         assert result == "Jan 2020 -- Dec 2021"
 
     def test_with_none_end_date(self):
         """None end date returns just start (current/ongoing)."""
-        assert format_date_range("Jan 2020", None) == "Jan 2020"
+        assert format_date_range("2020-01", None) == "Jan 2020"
 
     def test_same_dates(self):
-        result = format_date_range("Jan 2020", "Jan 2020")
+        result = format_date_range("2020-01", "2020-01")
         assert result == "Jan 2020 -- Jan 2020"
 
+    def test_year_only_dates(self):
+        result = format_date_range("2023", "2024")
+        assert result == "2023 -- 2024"
 
+
+# =============================================================================
+# filter_by_resume tests
+# =============================================================================
 @pytest.mark.unit
 class TestFilterByResume:
     """Tests for filter_by_resume function."""
 
     def test_filters_out_false(self):
         items = [
-            {"name": "A", "inResume": True},
-            {"name": "B", "inResume": False},
-            {"name": "C", "inResume": True},
+            {"name": "A", "x-inResume": True},
+            {"name": "B", "x-inResume": False},
+            {"name": "C", "x-inResume": True},
         ]
         result = filter_by_resume(items)
         assert len(result) == 2
@@ -428,8 +563,8 @@ class TestFilterByResume:
         assert result[1]["name"] == "C"
 
     def test_defaults_to_true(self):
-        """Items without inResume field default to included."""
-        items = [{"name": "A"}, {"name": "B", "inResume": False}]
+        """Items without x-inResume field default to included."""
+        items = [{"name": "A"}, {"name": "B", "x-inResume": False}]
         result = filter_by_resume(items)
         assert len(result) == 1
         assert result[0]["name"] == "A"
@@ -438,33 +573,36 @@ class TestFilterByResume:
         assert filter_by_resume([]) == []
 
 
+# =============================================================================
+# get_highlights tests
+# =============================================================================
 @pytest.mark.unit
-class TestGetResponsibilities:
-    """Tests for get_responsibilities function."""
+class TestGetHighlights:
+    """Tests for get_highlights function."""
 
-    def test_filters_responsibilities(self):
+    def test_filters_highlights(self):
         item = {
-            "responsibilities": [
-                {"value": "Task A", "inResume": True},
-                {"value": "Task B", "inResume": False},
-                {"value": "Task C", "inResume": True},
+            "highlights": [
+                {"value": "Task A", "x-inResume": True},
+                {"value": "Task B", "x-inResume": False},
+                {"value": "Task C", "x-inResume": True},
             ]
         }
-        result = get_responsibilities(item)
+        result = get_highlights(item)
         assert result == ["Task A", "Task C"]
 
-    def test_empty_responsibilities(self):
-        assert get_responsibilities({}) == []
-        assert get_responsibilities({"responsibilities": []}) == []
+    def test_empty_highlights(self):
+        assert get_highlights({}) == []
+        assert get_highlights({"highlights": []}) == []
 
     def test_defaults_to_true(self):
         item = {
-            "responsibilities": [
+            "highlights": [
                 {"value": "Task A"},
-                {"value": "Task B", "inResume": False},
+                {"value": "Task B", "x-inResume": False},
             ]
         }
-        result = get_responsibilities(item)
+        result = get_highlights(item)
         assert result == ["Task A"]
 
 

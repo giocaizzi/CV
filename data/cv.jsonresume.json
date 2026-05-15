@@ -1,0 +1,246 @@
+{
+  "basics": {
+    "name": "Giorgio Caizzi",
+    "email": "giocaizzi@gmail.com",
+    "location": {
+      "city": "Milan",
+      "countryCode": "IT"
+    },
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "url": "https://linkedin.com/in/giorgio-caizzi/"
+      },
+      {
+        "network": "GitHub",
+        "url": "https://www.github.com/giocaizzi/"
+      },
+      {
+        "network": "Website",
+        "url": "https://giocaizzi.xyz/"
+      }
+    ]
+  },
+  "work": [
+    {
+      "position": "Product Senior Engineer - Generative AI",
+      "name": "Jakala S.p.A.",
+      "location": "Milan, Italy",
+      "startDate": "2024-05",
+      "summary": "Developement of end-to-end Generative AI solutions tailored to industry needs -from research and prototyping to deployment to the Cloud- with a focus on observability and cost-effectiveness.",
+      "highlights": [
+        "RAG and BI Agents, multimodal LLMs, Multi-agentic patterns and orchestration.",
+        "DevOps for GenAI and LLMOps: TDD for GenAI Agents, groundedness and guardrailing, deployment to production, CloudOps, monitoring and evaluation of Agents outputs and performance."
+      ]
+    },
+    {
+      "position": "Environmental Engineer",
+      "name": "AECOM URS Italia S.p.A.",
+      "location": "Milan, Italy",
+      "startDate": "2021-02",
+      "endDate": "2024-05",
+      "summary": "Technical consultancy on remediation procedures in industrial sites across Italy, in compliance with D.Lgs.152/06.",
+      "highlights": [
+        "Developing solutions for effective collection, processing, analysis and restitution of environmental spatial data.",
+        "Project management: budgeting, proposals, planning, and billing. Regular meetings with clients."
+      ]
+    },
+    {
+      "position": "External Collaborator",
+      "name": "Wiseair S.r.l.",
+      "location": "Milan, Italy & Lisbon, Portugal",
+      "startDate": "2020-03",
+      "endDate": "2020-12",
+      "summary": "Development of a GIS-based framework for spatial interpolation of PM2.5 concentration data, taking into account the contribution of urban features and their morphology in the dispersion of pollutants.",
+      "highlights": []
+    },
+    {
+      "position": "Event specialist - \"Citycrusher\" Team",
+      "name": "Red Bull Italia S.r.l.",
+      "location": "Milan, Italy",
+      "startDate": "2017-09",
+      "endDate": "2020-09",
+      "summary": "Managining brand-activation of Red Bull Citycrusher event-car in selected sport events in Italy.",
+      "highlights": []
+    },
+    {
+      "position": "Hero Team Promoter",
+      "name": "GoPro EMEA GmbH",
+      "location": "Munich, Germany",
+      "startDate": "2014-05",
+      "endDate": "2019-09",
+      "summary": "Promotion of cameras and brand-activation in selected events in Europe.",
+      "highlights": []
+    }
+  ],
+  "education": [
+    {
+      "area": "BSc & MSc in Environmental and Land Planning Engineering",
+      "institution": "Politecnico di Milano",
+      "location": "Milan, Italy",
+      "startDate": "2014-09",
+      "endDate": "2020-12"
+    },
+    {
+      "area": "International Baccalaureate (IB Diploma)",
+      "institution": "The British School of Brussels",
+      "location": "Brussels, Belgium",
+      "startDate": "2012-09",
+      "endDate": "2014-05"
+    }
+  ],
+  "certificates": [
+    {
+      "name": "Italian National Assotiation of Engineers",
+      "date": "2021"
+    }
+  ],
+  "projects": [
+    {
+      "name": "py3dinterpolations",
+      "url": "https://github.com/giocaizzi/py3dinterpolations",
+      "description": "quick 3D spatial interpolations"
+    },
+    {
+      "name": "mplstrater",
+      "url": "https://github.com/giocaizzi/mplstrater",
+      "description": "plot stratigraphic logs with matplotlib"
+    },
+    {
+      "name": "smart-spotify",
+      "url": "https://github.com/giocaizzi/smart-spotify",
+      "description": "create smart playlists with Spotify"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Programming",
+      "keywords": [
+        "Python",
+        "JavaScript & TypeScript",
+        "shell scripting"
+      ]
+    },
+    {
+      "name": "Cloud",
+      "keywords": [
+        "Infrastructures on AWS",
+        "GCP & Azure",
+        "Cloudflare"
+      ]
+    },
+    {
+      "name": "Deployments",
+      "keywords": [
+        "Docker & Docker Swarm",
+        "Serverless",
+        "orchestration"
+      ]
+    },
+    {
+      "name": "Data",
+      "keywords": [
+        "SQL & noSQL",
+        "Redis",
+        "graphs"
+      ]
+    },
+    {
+      "name": "Development",
+      "keywords": [
+        "CI/CD pipelines",
+        "git",
+        "testing",
+        "documentation"
+      ]
+    },
+    {
+      "name": "GenAI",
+      "keywords": [
+        "Langchain",
+        "OpenAI API",
+        "HuggingFace",
+        "langgraph",
+        "LlamaIndex",
+        "MS Copilot Studio"
+      ]
+    },
+    {
+      "name": "API",
+      "keywords": [
+        "REST & GraphQL",
+        "OpenAPI specifications"
+      ]
+    },
+    {
+      "name": "Observability",
+      "keywords": [
+        "Opentelemetry - Grafana stack: Prometheus",
+        "Loki",
+        "Tempo",
+        "Alloy"
+      ]
+    },
+    {
+      "name": "Web frameworks",
+      "keywords": [
+        "Flask",
+        "FastAPI",
+        "Django",
+        "Express",
+        "Nest.js",
+        "Next.js"
+      ]
+    },
+    {
+      "name": "Data Science",
+      "keywords": [
+        "pytorch",
+        "pandas",
+        "numpy",
+        "sklearn"
+      ]
+    },
+    {
+      "name": "GIS",
+      "keywords": [
+        "ArcGIS",
+        "QGis",
+        "PostGIS",
+        "GDAL",
+        "geopandas",
+        "shapely",
+        "rasterio"
+      ]
+    },
+    {
+      "name": "Writing",
+      "keywords": [
+        "LaTeX",
+        "Markdown & reStructuredText"
+      ]
+    },
+    {
+      "name": "Web",
+      "keywords": [
+        "HTML & CSS",
+        "TailwindCSS"
+      ]
+    },
+    {
+      "name": "Languages",
+      "keywords": [
+        "Fluency in Italian (mothertongue) and English. French at professional level."
+      ]
+    },
+    {
+      "name": "Interests",
+      "keywords": [
+        "skiing",
+        "surfing",
+        "road-cycling and outdoors. Cartography",
+        "infographics and mapping. Tech and AI."
+      ]
+    }
+  ]
+}

@@ -7,6 +7,37 @@ from pathlib import Path
 import jsonschema
 from jinja2 import Environment, FileSystemLoader
 
+MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+               "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+# ISO 3166-1 alpha-2 → display name. Extend as needed; falls back to the code.
+COUNTRY_NAMES = {
+    "IT": "Italy",
+    "US": "United States",
+    "GB": "United Kingdom",
+    "DE": "Germany",
+    "FR": "France",
+    "ES": "Spain",
+    "BE": "Belgium",
+    "NL": "Netherlands",
+    "PT": "Portugal",
+    "CH": "Switzerland",
+    "AT": "Austria",
+    "IE": "Ireland",
+    "DK": "Denmark",
+    "SE": "Sweden",
+    "NO": "Norway",
+    "FI": "Finland",
+    "PL": "Poland",
+    "CZ": "Czechia",
+    "GR": "Greece",
+    "JP": "Japan",
+    "CN": "China",
+    "CA": "Canada",
+    "AU": "Australia",
+    "BR": "Brazil",
+}
+
 
 def load_json(path: Path) -> dict:
     """Load and parse JSON file."""
@@ -79,26 +110,82 @@ def latex_escape(text: str) -> str:
     return text
 
 
+def format_month_year(iso_date: str) -> str:
+    """Convert ISO 8601 date string to display format.
+
+    "2024-05" -> "May 2024"
+    "2020-07" -> "Jul 2020"
+    "2023"    -> "2023"  (year-only)
+    ""        -> ""
+    None      -> ""
+    """
+    if not iso_date:
+        return ""
+    iso_date = str(iso_date).strip()
+    if not iso_date:
+        return ""
+    parts = iso_date.split("-")
+    if len(parts) == 1:
+        # Year-only
+        return parts[0]
+    year = parts[0]
+    try:
+        month_idx = int(parts[1]) - 1
+        month = MONTH_NAMES[month_idx]
+    except (ValueError, IndexError):
+        return iso_date
+    return f"{month} {year}"
+
+
+def format_location(loc) -> str:
+    """Format a JSON Resume location object as a display string.
+
+    Accepts the canonical object shape {city, region, countryCode, ...} and
+    returns "City, Region, Country". Missing fields are skipped. Unknown
+    country codes pass through unchanged.
+
+    Also accepts a plain string for backward compatibility, returning it
+    unchanged.
+    """
+    if loc is None:
+        return ""
+    if isinstance(loc, str):
+        return loc
+    if not isinstance(loc, dict):
+        return ""
+    parts = []
+    if loc.get("city"):
+        parts.append(loc["city"])
+    if loc.get("region"):
+        parts.append(loc["region"])
+    code = loc.get("countryCode")
+    if code:
+        parts.append(COUNTRY_NAMES.get(code, code))
+    return ", ".join(parts)
+
+
 def format_date_range(start: str, end: str | None) -> str:
     """Format date range for display. None end means 'Present'."""
+    start_fmt = format_month_year(start)
     if end is None:
-        return start
-    return f"{start} -- {end}"
+        return start_fmt
+    end_fmt = format_month_year(end)
+    return f"{start_fmt} -- {end_fmt}"
 
 
 def filter_by_resume(items: list) -> list:
-    """Filter items by inResume flag."""
-    return [item for item in items if item.get("inResume", True)]
+    """Filter items by x-inResume flag."""
+    return [item for item in items if item.get("x-inResume", True)]
 
 
-def get_responsibilities(item: dict) -> list:
-    """Get responsibilities filtered by inResume flag.
+def get_highlights(item: dict) -> list:
+    """Get highlights filtered by x-inResume flag.
 
-    Each responsibility is an object with 'value' and 'inResume' fields.
-    Returns list of responsibility strings where inResume=true.
+    Each highlight is an object with 'value' and 'x-inResume' fields.
+    Returns list of highlight strings where x-inResume=true.
     """
-    responsibilities = item.get("responsibilities", [])
-    return [r["value"] for r in responsibilities if r.get("inResume", True)]
+    highlights = item.get("highlights", [])
+    return [h["value"] for h in highlights if h.get("x-inResume", True)]
 
 
 def create_jinja_env(variant_dir: Path) -> Environment:
@@ -122,7 +209,9 @@ def create_jinja_env(variant_dir: Path) -> Environment:
         item.get("startDate", ""), item.get("endDate")
     )
     env.filters["resume_filter"] = filter_by_resume
-    env.filters["get_resp"] = get_responsibilities
+    env.filters["get_highlights"] = get_highlights
+    env.filters["month_year"] = format_month_year
+    env.filters["location_str"] = format_location
 
     return env
 
@@ -143,6 +232,18 @@ def build_variant(
 
     print(f"✓ Generated {output_file}")
     return output_file
+
+
+def build_jsonresume(cv_data: dict, output_path: Path) -> Path:
+    """Emit vanilla JSON Resume artifact alongside the .tex output."""
+    from .jsonresume import to_jsonresume
+    vanilla = to_jsonresume(cv_data)
+    output_path.write_text(
+        json.dumps(vanilla, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    print(f"✓ Generated {output_path}")
+    return output_path
 
 
 def compile_pdf(tex_file: Path, template_dir: Path) -> bool:

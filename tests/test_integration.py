@@ -4,11 +4,13 @@ These tests use real file I/O and the actual package templates.
 LaTeX compilation is skipped (requires TeX installation).
 """
 
+import json
+import sys
 from pathlib import Path
 
 import pytest
 
-from cv_builder.cli import get_package_templates_dir
+from cv_builder.cli import get_package_templates_dir, main
 from cv_builder.core import (
     build_variant,
     create_jinja_env,
@@ -25,7 +27,7 @@ class TestLoadValidateBuildFlow:
         """Complete flow: load schema, validate data, build .tex."""
         # Setup
         template_dir = get_package_templates_dir() / "resume"
-        schema = load_json(template_dir / "schema.json")
+        schema = load_json(get_package_templates_dir().parent / "schema.json")
         output_dir = tmp_path / "output"
         output_dir.mkdir()
 
@@ -45,9 +47,9 @@ class TestLoadValidateBuildFlow:
         assert "Tech Corp" in content
 
     def test_flow_with_real_data_file(self, tmp_path):
-        """Test with actual data/resume/resume.json if available."""
+        """Test with actual data/cv.json if available."""
         project_root = Path(__file__).parent.parent
-        data_file = project_root / "data" / "resume" / "resume.json"
+        data_file = project_root / "data" / "cv.json"
         template_dir = get_package_templates_dir() / "resume"
 
         if not data_file.exists():
@@ -55,7 +57,7 @@ class TestLoadValidateBuildFlow:
 
         # Load and validate
         cv_data = load_json(data_file)
-        schema = load_json(template_dir / "schema.json")
+        schema = load_json(get_package_templates_dir().parent / "schema.json")
         assert validate_cv(cv_data, schema) is True
 
         # Build
@@ -91,37 +93,41 @@ class TestJinjaEnvironmentIntegration:
 
         # Data with special characters in location field (which uses | latex)
         cv_data = {
-            "personalInfo": {
+            "basics": {
                 "name": "John Doe",
                 "email": "test@example.com",
-                "location": "City & State",
-                "linkedin": {
-                    "url": "https://linkedin.com/in/test",
-                    "inResume": True,
-                },
-                "github": {
-                    "url": "https://github.com/test",
-                    "inResume": True,
-                },
+                "location": {"city": "City", "region": "State"},
+                "profiles": [
+                    {
+                        "network": "LinkedIn",
+                        "url": "https://linkedin.com/in/test",
+                        "x-inResume": True,
+                    },
+                    {
+                        "network": "GitHub",
+                        "url": "https://github.com/test",
+                        "x-inResume": True,
+                    },
+                ],
             },
-            "experience": [
+            "work": [
                 {
-                    "title": "Engineer",
-                    "company": "Tech Co",
+                    "position": "Engineer",
+                    "name": "Tech Co",
                     "location": "New York & LA",  # location uses | latex
-                    "startDate": "Jan 2020",
+                    "startDate": "2020-01",
                     "endDate": None,
-                    "description": "Work",
-                    "responsibilities": [],
-                    "inResume": True,
+                    "summary": "Work",
+                    "highlights": [],
+                    "x-inResume": True,
                 }
             ],
             "education": [],
-            "licenses": [],
+            "certificates": [],
             "technicalSkills": {},
             "projects": [],
             "personalSkills": {},
-            "footer": {"value": "", "inResume": False},
+            "meta": {"footer": {"value": "", "x-inResume": False}},
         }
 
         output = template.render(cv=cv_data)
@@ -136,31 +142,35 @@ class TestJinjaEnvironmentIntegration:
         template = env.get_template("template.tex.j2")
 
         cv_data = {
-            "personalInfo": {
+            "basics": {
                 "name": "John Doe",
                 "email": "test@example.com",
-                "location": "City",
-                "linkedin": {
-                    "url": "https://linkedin.com/in/test",
-                    "inResume": True,
-                },
-                "github": {
-                    "url": "https://github.com/test",
-                    "inResume": True,
-                },
+                "location": {"city": "City"},
+                "profiles": [
+                    {
+                        "network": "LinkedIn",
+                        "url": "https://linkedin.com/in/test",
+                        "x-inResume": True,
+                    },
+                    {
+                        "network": "GitHub",
+                        "url": "https://github.com/test",
+                        "x-inResume": True,
+                    },
+                ],
             },
-            "experience": [],
+            "work": [],
             "education": [],
-            "licenses": [],
+            "certificates": [],
             "technicalSkills": {
                 "Languages": {
                     "value": r"Python /latex{\&} SQL",
-                    "inResume": True,
+                    "x-inResume": True,
                 }
             },
             "projects": [],
             "personalSkills": {},
-            "footer": {"value": "", "inResume": False},
+            "meta": {"footer": {"value": "", "x-inResume": False}},
         }
 
         output = template.render(cv=cv_data)
@@ -182,26 +192,19 @@ class TestSchemaValidation:
     def test_schema_rejects_extra_properties(self, valid_schema):
         """Schema rejects data with extra properties."""
         invalid_data = {
-            "personalInfo": {
+            "basics": {
                 "name": "John",
                 "email": "john@example.com",
-                "location": "NYC",
-                "linkedin": {
-                    "url": "https://linkedin.com/in/john",
-                    "inResume": True,
-                },
-                "github": {
-                    "url": "https://github.com/john",
-                    "inResume": True,
-                },
+                "location": {"city": "NYC"},
+                "profiles": [],
                 "extraField": "not allowed",  # Should fail
             },
-            "experience": [],
+            "work": [],
             "education": [],
-            "licenses": [],
-            "technicalSkills": [],
+            "certificates": [],
+            "technicalSkills": {},
             "projects": [],
-            "personalSkills": [],
+            "personalSkills": {},
         }
 
         assert validate_cv(invalid_data, valid_schema) is False
@@ -209,20 +212,13 @@ class TestSchemaValidation:
     def test_schema_requires_all_sections(self, valid_schema):
         """Schema requires all top-level sections."""
         incomplete_data = {
-            "personalInfo": {
+            "basics": {
                 "name": "John",
                 "email": "john@example.com",
-                "location": "NYC",
-                "linkedin": {
-                    "url": "https://linkedin.com/in/john",
-                    "inResume": True,
-                },
-                "github": {
-                    "url": "https://github.com/john",
-                    "inResume": True,
-                },
+                "location": {"city": "NYC"},
+                "profiles": [],
             },
-            # Missing: experience, education, licenses, etc.
+            # Missing: work, education, certificates, etc.
         }
 
         assert validate_cv(incomplete_data, valid_schema) is False
@@ -251,7 +247,7 @@ class TestOutputFileGeneration:
     def test_output_encoding_is_utf8(self, sample_cv_data, tmp_path):
         """Output file uses UTF-8 encoding."""
         # Add UTF-8 characters to data
-        sample_cv_data["personalInfo"]["name"] = "José García"
+        sample_cv_data["basics"]["name"] = "José García"
 
         template_dir = get_package_templates_dir() / "resume"
         output_dir = tmp_path / "output"
@@ -264,3 +260,69 @@ class TestOutputFileGeneration:
         # Should read without encoding errors
         content = tex_file.read_text(encoding="utf-8")
         assert "José García" in content
+
+
+@pytest.mark.integration
+class TestJsonResumeEmitter:
+    """Integration test for the JSON Resume emitter via cv-build CLI."""
+
+    def test_cv_build_emits_jsonresume_artifact(self, tmp_data_dir, monkeypatch):
+        """cv-build writes cv.jsonresume.json with valid, x-free content."""
+        # Point CLI at the tmp data directory (has sample cv.json)
+        monkeypatch.setattr(
+            sys, "argv",
+            ["cv-build", "--data", str(tmp_data_dir), "--skip-validation"],
+        )
+        main()
+
+        artifact = tmp_data_dir / "cv.jsonresume.json"
+
+        # File must exist
+        assert artifact.exists(), "cv.jsonresume.json was not created"
+
+        # Must be valid JSON
+        text = artifact.read_text(encoding="utf-8")
+        data = json.loads(text)
+
+        # Must have expected top-level keys
+        for key in ("basics", "work", "education", "skills", "projects"):
+            assert key in data, f"Missing top-level key: {key!r}"
+
+        # No x-* keys anywhere (recursive)
+        def _has_x_key(obj) -> bool:
+            if isinstance(obj, dict):
+                for k, v in obj.items():
+                    if k.startswith("x-"):
+                        return True
+                    if _has_x_key(v):
+                        return True
+            elif isinstance(obj, list):
+                for item in obj:
+                    if _has_x_key(item):
+                        return True
+            return False
+
+        assert not _has_x_key(data), "Output contains x-* keys"
+
+        # work[0].highlights must be a list of strings (not objects)
+        if data["work"]:
+            highlights = data["work"][0]["highlights"]
+            assert isinstance(highlights, list)
+            for h in highlights:
+                assert isinstance(h, str), f"Highlight is not a string: {h!r}"
+
+    def test_no_emit_flag_skips_artifact(self, tmp_data_dir, monkeypatch):
+        """--no-emit-jsonresume suppresses cv.jsonresume.json creation."""
+        monkeypatch.setattr(
+            sys, "argv",
+            [
+                "cv-build",
+                "--data", str(tmp_data_dir),
+                "--skip-validation",
+                "--no-emit-jsonresume",
+            ],
+        )
+        main()
+
+        artifact = tmp_data_dir / "cv.jsonresume.json"
+        assert not artifact.exists(), "cv.jsonresume.json should not have been created"
