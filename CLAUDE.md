@@ -93,13 +93,41 @@ A single `ci.yml` workflow runs on every PR against `main`:
 
 1. `test` (matrix: Python 3.10–3.13) — runs unit + integration tests.
 2. `tests-pass` — aggregator that succeeds only if all matrix jobs passed.
-   This is the single status check to require in branch rulesets.
-3. `build` — depends on `tests-pass`, so it only runs after tests are green.
-   Regenerates `.tex` / `.pdf` / `cv.jsonresume.json` and commits them
-   back to the PR head branch, so the rendered PDF is part of review.
+3. `build` — depends on `tests-pass`. Regenerates `.tex` / `.pdf` /
+   `cv.jsonresume.json` and commits them back to the PR head branch, so
+   the rendered PDF is part of review.
+
+Required status checks for branch rulesets: `tests-pass` AND `build`.
 
 Merging the PR publishes the rebuilt artifacts to `main`. No bot push
 to `main`; works under a "require PR" ruleset without bypass.
+
+### Reproducible PDF builds
+
+The build job sets `SOURCE_DATE_EPOCH` (derived from the last commit
+that touched `data/cv.json`) and `resume.sty` declares `\pdftrailerid{}`.
+Together these make `pdflatex` produce a byte-identical PDF for an
+unchanged source — so CI doesn't generate no-op "rebuild artifacts"
+commits every run.
+
+### PAT requirement for the auto-commit flow
+
+For the `build` job's commit-back-to-PR to trigger CI on the new HEAD
+(needed so the `build` required check refreshes after the auto-commit),
+add a fine-grained Personal Access Token as `secrets.CV_PAT`:
+
+1. GitHub → Settings → Developer settings → Personal access tokens →
+   Fine-grained tokens → Generate new token
+2. Repository access: only this repo. Permissions: `Contents: Read and
+   write`. No other scopes.
+3. Repo → Settings → Secrets and variables → Actions → New repository
+   secret → name `CV_PAT`, value = token
+
+Without the PAT the workflow falls back to `GITHUB_TOKEN`, which still
+commits but its commits do NOT trigger workflows (GitHub safeguard
+against loops). That makes the PR unmergeable when `build` is a
+required check, because the bot's commit leaves the new HEAD without
+a `build` status. The PAT is what closes that gap.
 
 ## JSON Resume compatibility
 

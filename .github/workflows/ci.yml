@@ -85,7 +85,12 @@ jobs:
       uses: actions/checkout@v4
       with:
         ref: ${{ github.event.pull_request.head.ref }}
-        token: ${{ secrets.GITHUB_TOKEN }}
+        # Prefer a fine-grained PAT (secrets.CV_PAT) so the bot's push back
+        # to the PR triggers CI on the new HEAD — required so the `build`
+        # status check refreshes after the auto-commit. Falls back to
+        # GITHUB_TOKEN if the secret isn't configured.
+        token: ${{ secrets.CV_PAT || secrets.GITHUB_TOKEN }}
+        fetch-depth: 0  # need history for SOURCE_DATE_EPOCH lookup
 
     - name: Setup Python
       uses: actions/setup-python@v5
@@ -108,8 +113,19 @@ jobs:
           cp "$sty" data/
         done
 
+    - name: Compute SOURCE_DATE_EPOCH for reproducible PDF
+      id: epoch
+      run: |
+        # Use the last commit that touched cv.json so the timestamp embedded
+        # in the PDF only changes when source data changes. Fall back to HEAD
+        # time if cv.json has no history (e.g. brand-new repo).
+        epoch=$(git log -1 --pretty=%ct -- data/cv.json 2>/dev/null)
+        echo "value=${epoch:-$(git log -1 --pretty=%ct)}" >> "$GITHUB_OUTPUT"
+
     - name: Compile LaTeX
       uses: xu-cheng/latex-action@v4
+      env:
+        SOURCE_DATE_EPOCH: ${{ steps.epoch.outputs.value }}
       with:
         root_file: data/*.tex
         work_in_root_file_dir: true
