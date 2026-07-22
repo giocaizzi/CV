@@ -82,7 +82,7 @@ def latex_escape(text: str) -> str:
 def format_date_range(start: str, end: str | None) -> str:
     """Format date range for display. None end means 'Present'."""
     if end is None:
-        return start
+        return f"{start} -- Present"
     return f"{start} -- {end}"
 
 
