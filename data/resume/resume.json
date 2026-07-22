@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/giocaizzi/CV/main/cv_builder/templates/resume/schema.json",
   "skillsColumns": 1,
   "summary": {
-    "value": "Engineer who builds production RAG and agent systems, and the backends and infrastructure that run them. Self-taught into code at AECOM, now shipping GenAI for banks, retail and the public sector.",
+    "value": "Engineer who builds production RAG and agent systems, and the backends and infrastructure that run them. Self-taught into code as an environmental engineer, now shipping GenAI for banks, retail and the public sector.",
     "inResume": true
   },
   "personalInfo": {
