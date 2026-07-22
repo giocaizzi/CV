@@ -150,7 +150,7 @@
       "inResume": true
     },
     "Backend & Systems": {
-      "value": "Python & TypeScript, FastAPI, REST & GraphQL, event-driven pipelines & queues, OpenTelemetry distributed tracing, Docker, CI/CD, git",
+      "value": "Python & TypeScript, FastAPI, REST & GraphQL, event-driven pipelines & queues, OpenTelemetry distributed tracing, Docker, CI/CD",
       "inResume": true
     },
     "Data": {
