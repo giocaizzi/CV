@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/giocaizzi/CV/main/cv_builder/templates/resume/schema.json",
   "skillsColumns": 1,
   "summary": {
-    "value": "Engineer who owns systems end to end — event-driven backends, observability and IaC, with AI on top. Self-taught into code at AECOM, now a hands-on tech lead shipping production systems for banks, media and retail.",
+    "value": "Engineer who builds and owns production AI systems end to end — the retrieval, agents, event-driven backends, CI/CD, observability and IaC around them. Self-taught into code at AECOM, promoted from consultant to tech lead in two years, now shipping GenAI for banks, media and retail.",
     "inResume": true
   },
   "personalInfo": {

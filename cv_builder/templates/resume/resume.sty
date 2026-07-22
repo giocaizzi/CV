@@ -124,7 +124,7 @@
 % tighten vertical space around section titles (left, before, after).
 % Small explicit gaps, paired with a small negative at the end of
 % sectionElementsList — predictable spacing, no title/content overlap.
-\titlespacing*{\section}{0pt}{2.3em}{0.9em}
+\titlespacing*{\section}{0pt}{2.0em}{0.8em}
 
 
 % -------------------------
@@ -335,12 +335,13 @@
 % -------------------------
 % 1 argument: profile/summary text shown under the header
 \newcommand{\resumeSummary}[1]{
-  \vspace{34pt}
+  % small gap from the header/links row above
+  \vspace{24pt}
   \par\noindent
   {\small #1}
-  % negative trailing to offset the following section's 2.5em "before"
-  % space, so the gap below the summary matches the gap above it.
-  \vspace{-2.1em}
+  % trim the gap before the first section (partially offsets the section's
+  % "before" space, leaving a small gap under the summary).
+  \vspace{-1.5em}
 }
 
 % -------------------------
