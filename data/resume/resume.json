@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/giocaizzi/CV/main/cv_builder/templates/resume/schema.json",
   "skillsColumns": 1,
   "summary": {
-    "value": "Engineer who builds and owns production AI systems end to end — the retrieval, agents, event-driven backends, CI/CD, observability and IaC around them. Self-taught into code at AECOM, promoted from consultant to tech lead in two years, now shipping GenAI for banks, media and retail.",
+    "value": "Engineer who builds production RAG and agent systems, and the backends and infrastructure that run them. Self-taught into code at AECOM, now shipping GenAI for banks, retail and the public sector.",
     "inResume": true
   },
   "personalInfo": {
@@ -33,15 +33,15 @@
       "longDescription": "",
       "responsibilities": [
         {
-          "value": "Built a production RAG over 600,000 pages of internal banking regulation (PDF, Word, Excel) as lead engineer on a year-long embedded Banca Generali engagement — structure-aware chunking, hierarchical retrieval, version-aware metadata and an event-driven sync pipeline into the bank's platforms, quality-gated by a golden evaluation set. In production, rolling out across 1,600 employees.",
+          "value": "As lead engineer on a year-long Banca Generali engagement, built a production RAG over 600,000 pages of internal banking regulation (PDF, Word, Excel): structure-aware chunking, hierarchical retrieval and an event-driven sync pipeline into the bank's platforms, quality-gated by a golden evaluation set. In production, rolling out across 1,600 employees.",
           "inResume": true
         },
         {
-          "value": "Built a governed tool layer that lets AI agents run SQL and geospatial operations — a GraphQL wrapper with RBAC constraining each agent call to the user's role. Non-technical users chat with their data beside a live map; productized for clients including Regione Lombardia and NielsenIQ.",
+          "value": "Built a GraphQL wrapper over a SQL database with role-based access control, letting AI agents run SQL and geospatial queries scoped to each user's role. Non-technical users chat with their data beside a live map; productized for clients including Regione Lombardia and NielsenIQ.",
           "inResume": true
         },
         {
-          "value": "Led the engineering team that built an AI pipeline generating on-model product photography for Benetton (ComfyUI, Flux, LoRAs on Azure GPUs) at up to 90 SKUs/day with hybrid human-and-AI QA — replacing studio photoshoots for most of the brand's ecommerce imagery by autumn 2025.",
+          "value": "Led the engineering team that built an AI pipeline generating on-model product photography for Benetton (ComfyUI with Flux and off-the-shelf LoRAs on Azure GPUs) at up to 90 SKUs/day with a human in the loop, replacing studio photoshoots for most of the brand's ecommerce imagery by autumn 2025.",
           "inResume": true
         },
         {
@@ -73,7 +73,7 @@
       "longDescription": "",
       "responsibilities": [
         {
-          "value": "Built Python pipelines (geopandas, GDAL, rasterio, PostGIS) that turned days of manual GIS work into hours — open-sourced on GitHub as /latex{\\href{https://github.com/giocaizzi/py3dinterpolations}{\\underline{py3dinterpolations}}}.",
+          "value": "Built Python pipelines (geopandas, GDAL, rasterio, PostGIS) that turned days of manual GIS work into hours, open-sourced on GitHub as /latex{\\href{https://github.com/giocaizzi/py3dinterpolations}{\\underline{py3dinterpolations}}}.",
           "inResume": true
         },
         {
@@ -100,7 +100,7 @@
       "location": "Italy & Europe",
       "startDate": "Nov. 2013",
       "endDate": "Feb. 2021",
-      "description": "Seven years of live brand-activation at major sporting events across Europe, alongside my studies — public speaking and running games/giveaways for crowds, trilingually.",
+      "description": "Seven years of live brand-activation for Red Bull and GoPro at major European sporting events, alongside my studies: trilingual public speaking and running games for crowds.",
       "longDescription": "",
       "responsibilities": [],
       "inResume": true
@@ -128,7 +128,7 @@
       "inResume": true
     },
     {
-      "degree": "International Baccalaureate Diploma",
+      "degree": "International Baccalaureate Diploma (36/45)",
       "institution": "The British School of Brussels",
       "location": "Brussels, Belgium",
       "startDate": "Sep. 2012",
@@ -145,10 +145,6 @@
     }
   ],
   "technicalSkills": {
-    "GenAI & LLMOps": {
-      "value": "RAG & retrieval engineering, LLMs & multimodal, agentic orchestration & MCP, evaluation & guardrailing, AI observability, OpenAI, Anthropic & Azure OpenAI",
-      "inResume": true
-    },
     "Backend & Systems": {
       "value": "Python & TypeScript, FastAPI, REST & GraphQL, event-driven pipelines & queues, OpenTelemetry distributed tracing, Docker, CI/CD",
       "inResume": true
@@ -161,9 +157,13 @@
       "value": "Azure, GCP, Terraform (IaC), networking, serverless",
       "inResume": true
     },
+    "GenAI": {
+      "value": "RAG & retrieval, multimodal, agents & MCP, evaluation-driven development",
+      "inResume": true
+    },
     "Geospatial": {
       "value": "PostGIS, GDAL, geopandas, shapely, rasterio, ArcGIS & QGIS",
-      "inResume": true
+      "inResume": false
     }
   },
   "projects": [
