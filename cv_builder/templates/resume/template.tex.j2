@@ -28,15 +28,20 @@
   {<< info_items | join(" | ") >>}
   {<< social_links | join(" ") >>\\}
 
+%-----------SUMMARY-----------
+<% if cv.summary and cv.summary.inResume %>
+\resumeSummary{<< cv.summary.value | latex >>}
+<% endif %>
+
 %-----------EXPERIENCE-----------
 \section{Experience}
 \begin{sectionElementsList}
 <% for exp in cv.experience if exp.inResume %>
   \experienceElement
-  {<< exp.title >>}{<< exp | date_range >>}
-  {<< exp.company >>}{<< exp.location | latex >>}
-  {<< exp.description >>}
-  {<% set responsibilities = exp | get_resp %><% if responsibilities %><% for resp in responsibilities %>{<< resp >>}<% if not loop.last %>,<% endif %><% endfor %><% endif %>}
+  {<< exp.title | latex >>}{<< exp | date_range >>}
+  {<< exp.company | latex >>}{<< exp.location | latex >>}
+  {<< exp.description | latex >>}
+  {<% set responsibilities = exp | get_resp %><% if responsibilities %><% for resp in responsibilities %>{<< resp | latex >>}<% if not loop.last %>,<% endif %><% endfor %><% endif %>}
 <% endfor %>
 \end{sectionElementsList}
 
@@ -48,8 +53,8 @@
   \educationElementWithDetails
     {<< edu.degree | latex >>}{<< edu.location >>}
     {<< edu.institution >>}{<< edu.startDate >> -- << edu.endDate >>}
-    {<% if edu.details.msc %>\degreeDetail{MSc}{<< edu.details.msc.courses | latex >>}{<< edu.details.msc.thesis >>}<% endif %>}
-    {<% if edu.details.bsc %>\degreeDetail{BSc}{<< edu.details.bsc.courses | latex >>}{<< edu.details.bsc.thesis >>}<% endif %>}
+    {<% if edu.details.msc %>\degreeDetail{<% if edu.details.msc.label %><< edu.details.msc.label >><% else %>MSc<% endif %>}{<< edu.details.msc.courses | latex >>}{<< edu.details.msc.thesis >>}<% endif %>}
+    {<% if edu.details.bsc %>\degreeDetail{<% if edu.details.bsc.label %><< edu.details.bsc.label >><% else %>BSc<% endif %>}{<< edu.details.bsc.courses | latex >>}{<< edu.details.bsc.thesis >>}<% endif %>}
 <% else %>
   \experienceElement
     {<< edu.institution >>}{<< edu.location >>}
@@ -60,21 +65,24 @@
 \end{sectionElementsList}
 
 %-----------LICENSES-----------
+<% set visible_licenses = cv.licenses | selectattr('inResume') | list %>
+<% if visible_licenses %>
 \section{Licenses}
 \begin{sectionElementsList}
   \skillsElement{1}{
-<% for license in cv.licenses if license.inResume %>
-    \skillsItem{<< license.name >>}{<< license.year >>}
+<% for license in visible_licenses %>
+    \skillsItem{<< license.name | latex >>}{<< license.year >>}
 <% endfor %>
   }
 \end{sectionElementsList}
+<% endif %>
 
 %-----------TECH SKILLS-----------
 \section{Technical Skills}
 \begin{sectionElementsList}
-  \skillsElement{2}{
+  \skillsElement{<% if cv.skillsColumns %><< cv.skillsColumns >><% else %>2<% endif %>}{
 <% for skill_name, skill in cv.technicalSkills.items() if skill.inResume %>
-    \skillsItem{<< skill_name >>}{<< skill.value | latex >>}
+    \skillsItem{<< skill_name | latex >>}{<< skill.value | latex >>}
 <% endfor %>
   }
 \end{sectionElementsList}
@@ -86,7 +94,7 @@
   \projectElement{
     \href{<< project.url >>}{<< project.name >>}
     }{
-    << project.description >>
+    << project.description | latex >>
   }{<< project.technologies | latex >>}
 <% endfor %>
 \end{sectionElementsList}

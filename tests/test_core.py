@@ -160,7 +160,7 @@ class TestCreateJinjaEnv:
         """date_range filter handles None endDate."""
         env = create_jinja_env(tmp_template_dir)
         item = {"startDate": "Jan 2020", "endDate": None}
-        assert env.filters["date_range"](item) == "Jan 2020"
+        assert env.filters["date_range"](item) == "Jan 2020 -- Present"
 
     def test_resume_filter_registered(self, tmp_template_dir: Path):
         """resume_filter is registered and works."""
@@ -404,8 +404,8 @@ class TestFormatDateRange:
         assert result == "Jan 2020 -- Dec 2021"
 
     def test_with_none_end_date(self):
-        """None end date returns just start (current/ongoing)."""
-        assert format_date_range("Jan 2020", None) == "Jan 2020"
+        """None end date renders as ongoing ('Present')."""
+        assert format_date_range("Jan 2020", None) == "Jan 2020 -- Present"
 
     def test_same_dates(self):
         result = format_date_range("Jan 2020", "Jan 2020")

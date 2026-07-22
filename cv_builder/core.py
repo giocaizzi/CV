@@ -41,9 +41,9 @@ def latex_escape(text: str) -> str:
     if not isinstance(text, str):
         return text
 
-    # Pattern to match /latex{...} with balanced braces (one level deep)
-    # Allows any characters including backslashes, with nested braces one level deep
-    pattern = r"/latex\{((?:[^{}]|\{[^{}]*\})*)\}"
+    # Pattern to match /latex{...} with balanced braces (up to two levels deep),
+    # so nested commands like \href{url}{\underline{text}} pass through unescaped.
+    pattern = r"/latex\{((?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*)\}"
 
     # Find all raw LaTeX sections and store them with placeholders
     raw_sections = []
@@ -82,7 +82,7 @@ def latex_escape(text: str) -> str:
 def format_date_range(start: str, end: str | None) -> str:
     """Format date range for display. None end means 'Present'."""
     if end is None:
-        return start
+        return f"{start} -- Present"
     return f"{start} -- {end}"
 
 

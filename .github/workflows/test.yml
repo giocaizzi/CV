@@ -43,3 +43,20 @@ jobs:
       if: matrix.python-version == '3.11'
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
+
+  # Aggregate gate for branch protection: a single required check that
+  # succeeds only when the whole test matrix passes. Branch protection
+  # requires the context "tests-pass", which the matrix job cannot provide.
+  tests-pass:
+    name: tests-pass
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+    - name: Verify test matrix succeeded
+      run: |
+        if [ "${{ needs.test.result }}" != "success" ]; then
+          echo "Test matrix did not succeed: ${{ needs.test.result }}"
+          exit 1
+        fi
+        echo "All test-matrix jobs passed."

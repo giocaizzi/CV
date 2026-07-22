@@ -3,7 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Giorgio Caizzi
 % giocaizzi@gmail.com
-% version 2.0 (11/12/2025)
+% version 2.1 (07/14/2026)
 % original template by: XXXX
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -121,6 +121,10 @@
   % horizontal line
   \titlerule
 ]
+% tighten vertical space around section titles (left, before, after).
+% Small explicit gaps, paired with a small negative at the end of
+% sectionElementsList — predictable spacing, no title/content overlap.
+\titlespacing*{\section}{0pt}{2.0em}{0.8em}
 
 
 % -------------------------
@@ -242,9 +246,8 @@
 \newcommand{\multicolSkillsElement}[2]{
 % % vertical space before multicols
 \vspace{-1em}
-% column separation
-% \setlength{\multicolsep}{-100pt} 
-\setlength{\columnsep}{0em}
+% column separation: a gutter so adjacent columns don't run together
+\setlength{\columnsep}{1.6em}
 \begin{multicols}{#1}
   \ignoreitemtrue
     #2
@@ -298,15 +301,15 @@
 
 % Social link items (to be used conditionally in template)
 \newcommand{\linkedinLink}[1]{%
-  \faLinkedinSquare{} : \href{#1}{\underline{\linkedinUsername{#1}}}%
+  \faLinkedinSquare{}~\href{#1}{\underline{\linkedinUsername{#1}}}%
 }
 
 \newcommand{\githubLink}[1]{%
-  \faGithubSquare{} : \href{#1}{\underline{\githubUsername{#1}}}%
+  \faGithubSquare{}~\href{#1}{\underline{\githubUsername{#1}}}%
 }
 
 \newcommand{\webpageLink}[1]{%
-  \faGlobe{} : \href{#1}{\underline{\webpageHostname{#1}}}%
+  \faGlobe{}~\href{#1}{\underline{\webpageHostname{#1}}}%
 }
 
 % Helper to extract linkedin username from URL
@@ -328,6 +331,20 @@
 }
 
 % -------------------------
+% SUMMARY
+% -------------------------
+% 1 argument: profile/summary text shown under the header
+\newcommand{\resumeSummary}[1]{
+  % small gap from the header/links row above
+  \vspace{24pt}
+  \par\noindent
+  {\small #1}
+  % trim the gap before the first section (partially offsets the section's
+  % "before" space, leaving a small gap under the summary).
+  \vspace{-1.5em}
+}
+
+% -------------------------
 % FOOTER
 % -------------------------
 % 1 argument: footer text
@@ -346,14 +363,13 @@
   \experienceElement
   {#1}{#2}
   {#3}{#4}
-  {\scriptsize #5 #6}{}
+  {\scriptsize #5\ifblank{#6}{}{\newline #6}}{}
 }
 
 % Format for degree details (MSc/BSc)
 \newcommand{\degreeDetail}[3]{
   \textbf{#1}: #2
-  \newline
-  \textit{"#3"}
+  \ifblank{#3}{}{\newline \textbf{Thesis:} \textit{"#3"}}
 }
 
 % % -------------------------
