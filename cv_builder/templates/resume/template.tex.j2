@@ -53,8 +53,8 @@
   \educationElementWithDetails
     {<< edu.degree | latex >>}{<< edu.location >>}
     {<< edu.institution >>}{<< edu.startDate >> -- << edu.endDate >>}
-    {<% if edu.details.msc %>\degreeDetail{MSc}{<< edu.details.msc.courses | latex >>}{<< edu.details.msc.thesis >>}<% endif %>}
-    {<% if edu.details.bsc %>\degreeDetail{BSc}{<< edu.details.bsc.courses | latex >>}{<< edu.details.bsc.thesis >>}<% endif %>}
+    {<% if edu.details.msc %>\degreeDetail{<% if edu.details.msc.label %><< edu.details.msc.label >><% else %>MSc<% endif %>}{<< edu.details.msc.courses | latex >>}{<< edu.details.msc.thesis >>}<% endif %>}
+    {<% if edu.details.bsc %>\degreeDetail{<% if edu.details.bsc.label %><< edu.details.bsc.label >><% else %>BSc<% endif %>}{<< edu.details.bsc.courses | latex >>}{<< edu.details.bsc.thesis >>}<% endif %>}
 <% else %>
   \experienceElement
     {<< edu.institution >>}{<< edu.location >>}

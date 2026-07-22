@@ -301,15 +301,15 @@
 
 % Social link items (to be used conditionally in template)
 \newcommand{\linkedinLink}[1]{%
-  \faLinkedinSquare{} : \href{#1}{\underline{\linkedinUsername{#1}}}%
+  \faLinkedinSquare{}~\href{#1}{\underline{\linkedinUsername{#1}}}%
 }
 
 \newcommand{\githubLink}[1]{%
-  \faGithubSquare{} : \href{#1}{\underline{\githubUsername{#1}}}%
+  \faGithubSquare{}~\href{#1}{\underline{\githubUsername{#1}}}%
 }
 
 \newcommand{\webpageLink}[1]{%
-  \faGlobe{} : \href{#1}{\underline{\webpageHostname{#1}}}%
+  \faGlobe{}~\href{#1}{\underline{\webpageHostname{#1}}}%
 }
 
 % Helper to extract linkedin username from URL
@@ -362,14 +362,13 @@
   \experienceElement
   {#1}{#2}
   {#3}{#4}
-  {\scriptsize #5 #6}{}
+  {\scriptsize #5\ifblank{#6}{}{\newline #6}}{}
 }
 
 % Format for degree details (MSc/BSc)
 \newcommand{\degreeDetail}[3]{
   \textbf{#1}: #2
-  \newline
-  \textit{"#3"}
+  \ifblank{#3}{}{\newline \textbf{Thesis:} \textit{"#3"}}
 }
 
 % % -------------------------
