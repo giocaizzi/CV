@@ -3,7 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Giorgio Caizzi
 % giocaizzi@gmail.com
-% version 2.0 (11/12/2025)
+% version 2.1 (07/14/2026)
 % original template by: XXXX
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -121,6 +121,10 @@
   % horizontal line
   \titlerule
 ]
+% tighten vertical space around section titles (left, before, after).
+% Small explicit gaps, paired with a small negative at the end of
+% sectionElementsList — predictable spacing, no title/content overlap.
+\titlespacing*{\section}{0pt}{2.5em}{0.7em}
 
 
 % -------------------------
@@ -242,9 +246,8 @@
 \newcommand{\multicolSkillsElement}[2]{
 % % vertical space before multicols
 \vspace{-1em}
-% column separation
-% \setlength{\multicolsep}{-100pt} 
-\setlength{\columnsep}{0em}
+% column separation: a gutter so adjacent columns don't run together
+\setlength{\columnsep}{1.6em}
 \begin{multicols}{#1}
   \ignoreitemtrue
     #2
@@ -325,6 +328,19 @@
 \newcommand{\webpageHostname}[1]{%
   \StrBehind{#1}{://}[\tempweb]%
   \StrBefore{\tempweb}{/}%
+}
+
+% -------------------------
+% SUMMARY
+% -------------------------
+% 1 argument: profile/summary text shown under the header
+\newcommand{\resumeSummary}[1]{
+  \vspace{34pt}
+  \par\noindent
+  {\small #1}
+  % negative trailing to offset the following section's 2.5em "before"
+  % space, so the gap below the summary matches the gap above it.
+  \vspace{-2.1em}
 }
 
 % -------------------------

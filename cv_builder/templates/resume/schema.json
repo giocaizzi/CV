@@ -11,6 +11,27 @@
       "type": "string",
       "description": "JSON Schema reference"
     },
+    "skillsColumns": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Number of columns for the Technical Skills section (default 2)"
+    },
+    "summary": {
+      "type": "object",
+      "description": "Short professional profile shown at the top of the CV",
+      "required": ["value", "inResume"],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": "string",
+          "description": "Profile / summary text"
+        },
+        "inResume": {
+          "type": "boolean",
+          "description": "Whether to show the summary in the resume"
+        }
+      }
+    },
     "personalInfo": {
       "type": "object",
       "description": "Personal contact information",
