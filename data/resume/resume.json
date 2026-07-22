@@ -45,7 +45,7 @@
           "inResume": true
         },
         {
-          "value": "Co-developed the vision-language pipeline that estimates a meal's carbohydrates from a single photo for T.Conto, a diabetes app live on the App Store and Google Play, with a validation harness scoring estimates against official food-composition tables.",
+          "value": "Developed the vision-language pipeline that estimates a meal's carbohydrates from a single photo for T.Conto (a consumer nutrition app live on the App Store and Google Play), using agents to retrieve ingredient reference values from a vector store of the official food-composition tables.",
           "inResume": true
         },
         {
@@ -69,7 +69,7 @@
       "location": "Milan, Italy",
       "startDate": "Feb. 2021",
       "endDate": "May 2024",
-      "description": "Remediation consultancy for contaminated industrial sites across Italy (D.Lgs. 152/06).",
+      "description": "Remediation of contaminated industrial sites for ENI, Q8 and the US DoD.",
       "longDescription": "",
       "responsibilities": [
         {
@@ -146,7 +146,7 @@
   ],
   "technicalSkills": {
     "GenAI & LLMOps": {
-      "value": "RAG & retrieval engineering, LLMs & multimodal, agentic orchestration & MCP (LangGraph, Pydantic AI, raw SDKs), evaluation & guardrailing, Langfuse, OpenAI & Azure OpenAI",
+      "value": "RAG & retrieval engineering, LLMs & multimodal, agentic orchestration & MCP, evaluation & guardrailing, AI observability, OpenAI, Anthropic & Azure OpenAI",
       "inResume": true
     },
     "Backend & Systems": {
@@ -170,7 +170,7 @@
     {
       "name": "ralph-copilot",
       "url": "https://github.com/giocaizzi/ralph-copilot",
-      "description": "autonomous agent loop for GitHub Copilot, 138 stars",
+      "description": "autonomous agent loop for GitHub Copilot  /latex{\\faStar} 138",
       "technologies": "Copilot custom agents, git-as-memory",
       "inResume": true
     },
