@@ -242,6 +242,19 @@ class TestBuildVariant:
         assert "✓" in captured.out
         assert "Generated" in captured.out
 
+    def test_copies_sty_file(
+        self, tmp_template_dir: Path, tmp_path: Path, sample_cv_data
+    ):
+        """build_variant copies the .sty file so the .tex is compilable on its own,
+        without requiring a separate --compile run (e.g. the CI build step that
+        generates .tex and hands it to an external LaTeX compiler)."""
+        output_dir = tmp_path / "output"
+        output_dir.mkdir()
+
+        build_variant(tmp_template_dir, output_dir, "test_template", sample_cv_data)
+
+        assert (output_dir / "test_template.sty").exists()
+
 
 # =============================================================================
 # compile_pdf tests
