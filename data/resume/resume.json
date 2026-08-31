@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/giocaizzi/CV/main/cv_builder/templates/resume/schema.json",
   "skillsColumns": 1,
   "summary": {
-    "value": "Engineer who builds production RAG and agent systems, and the backends and infrastructure that run them. Self-taught into code as an environmental engineer, now shipping GenAI for banks, retail and the public sector.",
+    "value": "AI Engineer who embeds with enterprise clients to ship production AI end-to-end, from stakeholder requirements to RAG and agent systems in production. Self-taught into code as an environmental engineer, now delivering GenAI for banks, retail and the public sector.",
     "inResume": true
   },
   "personalInfo": {
@@ -33,7 +33,7 @@
       "longDescription": "",
       "responsibilities": [
         {
-          "value": "As lead engineer on a year-long Banca Generali engagement, built a production RAG over 600,000 pages of internal banking regulation (PDF, Word, Excel): structure-aware chunking, hierarchical retrieval and an event-driven sync pipeline into the bank's platforms, quality-gated by a golden evaluation set. In production, rolling out across 1,600 employees.",
+          "value": "/latex{\\textbf{Forward Deployed Engineer}} on a Banca Generali engagement, now in its second year, scoped to the AI transformation of the whole bank: embedded with the client, taking requirements and presenting outcomes directly to C-level sponsors and non-technical business owners, delivering on their Microsoft stack (Azure, Copilot) as their Microsoft partner. The custom core is a production RAG over 600k pages of internal banking regulation (PDF, Word, Excel): structure-aware chunking, hierarchical retrieval and an event-driven sync pipeline into the bank's platforms, quality-gated by a golden evaluation set. In production, rolling out across 2k employees.",
           "inResume": true
         },
         {
