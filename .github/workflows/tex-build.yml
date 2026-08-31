@@ -38,6 +38,7 @@ jobs:
         root_file: data/*/*.tex
         work_in_root_file_dir: true
         pre_compile: |
+          tlmgr update --self
           tlmgr install $(cat latex_requirements.txt | tr '\n' ' ')
 
     - name: Commit generated files
