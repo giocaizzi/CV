@@ -1,6 +1,7 @@
 """Core CV building functionality."""
 
 import json
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -127,6 +128,13 @@ def create_jinja_env(variant_dir: Path) -> Environment:
     return env
 
 
+def copy_sty_files(template_dir: Path, output_dir: Path) -> None:
+    """Copy the template's .sty file(s) next to the generated .tex, so the
+    output directory is self-contained and compilable on its own."""
+    for sty_file in template_dir.glob("*.sty"):
+        shutil.copy(sty_file, output_dir / sty_file.name)
+
+
 def build_variant(
     template_dir: Path, output_dir: Path, variant_name: str, cv_data: dict
 ) -> Path:
@@ -141,6 +149,8 @@ def build_variant(
     output_file = output_dir / f"{variant_name}.tex"
     output_file.write_text(output, encoding="utf-8")
 
+    copy_sty_files(template_dir, output_dir)
+
     print(f"✓ Generated {output_file}")
     return output_file
 
@@ -151,10 +161,7 @@ def compile_pdf(tex_file: Path, template_dir: Path) -> bool:
     output_dir = tex_file.parent.resolve()
     print(f"  Compiling {tex_file.name}...")
 
-    # Copy .sty file to output directory for compilation
-    import shutil
-    for sty_file in template_dir.glob("*.sty"):
-        shutil.copy(sty_file, output_dir / sty_file.name)
+    copy_sty_files(template_dir, output_dir)
 
     try:
         result = subprocess.run(
