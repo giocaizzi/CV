@@ -9,6 +9,7 @@ on:
       - main
     paths:
       - 'data/**/*.json'
+  workflow_dispatch:
 
 jobs:
   build:
