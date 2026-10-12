@@ -1,8 +1,20 @@
+<div align="center">
+
 # CV Builder
 
-[![Build CV](https://github.com/giocaizzi/CV/actions/workflows/tex-build.yml/badge.svg)](https://github.com/giocaizzi/CV/actions/workflows/tex-build.yml)
+**JSON-driven LaTeX CV building with Jinja2 templating.**
 
-JSON-driven LaTeX CV building with Jinja2 templating.
+[![CI](https://github.com/giocaizzi/CV/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/giocaizzi/CV/actions/workflows/ci.yml)
+[![Build CV](https://github.com/giocaizzi/CV/actions/workflows/tex-build.yml/badge.svg?branch=main)](https://github.com/giocaizzi/CV/actions/workflows/tex-build.yml)
+[![Coverage](https://codecov.io/gh/giocaizzi/CV/branch/main/graph/badge.svg)](https://codecov.io/gh/giocaizzi/CV)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+</div>
+
+---
+
+JSON-driven LaTeX CV building with Jinja2 templating: edit `data/resume/resume.json`, and the PDF is built from it.
 
 📄 [Download CV](https://raw.githubusercontent.com/giocaizzi/CV/main/data/resume/resume.pdf)
 
@@ -47,3 +59,7 @@ Edit `data/resume/resume.json` directly on GitHub (web/mobile). CI automatically
 
 - Python 3.10+ and [uv](https://docs.astral.sh/uv/)
 - TeX Live / TinyTeX / MacTeX
+
+## License
+
+[MIT](LICENSE)
