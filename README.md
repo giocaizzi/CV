@@ -25,9 +25,8 @@ data/resume/                   # User data + generated output
 Install dependencies and view help:
 
 ```bash
-# Activate virtual environment
+uv sync
 source .venv/bin/activate
-poetry install
 cv-build --help
 ```
 
@@ -46,5 +45,5 @@ Edit `data/resume/resume.json` directly on GitHub (web/mobile). CI automatically
 
 ## 📋 Requirements
 
-- Python 3.10+
+- Python 3.10+ and [uv](https://docs.astral.sh/uv/)
 - TeX Live / TinyTeX / MacTeX
