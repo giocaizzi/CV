@@ -34,9 +34,7 @@ class TestLoadValidateBuildFlow:
         assert is_valid is True
 
         # Build
-        tex_file = build_variant(
-            template_dir, output_dir, "resume", sample_cv_data
-        )
+        tex_file = build_variant(template_dir, output_dir, "resume", sample_cv_data)
 
         # Verify
         assert tex_file.exists()
@@ -173,9 +171,7 @@ class TestJinjaEnvironmentIntegration:
 class TestSchemaValidation:
     """Integration tests for JSON schema validation."""
 
-    def test_real_schema_validates_sample_data(
-        self, sample_cv_data, valid_schema
-    ):
+    def test_real_schema_validates_sample_data(self, sample_cv_data, valid_schema):
         """Real schema validates the sample CV data."""
         assert validate_cv(sample_cv_data, valid_schema) is True
 
@@ -238,9 +234,7 @@ class TestOutputFileGeneration:
         output_dir = tmp_path / "output"
         output_dir.mkdir()
 
-        tex_file = build_variant(
-            template_dir, output_dir, "resume", sample_cv_data
-        )
+        tex_file = build_variant(template_dir, output_dir, "resume", sample_cv_data)
         content = tex_file.read_text()
 
         # Basic LaTeX structure checks
@@ -257,9 +251,7 @@ class TestOutputFileGeneration:
         output_dir = tmp_path / "output"
         output_dir.mkdir()
 
-        tex_file = build_variant(
-            template_dir, output_dir, "resume", sample_cv_data
-        )
+        tex_file = build_variant(template_dir, output_dir, "resume", sample_cv_data)
 
         # Should read without encoding errors
         content = tex_file.read_text(encoding="utf-8")
