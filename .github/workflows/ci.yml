@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12', '3.13']
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6
+
+    - name: Setup uv with Python ${{ matrix.python-version }}
+      uses: astral-sh/setup-uv@v7
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: uv sync --locked
+
+    - name: Run unit tests with coverage
+      run: |
+        uv run pytest -m unit \
+          --cov=cv_builder \
+          --cov-report=xml \
+          --cov-report=term-missing
+
+    - name: Run integration tests
+      run: uv run pytest -m integration -v
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v5
+      if: matrix.python-version == '3.11'
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+
+    - name: Scan for secrets
+      uses: gitleaks/gitleaks-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Legacy aggregate still required by the current ruleset; drop it once
+  # the ruleset requires `check` instead.
+  tests-pass:
+    name: tests-pass
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+    - name: Verify test matrix succeeded
+      run: |
+        if [ "${{ needs.test.result }}" != "success" ]; then
+          echo "Test matrix did not succeed: ${{ needs.test.result }}"
+          exit 1
+        fi
+        echo "All test-matrix jobs passed."
+
+  # Required status check: runs `make check` and gates on every other job.
+  check:
+    name: check
+    needs: [test, secrets]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+    - name: Verify needed jobs succeeded
+      run: |
+        if [ "${{ needs.test.result }}" != "success" ] || [ "${{ needs.secrets.result }}" != "success" ]; then
+          echo "test=${{ needs.test.result }} secrets=${{ needs.secrets.result }}"
+          exit 1
+        fi
+
+    - name: Checkout repository
+      uses: actions/checkout@v6
+
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v7
+
+    - name: Run make check
+      run: make check

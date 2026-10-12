@@ -17,21 +17,18 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
-    - name: Setup Python
-      uses: actions/setup-python@v5
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v7
       with:
         python-version: '3.11'
 
-    - name: Install Poetry
-      run: pip install poetry
-
     - name: Install Python dependencies
-      run: poetry install
+      run: uv sync --locked --no-dev
 
     - name: Generate .tex files
-      run: poetry run cv-build
+      run: uv run --no-dev cv-build
 
     - name: Compile LaTeX
       uses: xu-cheng/latex-action@v4
