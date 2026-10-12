@@ -174,6 +174,7 @@ def compile_pdf(tex_file: Path, template_dir: Path) -> bool:
             ],
             capture_output=True,
             text=True,
+            check=False,
             cwd=output_dir,
         )
         if result.returncode == 0:

@@ -27,7 +27,9 @@ data/<name>/                   # User data + generated output
 
 ### Python
 
-- Use `poetry` for dependency management and version tracking
+- Use `uv` for dependency management (`uv.lock` is committed); never poetry or pip
+- `make check` (ruff lint + format check, pytest) must pass; CI requires the `check` job
+- Repo conventions follow the [GitHub standard](https://github.com/giocaizzi/.github/blob/main/docs/standard.md)
 
 #### Python tests
 
@@ -39,10 +41,10 @@ data/<name>/                   # User data + generated output
 - Mark tests with `@pytest.mark.unit` (fast, mocked) or `@pytest.mark.integration` (real I/O)
 
 ```bash
-poetry run pytest                    # Run all tests
-poetry run pytest -m unit            # Run unit tests only
-poetry run pytest -m integration     # Run integration tests only
-poetry run pytest --cov=cv_builder   # Run with coverage report
+uv run pytest                        # Run all tests
+uv run pytest -m unit                # Run unit tests only
+uv run pytest -m integration         # Run integration tests only
+uv run pytest --cov=cv_builder       # Run with coverage report
 ```
 
 ### JSON Data
@@ -60,11 +62,11 @@ poetry run pytest --cov=cv_builder   # Run with coverage report
 ## Workflow
 
 ```bash
-poetry install                              # Install dependencies
-poetry run cv-build                         # Generate .tex
-poetry run cv-build --compile               # Generate and compile PDF
-poetry run cv-build --template name         # Build specific template
-poetry run cv-build --data /path            # Custom data path
+uv sync                                     # Install dependencies
+uv run cv-build                             # Generate .tex
+uv run cv-build --compile                   # Generate and compile PDF
+uv run cv-build --template name             # Build specific template
+uv run cv-build --data /path                # Custom data path
 ```
 
 ## Jinja2 Syntax

@@ -41,9 +41,7 @@ class TestMainCli:
 
     def test_missing_template_exits_with_error(self, monkeypatch, capsys):
         """Missing template causes exit with code 1."""
-        monkeypatch.setattr(
-            sys, "argv", ["cv-build", "--template", "nonexistent"]
-        )
+        monkeypatch.setattr(sys, "argv", ["cv-build", "--template", "nonexistent"])
 
         with pytest.raises(SystemExit) as exc_info:
             main()
@@ -53,9 +51,7 @@ class TestMainCli:
         assert "Template" in captured.out
         assert "not found" in captured.out
 
-    def test_missing_data_file_exits_with_error(
-        self, monkeypatch, tmp_path, capsys
-    ):
+    def test_missing_data_file_exits_with_error(self, monkeypatch, tmp_path, capsys):
         """Missing data file causes exit with code 1."""
         # Create template dir but not data dir
         template_dir = tmp_path / "templates" / "resume"
@@ -68,12 +64,14 @@ class TestMainCli:
         )
 
         # Patch to use our temp templates
-        with patch(
-            "cv_builder.cli.get_package_templates_dir",
-            return_value=tmp_path / "templates",
+        with (
+            patch(
+                "cv_builder.cli.get_package_templates_dir",
+                return_value=tmp_path / "templates",
+            ),
+            pytest.raises(SystemExit) as exc_info,
         ):
-            with pytest.raises(SystemExit) as exc_info:
-                main()
+            main()
 
         assert exc_info.value.code == 1
         captured = capsys.readouterr()
@@ -103,12 +101,14 @@ class TestMainCli:
             ],
         )
 
-        with patch(
-            "cv_builder.cli.get_package_templates_dir",
-            return_value=templates_parent,
+        with (
+            patch(
+                "cv_builder.cli.get_package_templates_dir",
+                return_value=templates_parent,
+            ),
+            pytest.raises(SystemExit) as exc_info,
         ):
-            with pytest.raises(SystemExit) as exc_info:
-                main()
+            main()
 
         assert exc_info.value.code == 1
 
@@ -269,12 +269,14 @@ class TestMainCli:
             ],
         )
 
-        with patch(
-            "cv_builder.cli.get_package_templates_dir",
-            return_value=templates_parent,
+        with (
+            patch(
+                "cv_builder.cli.get_package_templates_dir",
+                return_value=templates_parent,
+            ),
+            pytest.raises(SystemExit) as exc_info,
         ):
-            with pytest.raises(SystemExit) as exc_info:
-                main()
+            main()
 
         assert exc_info.value.code == 1
 

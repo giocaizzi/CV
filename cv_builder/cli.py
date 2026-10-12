@@ -80,9 +80,8 @@ def main() -> None:
     )
 
     # Compile
-    if args.compile:
-        if not compile_pdf(tex_file, template_variant_dir):
-            sys.exit(1)
+    if args.compile and not compile_pdf(tex_file, template_variant_dir):
+        sys.exit(1)
 
     print("\nDone!")
 
