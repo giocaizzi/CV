@@ -47,7 +47,7 @@ def latex_escape(text: str) -> str:
     pattern = r"/latex\{((?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*)\}"
 
     # Find all raw LaTeX sections and store them with placeholders
-    raw_sections = []
+    raw_sections: list[str] = []
 
     def store_raw(match):
         idx = len(raw_sections)

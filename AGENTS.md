@@ -28,7 +28,7 @@ data/<name>/                   # User data + generated output
 ### Python
 
 - Use `uv` for dependency management (`uv.lock` is committed); never poetry or pip
-- `make check` (ruff lint + format check, pytest) must pass; CI requires the `check` job
+- `make check` (ruff lint + format check, mypy, pytest) must pass; CI requires the `check` job
 - Repo conventions follow the [GitHub standard](https://github.com/giocaizzi/.github/blob/main/docs/standard.md)
 
 #### Python tests
